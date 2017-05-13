@@ -1,10 +1,8 @@
 # Task-Editor-Application
-- - - -
 
 Le but du projet et de penser, concevoir et développer une interface graphique, qui permettra de visualiser et éditer un arbre de tâche.
 
 ## Usage
-- - - -
 
 Les principales fonctionnalités explicitées par les utilisateurs étaient que : 
 * L’application devra disposer de fonctionnalités dites génériques :		
@@ -26,14 +24,13 @@ Il y a donc trois parties principales de l’interface à développer :
 * et enfin l’**édition des propriétés** des tâches.
 
 ## Installation
-- - - -
 
 1. Télécharger/Installer [IntelliJ IDEA](https://www.jetbrains.com/idea/) en se créant un compte avec l'adresse ETU (gratuit) : 
 	1. Surement nécessiter de définir le path JAVA (1.8).
 2. Ouvrir le dossier Task-Editor-Application dans intelliJ, normalement tout est y embarqué.
 
 ## Architecture du projet
-- - - -
+
 **.idea** 
 	> fichiers utilent à IntelliJ pour le fonctionnement
 
@@ -48,7 +45,6 @@ Il y a donc trois parties principales de l’interface à développer :
 
 
 ## Credits
-- - - -
 
 Les contributeurs du projet : 
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<license>
+  <licensefileversion>1.0</licensefileversion>
+  <product>yFiles for JavaFX</product>
+  <package>complete</package>
+  <type>eval</type>
+  <distribution>false</distribution>
+  <watermark><![CDATA[yFiles for JavaFX Evaluation License (expires in ${license-days-remaining} days)]]></watermark>
+  <version>3.0</version>
+  <date>05/13/2017</date>
+  <expires>07/13/2017</expires>
+  <key>80aaea4008b99b9704aa56e0019017862b5cd9d855630f81166f23b013cab2850bba0ad4541cbfdddc49e7199fb234bc6e8f1f9a34e6985f98a6599b3d5531bd39390e89b6ac84f9477eee93247c2652ea8381576bdeb3e0a38828e989087882ab42c9703fa8fdf7bc6f33a295b0627389888b994e5cfd374a772d9c6de8e245</key>
+</license>
+

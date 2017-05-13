@@ -7,23 +7,23 @@ Le but du projet et de penser, concevoir et développer une interface graphique,
 - - - -
 
 Les principales fonctionnalités explicitées par les utilisateurs étaient que : 
-	* L’application devra disposer de fonctionnalités dites génériques :
-		* Créer un nouveau modèle de tâche
-		* Importer un modèle de tâche existant,
-		* Enregistrer le modèle de tâche,
-		* Quitter l’application.
-	* L’interface devra permettre en particulier de :
-		* Visualiser et éditer l’arbre de tâche,
-		* Visualiser et éditer  les propriétés des tâches,
-		* Visualiser et éditer les propriétés générales du modèle,
-		* Visualiser et éditer le fichier XML correspondant.
+* L’application devra disposer de fonctionnalités dites génériques :		
+	* Créer un nouveau modèle de tâche		
+	* Importer un modèle de tâche existant,
+	* Enregistrer le modèle de tâche,
+	* Quitter l’application.
+* L’interface devra permettre en particulier de :
+	* Visualiser et éditer l’arbre de tâche,
+	* Visualiser et éditer  les propriétés des tâches,
+	* Visualiser et éditer les propriétés générales du modèle,
+	* Visualiser et éditer le fichier XML correspondant.
 
 Les fonctionnalités de visualisation/édition de l’arbre ainsi que celle de visualisation/édition des propriétés générales du modèle peuvent être regroupées en une seule entité dans la limite où l’on admet que les propriétés générales du modèle sont limitées à l’existence de tags. 
 
 Il y a donc trois parties principales de l’interface à développer : 
-	* **arbre de tâche** avec la gestion des tags,
-	* la section **XML**,
-	* et enfin l’**édition des propriétés** des tâches.
+* **arbre de tâche** avec la gestion des tags,
+* la section **XML**,
+* et enfin l’**édition des propriétés** des tâches.
 
 ## Installation
 - - - -

@@ -27,6 +27,7 @@ Il y a donc trois parties principales de l’interface à développer :
 
 1. Télécharger/Installer [IntelliJ IDEA](https://www.jetbrains.com/idea/) en se créant un compte avec l'adresse ETU (gratuit) : 
 	1. Surement nécessiter de définir le path JAVA (1.8).
+	2. [Préparer IntelliJ à l'utilisation de JavaFX](https://www.jetbrains.com/help/idea/2017.1/preparing-for-javafx-application-development.html) 
 2. Ouvrir le dossier Task-Editor-Application dans intelliJ, normalement tout est y embarqué.
 
 ## Architecture du projet

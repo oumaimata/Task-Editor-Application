@@ -11,3 +11,5 @@ L’arbre de tâche est basé sur un ensemble de tâches organisées hiérarchiq
 Finalement, après étude et discussions, nous avons pu convenir de fonctionnalités qu’il serait souhaitable de développer. 
 
 ## Utilisation
+
+Toute la documentation yWorks est à retrouver [ici](http://docs.yworks.com/yfilesjavafx/doc/api/#/dguide/getting_started-creating_graph_elements)

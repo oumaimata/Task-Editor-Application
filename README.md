@@ -44,6 +44,24 @@ Il y a donc trois parties principales de l’interface à développer :
 **src** 
 	> ressources du projet (contient pour le moment le starting pack Hello World et la clé de licence yWorks)
 
+### Précision sur l'architecture
+
+Les fichiers **modèles** possèdent un prefixe **m**, les **controllers** un prefixe **c** et les **vues** un prefixe **v**
+
+Nous allons devoir créer les fichiers modèles suivants :
+***mTag** pour la creation de la classe Tag
+***mTache** pour la creation de la classe Tache
+***mXML** pour la gestion du XML
+***mConditions** pour la définissions des conditions. Cette classe va contenir une sous classe **Assertion**
+
+Un fichier général : 
+***Global** qui est un fichier regrouper les définitions des énumérations
+
+Des fichiers Controllers : 
+***cApplications** modele global de l'application
+*Le controller de l'arbre existe déjà sous le nom de **GraphControl**
+*On se pose encore la question de la création d'un controller indépendant pour le XML. 
+
 ## Model du projet
 
 Le model peut être pour le moment représenté par l'UML ci-dessous :

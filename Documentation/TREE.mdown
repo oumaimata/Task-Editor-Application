@@ -1,4 +1,4 @@
-# Task-Editor-Application - Documentation
+# Tree - Documentation
 
 Les consignes que nous avons reçues pour l’invention et le développement de l’arbre de tâches étaient : 
 
@@ -18,3 +18,9 @@ Toute la documentation yWorks est à retrouver [ici](http://docs.yworks.com/yfil
 
 Les éléments créant le graph sont les Nodes, Edges, Port, Label et Bend comme définit ci-dessous :
 ![Model](http://docs.yworks.com/yfilesjavafx/doc/api/assets/graph_model_basics_01.f0dbd252.png "Basic yWorks graph model")
+
+
+
+## License
+
+Le framework utilisé pour le développement de ce graph est le framework de yWorks pour JavaFX. Il est utilisé de manière gratuite à l'aide des licenses d'évaluation de 60 jours.

@@ -105,4 +105,9 @@ public class HelloWorldController {
     public void handleSaveAction() {
         ICommand.SAVE.execute(null, graphControl);
     }
+
+    public void graphFitContent() {
+        graphControl.fitContent();
+    }
+
 }

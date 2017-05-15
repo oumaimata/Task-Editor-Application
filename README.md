@@ -44,6 +44,13 @@ Il y a donc trois parties principales de l’interface à développer :
 **src** 
 	> ressources du projet (contient pour le moment le starting pack Hello World et la clé de licence yWorks)
 
+## Model du projet
+
+Le model peut être pour le moment représenté par l'UML ci-dessous :
+
+![Model du projet](https://github.com/oumaimata/Task-Editor-Application/blob/master/Documentation/Task-Editor-Application.png?raw=true "Model du projet Task-Editor")
+
+[Le model au format draw.io](https://www.draw.io/?state=%7B%22ids%22:%5B%220B6uNeHUv0TqOXzRSOFBSZ1BHY3M%22%5D,%22action%22:%22open%22,%22userId%22:%22105699757419526717647%22%7D#G0B6uNeHUv0TqOXzRSOFBSZ1BHY3M)
 
 ## Credits
 

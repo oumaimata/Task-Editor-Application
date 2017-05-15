@@ -49,18 +49,18 @@ Il y a donc trois parties principales de l’interface à développer :
 Les fichiers **modèles** possèdent un prefixe **m**, les **controllers** un prefixe **c** et les **vues** un prefixe **v**
 
 Nous allons devoir créer les fichiers modèles suivants :
-1.**mTag** pour la creation de la classe Tag
-2.*mTache** pour la creation de la classe Tache
-3.**mXML** pour la gestion du XML
-4.**mConditions** pour la définissions des conditions. Cette classe va contenir une sous classe **Assertion**
+1. **mTag** pour la creation de la classe Tag
+2. *mTache** pour la creation de la classe Tache
+3. **mXML** pour la gestion du XML
+4. **mConditions** pour la définissions des conditions. Cette classe va contenir une sous classe **Assertion**
 
 Un fichier général : 
-1.**Global** qui est un fichier regrouper les définitions des énumérations
+1. **Global** qui est un fichier regrouper les définitions des énumérations
 
 Des fichiers Controllers : 
-1.**cApplications** modele global de l'application
-2.Le controller de l'arbre existe déjà sous le nom de **GraphControl**
-3.On se pose encore la question de la création d'un controller indépendant pour le XML. 
+1. **cApplications** modele global de l'application
+2. Le controller de l'arbre existe déjà sous le nom de **GraphControl**
+3. On se pose encore la question de la création d'un controller indépendant pour le XML. 
 
 ## Model du projet
 

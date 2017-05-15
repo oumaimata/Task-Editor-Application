@@ -2,7 +2,18 @@
 <?import com.yworks.yfiles.view.GraphControl?>
 <?import javafx.scene.layout.BorderPane?>
 
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Button?>
 <BorderPane fx:controller="start.HelloWorldController" xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <ToolBar>
+            <items>
+                <Button onAction="#handleOpenAction" text="Open"/>
+                <Button onAction="#handleSaveAction" text="Save"/>
+                <Button onAction="#handleLayoutAction" text="Layout"/>
+            </items>
+        </ToolBar>
+    </top>
     <center>
         <GraphControl fx:id="graphControl"/>
     </center>

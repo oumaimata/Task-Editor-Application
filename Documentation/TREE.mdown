@@ -13,3 +13,8 @@ Finalement, après étude et discussions, nous avons pu convenir de fonctionnali
 ## Utilisation
 
 Toute la documentation yWorks est à retrouver [ici](http://docs.yworks.com/yfilesjavafx/doc/api/#/dguide/getting_started-creating_graph_elements)
+
+## Model
+
+Les éléments créant le graph sont les Nodes, Edges, Port, Label et Bend comme définit ci-dessous :
+![Model](http://docs.yworks.com/yfilesjavafx/doc/api/assets/graph_model_basics_01.f0dbd252.png "Basic yWorks graph model")

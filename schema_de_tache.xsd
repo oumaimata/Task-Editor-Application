@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+
+	<xsd:simpleType name="activity_statement_type">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="domain" />
+			<xsd:enumeration value="activity" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="activity_macro_type">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="notEqual" />
+			<xsd:enumeration value="lessThan" />
+			<xsd:enumeration value="greaterThan" />
+			<!-- add macros here  -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+	<xsd:simpleType name="activity_list_operator_type">
+		<xsd:list itemType="activity_operator_type" />
+	</xsd:simpleType>
+
+	<xsd:simpleType name="activity_operator_type">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="&lt;" />
+			<xsd:enumeration value="&gt;" />
+			<xsd:enumeration value="m" />
+			<xsd:enumeration value="mo" />
+			<xsd:enumeration value="o" />
+			<xsd:enumeration value="oi" />
+			<xsd:enumeration value="s" />
+			<xsd:enumeration value="si" />
+			<xsd:enumeration value="d" />
+			<xsd:enumeration value="di" />
+			<xsd:enumeration value="f" />
+			<xsd:enumeration value="fi" />
+			<xsd:enumeration value="=" />
+			<!--	{<, >, m, mi, o, oi, s, si, d, di, f, fi, =} -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="activity_constructor_type">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="IND" />
+			<xsd:enumeration value="SEQ" />
+			<xsd:enumeration value="SEQ-ORD"/>
+			<xsd:enumeration value="PAR"/>
+			<xsd:enumeration value="PAR-SIM"/>
+			<xsd:enumeration value="PAR-START"/>
+			<xsd:enumeration value="PAR-END"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+
+	<!-- Prefix -->
+	<xsd:element name="prefix">
+		<xsd:complexType>
+			<xsd:attribute name="name" type="xsd:string" />
+			<xsd:attribute name="iri" type="xsd:anyURI" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Namespaces -->
+	<xsd:element name="namespaces">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" ref="prefix" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+
+	<!-- Triple -->
+	<xsd:element name="triple">
+		<xsd:complexType>
+			<xsd:attribute name="predicate" type="xsd:string" />
+			<xsd:attribute name="subject" type="xsd:string" />
+			<xsd:attribute name="object" type="xsd:string" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Var -->
+	<xsd:element name="var">
+		<xsd:complexType>
+			<xsd:attribute name="n" type="xsd:string" />
+			<xsd:attribute name="id" type="xsd:string" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- Macro -->
+	<xsd:element name="macro">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" ref="var" />
+			</xsd:sequence>
+			<xsd:attribute name="operator" type="activity_macro_type" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+
+	<!-- Statement -->
+	<xsd:element  name="statement">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="0" maxOccurs="unbounded" ref="triple" />
+				<xsd:element minOccurs="0" maxOccurs="unbounded" ref="macro" />
+			</xsd:sequence>
+			<xsd:attribute name="type" type="activity_statement_type" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- AND (content of conditions) -->
+	<xsd:element name="AND">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="0" maxOccurs="unbounded" ref="statement" />
+				<xsd:element minOccurs="0" maxOccurs="unbounded" name="NOT">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element maxOccurs="unbounded" ref="statement" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Conditions -->
+	<xsd:element name="conditions">
+		<xsd:complexType>
+			<xsd:all>
+				<xsd:element minOccurs="0" maxOccurs="1" ref="satisfaction" />
+				<xsd:element minOccurs="0" maxOccurs="1" ref="regulatory" />
+				<xsd:element minOccurs="0" maxOccurs="1" ref="nomological" />
+				<xsd:element minOccurs="0" maxOccurs="1" ref="contextual" />
+			</xsd:all>
+
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Satisfaction -->
+	<xsd:element name="satisfaction">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" ref="AND" />
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:positiveInteger" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- Regulatory -->
+	<xsd:element name="regulatory">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" ref="AND" />
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:positiveInteger" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Nomological -->
+	<xsd:element name="nomological">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" ref="AND" />
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:positiveInteger" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- Contextual -->
+	<xsd:element name="contextual">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" ref="AND" />
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:positiveInteger" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+
+	<!-- Ref-concept -->
+	<xsd:element name="ref-concept">
+		<xsd:complexType>
+			<xsd:attribute name="concept" type="xsd:string" use="optional" />
+			<xsd:attribute name="ref" type="xsd:string" use="required" />
+			<xsd:attribute name="predicate" type="xsd:string" use="optional" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- Constraint-->
+	<xsd:element name="constraint">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" ref="triple" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Context -->
+	<xsd:element name="context">
+		<xsd:complexType>
+			<xsd:all>
+				<xsd:element maxOccurs="1" name="refs" >
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element minOccurs="0" maxOccurs="unbounded" ref="ref-concept" />
+							<xsd:element minOccurs="0" maxOccurs="unbounded" name="param"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element minOccurs="0" maxOccurs="1" name="constraints" >
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element maxOccurs="unbounded" ref="constraint" />
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:all>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Tag-->
+	<xsd:element name="tag">
+		<xsd:complexType>
+			<xsd:attribute name="id" type="xsd:string" use="required" />
+			<xsd:attribute name="name" type="xsd:string" use="required" />
+			<xsd:attribute name="supertags" type="xsd:integer" />
+			<xsd:attribute name="valued" type="xsd:boolean" use="optional" />
+		</xsd:complexType>
+	</xsd:element>
+	
+	<!-- Tags -->
+	<xsd:element name="tags">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" ref="tag" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	
+	
+	<!-- Ref-tag -->
+	<xsd:element name="ref-tag">
+		<xsd:complexType>
+			<xsd:attribute name="id" type="xsd:string" use="required" />
+			<xsd:attribute name="value" type="xsd:integer" use="optional" />
+		</xsd:complexType>
+	</xsd:element>
+	
+	<!-- Ref-tags -->
+	<xsd:element name="ref-tags">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" ref="ref-tag" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<!-- Subtask -->
+	<xsd:element name="subtask">
+		<xsd:complexType>
+			<xsd:attribute name="id" type="xsd:string" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- Subtasks -->
+	<xsd:element name="subtasks">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="unbounded" ref="subtask" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Relation -->
+	<xsd:element name="relation">
+		<xsd:complexType>
+			<xsd:attribute name="lh" type="xsd:string" use="required" />
+			<xsd:attribute name="operator" type="activity_operator_type" use="required" />
+			<xsd:attribute name="rh" type="xsd:string" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Constructor -->
+	<xsd:element name="constructor">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="0" maxOccurs="unbounded" ref="relation" />
+			</xsd:sequence>
+			<xsd:attribute name="type" type="activity_constructor_type" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+
+
+	<!-- Action -->
+	<xsd:element name="action">
+		<xsd:complexType>
+			<xsd:attribute name="id" type="xsd:string" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Param -->
+	<xsd:element name="param">
+		<xsd:complexType>
+			<xsd:attribute name="value" type="xsd:string" use="required" />
+			<xsd:attribute name="predicate" type="xsd:string" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Resources-->
+	<xsd:element name="resources">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="0" maxOccurs="unbounded" name="ref-concept">
+					<xsd:complexType>
+						<xsd:attribute name="ref" type="xsd:string" use="required" />
+						<xsd:attribute name="predicate" type="xsd:string" use="required" />
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element minOccurs="0" maxOccurs="unbounded" name="param"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Operation -->
+	<xsd:element name="operation">
+		<xsd:complexType>
+			<xsd:all>
+				<xsd:element minOccurs="1" maxOccurs="1" name="action"/>
+				<xsd:element minOccurs="1" maxOccurs="1" name="resources"/>
+			</xsd:all>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Task_m -->
+	<xsd:element name="task_m">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="1" maxOccurs="unbounded" name="task">
+					<xsd:complexType>
+						<xsd:all>
+							<xsd:element minOccurs="1" maxOccurs="1" ref="context"/>
+							<xsd:element minOccurs="1" maxOccurs="1" ref="subtasks"/>
+							<xsd:element minOccurs="1" maxOccurs="1" ref="constructor"/>
+							<xsd:element minOccurs="1" maxOccurs="1" ref="conditions"/>
+							<xsd:element minOccurs="0" maxOccurs="1" ref="ref-tags"/>
+						</xsd:all>
+						<xsd:attribute name="id" type="xsd:string" use="required" />
+						<xsd:attribute name="name" type="xsd:string" use="required" />
+						<xsd:attribute name="iterative" type="xsd:string" use="optional" default="false"/>
+						<xsd:attribute name="optional" type="xsd:string" use="optional" default="false"/>
+
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<!-- Task_f -->
+	<xsd:element name="task_f">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="1" maxOccurs="unbounded" name="task">
+					<xsd:complexType>
+						<xsd:all>
+							<xsd:element minOccurs="1" maxOccurs="1" ref="context"/>
+							<xsd:element minOccurs="1" maxOccurs="1" ref="operation"/>
+							<xsd:element minOccurs="1" maxOccurs="1" ref="conditions"/>
+							<xsd:element minOccurs="0" maxOccurs="1" ref="ref-tags"/>
+						</xsd:all>
+						<xsd:attribute name="id" type="xsd:string" use="required" />
+						<xsd:attribute name="name" type="xsd:string" use="required" />
+						<xsd:attribute name="iterative" type="xsd:string" use="optional" default="false"/>
+						<xsd:attribute name="optional" type="xsd:string" use="optional" default="false"/>
+
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+
+
+
+	<xsd:element name="model">
+		<xsd:complexType>
+			<xsd:all>
+				<xsd:element minOccurs="1" maxOccurs="1" ref="namespaces"/>
+				<xsd:element minOccurs="1" maxOccurs="1" name="tasks">
+					<xsd:complexType>
+						<xsd:all>
+							<xsd:element ref="task_m" minOccurs="1" maxOccurs="1"/>
+							<xsd:element ref="task_f" minOccurs="1" maxOccurs="1"/>
+						</xsd:all>	
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:all>
+			<xsd:attribute name="version" type="xsd:string" use="optional" />
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

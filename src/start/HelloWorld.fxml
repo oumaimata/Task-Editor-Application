@@ -11,6 +11,7 @@
                 <Button onAction="#handleOpenAction" text="Open"/>
                 <Button onAction="#handleSaveAction" text="Save"/>
                 <Button onAction="#handleLayoutAction" text="Layout"/>
+                <Button onAction="#graphFitContent" text="center"/>
             </items>
         </ToolBar>
     </top>

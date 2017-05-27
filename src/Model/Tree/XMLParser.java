@@ -18,6 +18,8 @@ public class XMLParser {
     se renseigner sur xpath
     librairie Xerces
 
-    faire des cénarios en fonction des uses cases choisir le pasing
+    faire des scénarios en fonction des uses cases choisir le pasingc
+    utiliser la classe XMLReader ?
+
     * */
 }

@@ -27,7 +27,7 @@ public class HelloWorldController {
 
     public void initialize() {
         // Called by the JavaFX framework on loading.
-
+/*
         //input mode enable user interaction
         graphControl.setInputMode(new GraphEditorInputMode());
 
@@ -62,12 +62,13 @@ public class HelloWorldController {
         ILabel ln3 = graph.addLabel(node3, "n3");
         ILabel le3 = graph.addLabel(edge1, "edge1-2");
         ILabel le4 = graph.addLabel(edge2, "edge2-3");
+        */
     }
 
     public void onLoaded() {
         // Called by our application right after stage is loaded.
         //fit graph after all element been loaded
-        graphControl.fitGraphBounds();
+        //graphControl.fitGraphBounds();
     }
 
     private ShapeNodeStyle createOrangeStyle(){

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import com.yworks.yfiles.view.GraphControl?>
-<?import javafx.scene.layout.BorderPane?>
 
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.control.Button?>
+<?import com.yworks.yfiles.view.GraphControl?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
 <BorderPane fx:controller="start.HelloWorldController" xmlns:fx="http://javafx.com/fxml">
     <top>
         <ToolBar>
@@ -16,6 +15,6 @@
         </ToolBar>
     </top>
     <center>
-        <GraphControl fx:id="graphControl"/>
+        <!--<GraphControl fx:id="graphControl"/>-->
     </center>
 </BorderPane>

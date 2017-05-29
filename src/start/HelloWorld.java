@@ -17,14 +17,16 @@ public class HelloWorld extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("HelloWorld.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../Task-editor-layout.fxml"));
         Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root, 1365, 768);
+        Scene scene = new Scene(root, 1366, 768);
 
         stage.setOnShown(windowEvent -> fxmlLoader.<HelloWorldController>getController().onLoaded());
 
-        stage.setTitle("Hello, yFiles for JavaFX");
+        stage.setTitle("Task Editor");
+        stage.setMaximized(false);
         stage.setScene(scene);
+        //stage.setFullScreen(true);
         stage.show();
     }
 }

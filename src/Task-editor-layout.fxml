@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<!--<?import com.yworks.yfiles.view.GraphControl?>-->
+
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="start.HelloWorldController">
+   <top>
+      <ToolBar BorderPane.alignment="CENTER">
+        <items>
+            <Button mnemonicParsing="false" text="Open" />
+          <Button mnemonicParsing="false" text="Save" />
+            <Button mnemonicParsing="false" text="Hierarchiser" />
+            <Button mnemonicParsing="false" text="Centrer" />
+        </items>
+      </ToolBar>
+   </top>
+   <center>
+      <SplitPane dividerPositions="0.7236704900938478" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <SplitPane dividerPositions="0.7828185328185329" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0">
+                           <children>
+                              <Button layoutX="662.0" layoutY="165.0" mnemonicParsing="false" text="Button" />
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Button layoutX="454.0" layoutY="506.0" mnemonicParsing="false" text="Button" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+</BorderPane>

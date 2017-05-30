@@ -1,5 +1,3 @@
-package start;
-
 import Controller.ViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +16,7 @@ public class TaskEditorApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../Task-editor-layout.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./Task-editor-layout.fxml"));
         Parent root = fxmlLoader.load();
         stage.setOnShown(windowEvent -> fxmlLoader.<ViewController>getController().onLoaded());
 

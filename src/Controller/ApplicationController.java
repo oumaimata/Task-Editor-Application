@@ -1,5 +1,6 @@
 package start;
 
+import Controller.ViewController;
 import com.yworks.yfiles.geometry.PointD;
 import com.yworks.yfiles.geometry.RectD;
 import com.yworks.yfiles.graph.*;
@@ -16,6 +17,7 @@ import javafx.scene.paint.Color;
 
 import java.time.Duration;
 
+
 /**
  * Created by pierrelouislacorte on 13/05/2017.
  */
@@ -24,6 +26,12 @@ public class HelloWorldController {
     public GraphControl graphControl;
     private ShapeNodeStyle orangeNodeStyle = createOrangeStyle();
     private ShapeNodeStyle blueNodeStyle = createBlueStyle();
+
+    public ViewController view;
+
+    public HelloWorldController(ViewController view) {
+        this.view = view;
+    }
 
     public void initialize() {
         // Called by the JavaFX framework on loading.
@@ -63,6 +71,18 @@ public class HelloWorldController {
         ILabel le3 = graph.addLabel(edge1, "edge1-2");
         ILabel le4 = graph.addLabel(edge2, "edge2-3");
         */
+
+    }
+
+    // Méthode principale a utiliser dans le controller.
+    // Y effectuer toutes les actions
+    public void main_action (){
+
+    }
+
+    // Méthode pour réaliser les bindings des actions et des boutons
+    public void make_binding (){
+
     }
 
     public void onLoaded() {

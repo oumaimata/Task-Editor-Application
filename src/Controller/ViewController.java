@@ -7,21 +7,26 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import start.HelloWorldController;
 
 /**
  * Created by pierrelouislacorte on 29/05/2017.
  */
-public class View {
-    HelloWorldController controller;
+public class ViewController {
+    ApplicationController applicationController;
 
+    // méthode appelée au moment ou on parse le FMXL et grâce a laquelle tout se construit
     public void initialize() {
-        this.controller = new HelloWorldController(this);
-        controller.action();
+        this.applicationController = new ApplicationController(this);
+        // on fait les bindings depuis applicationController
+        applicationController.make_binding();
+        // on déclanche la méthode d'action principale du controller de l'application
+        applicationController.main_action();
     }
 
+    // méthode appelée par l'application une fois que le stage a été chargé.
     public void onLoaded() {
-
+        //fit graph after all element been loaded
+        //graphControl.fitGraphBounds();
     }
 
     // bar de menu

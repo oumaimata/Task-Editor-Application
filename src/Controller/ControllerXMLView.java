@@ -37,7 +37,6 @@ public class ControllerXMLView {
             codeArea.setStyleSpans(0, XMLEditor.computeHighlighting(newText));
         });
         codeArea.replaceText(0,0,model.getXMLtext());
-
     }
 
 }

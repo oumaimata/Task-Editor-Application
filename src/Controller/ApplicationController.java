@@ -35,6 +35,7 @@ public class ApplicationController {
     // Méthode principale a utiliser dans le controller.
     // Y effectuer toutes les actions
     public void main_action (){
+        // ceci est un exemple pour acceder a un element graphique
         Button test = view.getButton_graph_zoomin();
         test.setText("test test");
     }

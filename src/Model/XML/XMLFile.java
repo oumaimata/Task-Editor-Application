@@ -1,4 +1,4 @@
-package Model;
+package Model.XML;
 
 
 import javafx.beans.property.ListProperty;

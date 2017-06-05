@@ -1,14 +1,9 @@
 package Controller;
 
 
-import Model.XMLFile;
+import Model.XML.XMLFile;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
-import javafx.scene.web.HTMLEditor;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import start.XMLEditor;

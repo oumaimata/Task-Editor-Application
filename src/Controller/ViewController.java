@@ -33,7 +33,7 @@ public class ViewController {
     // méthode appelée par l'application une fois que le stage a été chargé.
     public void onLoaded() {
         //fit graph after all element been loaded
-        //graphControl.fitGraphBounds();
+        graphControl.fitGraphBounds();
     }
 
     // bar de menu

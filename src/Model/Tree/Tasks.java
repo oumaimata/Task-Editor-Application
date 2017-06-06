@@ -43,12 +43,14 @@ public class Tasks {
     }
 
     // methode d'ajout a la liste des taches une tache par défaut : nom + id
-    public void addDefaultTache(){
+    // retourne la tache ainsi créée
+    public Task addDefaultTache(){
         System.out.println("lancement de la methode addDefaultTache de Tasks");
         Task newTask = new Task();
         newTask.setIdProperty(getId());
         addTask(newTask);
         System.out.println(contentFromTasks(tasks));
+        return newTask;
     }
 
     // methode pour clear la liste complete des taches

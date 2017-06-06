@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Tree.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -17,6 +18,7 @@ public class ViewController {
     // méthode appelée au moment ou on parse le FMXL et grâce a laquelle tout se construit
     public void initialize() {
         this.applicationController = new ApplicationController(this);
+        applicationController.initialize();
         // on fait les bindings depuis applicationController
         applicationController.make_binding();
         // on déclanche la méthode d'action principale du controller de l'application
@@ -50,7 +52,7 @@ public class ViewController {
     @FXML
     private  MenuButton menubutton_edit_nature,menubutton_edit_constructeur;
     @FXML
-    private  ListView listview_edit_taches_filles,listview_edit_autres_taches;
+    private  ListView<Task> listview_edit_taches_filles,listview_edit_autres_taches;
     @FXML
     private  Text txt_edit_id_resume;
 

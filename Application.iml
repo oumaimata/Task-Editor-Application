@@ -17,5 +17,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="yfiles-for-javafx1" level="project" />
+    <orderEntry type="library" name="richtextfx-demos-fat-0.7-M5" level="project" />
   </component>
 </module>

@@ -1,5 +1,8 @@
 package Model.Tree;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
+
 import java.util.List;
 
 /**
@@ -7,4 +10,9 @@ import java.util.List;
  */
 public class LeafTask extends Task{
     public List<Operation> operationList;
+
+    public LeafTask(IntegerProperty idProperty, StringProperty nameProperty, List<Operation> operationList) {
+        super(idProperty, nameProperty);
+        this.operationList = operationList;
+    }
 }

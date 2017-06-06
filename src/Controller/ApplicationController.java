@@ -74,6 +74,8 @@ public class ApplicationController {
         LeafTaskStyle = createLeafStyle();
         // le panel est actif initialement
         panelActif = true;
+        // initialisation de la tache courrante
+        currentTask = null;
     }
 
     public void initialize() {
@@ -125,12 +127,14 @@ public class ApplicationController {
             }
         });
 
-        // creation du listener sur le click d'une zone non clickable du graph : typiquement le fond
+        // creation du listener sur le click d'une zone non clickable du graph : typiquement le fond du graph
         graphEditorInputMode.addCanvasClickedListener(new IEventHandler<ClickEventArgs>() {
             @Override
             public void onEvent(Object o, ClickEventArgs clickEventArgs) {
                 // modification de l'etat du panel d'édition
                 changePanelState();
+                // on supprime la tache courante sélectionnée
+                currentTask = null;
             }
         });
     }

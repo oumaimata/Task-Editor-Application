@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!--<?import com.yworks.yfiles.view.GraphControl?>-->
+<?import com.yworks.yfiles.view.GraphControl?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController">
    <top>
@@ -28,7 +28,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <SplitPane dividerPositions="0.6253333333333333" layoutX="126.0" layoutY="67.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="584.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane dividerPositions="0.63" fx:id="splitPane_graph_edit" layoutX="126.0" layoutY="67.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="584.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="520.0" prefWidth="661.0">
                            <children>
@@ -43,6 +43,9 @@
                                        </BorderPane.margin>
                                     </VBox>
                                  </left>
+                                  <center>
+                                      <GraphControl fx:id="graphControl"/>
+                                  </center>
                                  <right>
                                     <VBox alignment="TOP_RIGHT" prefHeight="463.0" prefWidth="88.0" spacing="8.0" BorderPane.alignment="CENTER">
                                        <children>

@@ -1,11 +1,11 @@
 package Controller;
 
 import Model.Tree.Task;
+import com.yworks.yfiles.graph.IGraph;
+import com.yworks.yfiles.view.GraphControl;
+import com.yworks.yfiles.view.input.GraphEditorInputMode;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -15,9 +15,14 @@ import javafx.scene.text.Text;
 public class ViewController {
     ApplicationController applicationController;
 
+    public GraphControl graphControl;
+
     // méthode appelée au moment ou on parse le FMXL et grâce a laquelle tout se construit
     public void initialize() {
-        this.applicationController = new ApplicationController(this);
+        // creation de l'application controller
+        this.applicationController = new ApplicationController(this, graphControl);
+        // permettre l'edition directe du graph
+        graphControl.setInputMode(new GraphEditorInputMode());
         applicationController.initialize();
         // on fait les bindings depuis applicationController
         applicationController.make_binding();
@@ -28,7 +33,7 @@ public class ViewController {
     // méthode appelée par l'application une fois que le stage a été chargé.
     public void onLoaded() {
         //fit graph after all element been loaded
-        //graphControl.fitGraphBounds();
+        graphControl.fitGraphBounds();
     }
 
     // bar de menu
@@ -73,6 +78,10 @@ public class ViewController {
     private  ListView listview_edit_conditions,listview_edit_assertions;
     @FXML
     private  MenuButton menubutton_edit_type_condition,menubutton_edit_operateur_logique_condition;
+
+    // Split pane
+    @FXML
+    private SplitPane splitPane_graph_edit;
 
 
     /*
@@ -375,4 +384,11 @@ public class ViewController {
         this.menubutton_edit_operateur_logique_condition = menubutton_edit_operateur_logique_condition;
     }
 
+    public SplitPane getSplitPane_graph_edit() {
+        return splitPane_graph_edit;
+    }
+
+    public void setSplitPane_graph_edit(SplitPane splitPane_graph_edit) {
+        this.splitPane_graph_edit = splitPane_graph_edit;
+    }
 }

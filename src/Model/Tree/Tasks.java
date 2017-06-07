@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Tasks {
     private ObservableList<Task> tasks;
-    private int id;
+    private Integer id;
 
     // constructeur sans argument
     public Tasks() {
@@ -31,7 +31,7 @@ public class Tasks {
     }
 
     // getter sur un id qui va s'incrementer a chaque call
-    public int getId() {
+    public Integer getId() {
         this.id = id + 1;
         return id;
     }
@@ -46,7 +46,7 @@ public class Tasks {
     public void addDefaultTache(){
         System.out.println("lancement de la methode addDefaultTache de Tasks");
         Task newTask = new Task();
-        newTask.setIdProperty(getId());
+        newTask.setIdProperty(getId().toString());
         addTask(newTask);
         System.out.println(contentFromTasks(tasks));
     }

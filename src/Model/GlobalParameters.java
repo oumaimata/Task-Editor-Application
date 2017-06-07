@@ -14,17 +14,29 @@ public class GlobalParameters {
     }
 
     public enum TypeConditionArret {
-        satisfaction,
-        assertion,
-        duree,
-        iteration,
-        instance
+        satisfaction("satisfaction"),
+        assertion("assertion"),
+        duree("duree"),
+        iteration("iteration"),
+        instance("instance");
+
+        private String name;
+
+        TypeConditionArret(String name) {this.name = name;}
+
+        public String getName() {return name;}
     }
 
     public enum TypeCondition {
-        precondition,
-        satisfaction,
-        arret
+        precondition("precondition"),
+        satisfaction("satisfaction"),
+        arret("arret");
+
+        private String name;
+
+        TypeCondition(String name) {this.name = name;}
+
+        public String getName() {return name;}
     }
 
     public enum TypeAssertion {
@@ -33,23 +45,39 @@ public class GlobalParameters {
     }
 
     public enum OperateurLogique {
-        AND,
-        OR,
-        XOR,
-        NOT
+        AND("AND"),
+        OR("OR"),
+        XOR("XOR"),
+        NOT("NOT");
+
+        private String name;
+
+        OperateurLogique(String name) {this.name = name;}
+
+        public String getName() {return name;}
     }
 
     public enum Nature {
-        interruptible,
-        optionnelle,
-        iterative
+        INTERRUPTIBLE("interruptible"),
+        OPTIONELLE("optionelle"),
+        ITERATIVE("iterative");
+
+        private String baliseName;
+
+        Nature(String baliseName) {
+            this.baliseName = baliseName;
+        }
+
+        public String getBaliseName() {
+            return baliseName;
+        }
     }
 
     public enum RelationAllen{
         // X is the left part of the assertion and Y the right part
 
-        before("<"), // X takes place before Y
-        after(">"), // X takes place after Y
+        before("&lt"), // X takes place before Y
+        after("&gt"), // X takes place after Y
         meet("m"), // X meets Y, X est directement suivi par Y
         meetInverse("mi"), // Y meets X, Y est directement suivi par X
         overlap("o"), // X overlaps with Y
@@ -63,6 +91,22 @@ public class GlobalParameters {
         equal("="); // X happens at the same time as Y
 
         private String symbol;
+        static public RelationAllen fromString(String symbol){
+            if (symbol.equals(after.getSymbol())){return after;}
+            if (symbol.equals(before.getSymbol())){return before;}
+            if (symbol.equals(meet.getSymbol())){return meet;}
+            if (symbol.equals(meetInverse.getSymbol())){return meetInverse;}
+            if (symbol.equals(overlap.getSymbol())){return overlap;}
+            if (symbol.equals(overlapInverse.getSymbol())){return overlapInverse;}
+            if (symbol.equals(start.getSymbol())){return start;}
+            if (symbol.equals(startInverse.getSymbol())){return startInverse;}
+            if (symbol.equals(during.getSymbol())){return during;}
+            if (symbol.equals(duringInverse.getSymbol())){return duringInverse;}
+            if (symbol.equals(finish.getSymbol())){return finish;}
+            if (symbol.equals(finishInverse.getSymbol())){return finishInverse;}
+            if (symbol.equals(equal.getSymbol())){return equal;}
+            return null;
+        }
 
         RelationAllen(String symbol) {
             this.symbol = symbol;
@@ -74,12 +118,18 @@ public class GlobalParameters {
     }
 
     public enum TypeConstructeur{
-        IND,
-        SEQ,
-        SEQ_ORD,
-        PAR,
-        PAR_SIM,
-        PAR_START,
-        PAR_END
+        IND("IND"),
+        SEQ("SEQ"),
+        SEQ_ORD("SEQ_ORD"),
+        PAR("PAR"),
+        PAR_SIM("PAR_SIM"),
+        PAR_START("PAR_START"),
+        PAR_END("PAR_END");
+
+        private String name;
+
+        TypeConstructeur(String name) {this.name = name;}
+
+        public String getName() {return name;}
     }
 }

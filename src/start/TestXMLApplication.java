@@ -1,5 +1,7 @@
 package start;
 
+import Model.Tree.Tasks;
+import Model.XML.XMLParser;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,6 +27,10 @@ public class TestXMLApplication extends Application{
         stage.setTitle("Test vue XML");
         stage.setScene(scene);
         stage.show();
+        Tasks tasks = new Tasks();
+        XMLParser xmlparser = new XMLParser(tasks);
+        xmlparser.createTasksFromXML("exempleXML.xml");
+
     }
 
     public static void main (String[] args){

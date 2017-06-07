@@ -11,7 +11,7 @@ import java.util.List;
 public class LeafTask extends Task{
     public List<Operation> operationList;
 
-    public LeafTask(IntegerProperty idProperty, StringProperty nameProperty, List<Operation> operationList) {
+    public LeafTask(StringProperty idProperty, StringProperty nameProperty, List<Operation> operationList) {
         super(idProperty, nameProperty);
         this.operationList = operationList;
     }

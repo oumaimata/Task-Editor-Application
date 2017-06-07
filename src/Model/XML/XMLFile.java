@@ -20,8 +20,10 @@ import java.util.List;
 
 /**
  * Created by ladyn-totorosaure on 27/05/17.
+ * This class is used to contain the XML file and its content.
  */
 public class XMLFile {
+    // attribute containing the text of the XML File
     private String XMLtext;
 
     public XMLFile() {
@@ -29,25 +31,18 @@ public class XMLFile {
     }
 
     public void setTextFilePath() {
-//        System.out.println(XML_file_path);
-//        try (BufferedReader reader = Files.newBufferedReader(Paths.get(XML_file_path))) {
-//            String line = null;
-//            while ((line = reader.readLine()) != null) {
-//                System.out.println(line);
-//                XMLtext.add(line);
-//            }
-//        } catch (IOException x) {
-//            System.err.format("IOException: %s%n", x);
-//        }
+        // creating the object path to the file
         Path pathToFile = Paths.get("exempleXML.xml");
         Charset charset = Charset.defaultCharset();
         try {
+            // getting the text of the file in the string
            XMLtext = new String(Files.readAllBytes(pathToFile), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    // method that return the text of the file
     public String getXMLtext() {
         return XMLtext;
     }

@@ -1,6 +1,9 @@
 package Model.Tree;
 
 import Model.GlobalParameters;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.util.List;
@@ -9,19 +12,41 @@ import java.util.List;
  * Created by Théo on 17/05/2017.
  */
 public class Condition {
-    private GlobalParameters.TypeCondition type;
+    private ObjectProperty<GlobalParameters.TypeCondition> type;
 
-    public GlobalParameters.TypeCondition getType() { return type; }
-    public void setType(GlobalParameters.TypeCondition type) { this.type = type; }
+    private StringProperty id;
 
-    public class Assertion {
-        public StringProperty subject;
-        public StringProperty predicate;
-        public StringProperty object;
-        public GlobalParameters.TypeAssertion type;
+    public String getId() {
+        return id.get();
+    }
 
+    public StringProperty idProperty() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id.set(id);
+    }
+
+    public GlobalParameters.TypeCondition getType() {
+        return type.get();
+    }
+
+    public ObjectProperty<GlobalParameters.TypeCondition> typeProperty() {
+        return type;
+    }
+
+    public void setType(GlobalParameters.TypeCondition type) {
+        this.type.set(type);
     }
 
     private List<Assertion> assertionList;
+
+    public List<Assertion> getAssertionList() {
+        return assertionList;
+    }
+
+    public void setAssertionList(List<Assertion> assertionList) {
+        this.assertionList = assertionList;
+    }
 }

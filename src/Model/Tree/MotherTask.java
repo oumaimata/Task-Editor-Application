@@ -22,8 +22,10 @@ public class MotherTask extends Task{
     public GlobalParameters.TypeConstructeur getConstructor() {
         return constructor;
     }
-
     public void setConstructor(GlobalParameters.TypeConstructeur constructor) {
         this.constructor = constructor;
+    }
+    public void setConstructor(String name) {
+        constructor = GlobalParameters.TypeConstructeur.valueOf(name);
     }
 }

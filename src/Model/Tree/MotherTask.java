@@ -5,6 +5,8 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.List;
 
@@ -47,5 +49,32 @@ public class MotherTask extends Task{
     {
         if (linkBetweenDaughters.contains(link))
             linkBetweenDaughters.remove(link);
+    }
+
+    public Element toXml(Document doc)
+    {
+        Element motherTaskElement = super.toXml(doc);
+
+        Element constructorElement = doc.createElement("constructor");
+        constructorElement.setAttribute("type",getConstructor().getName());
+        int nb = linkBetweenDaughters.size();
+        for (int link_count=0; link_count<nb; ++link_count)
+        {
+            Element linkElement = linkBetweenDaughters.get(link_count).toXml(doc);
+            constructorElement.appendChild(linkElement);
+        }
+        motherTaskElement.appendChild(constructorElement);
+
+        Element subtasksElement = doc.createElement("subtasks");
+        nb = subTaskList.size();
+        for (int subtask_count=0; subtask_count<nb; ++subtask_count)
+        {
+            Element subtaskElement = doc.createElement("subtask");
+            subtaskElement.setAttribute("id",subTaskList.get(subtask_count));
+            subtasksElement.appendChild(subtaskElement);
+        }
+        motherTaskElement.appendChild(subtasksElement);
+
+        return motherTaskElement;
     }
 }

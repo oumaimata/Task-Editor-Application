@@ -1,10 +1,14 @@
 package Model.Tree;
 
 import Model.GlobalParameters;
+import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.util.Callback;
 
 import java.util.List;
 
@@ -15,13 +19,13 @@ public class Condition {
     public ObjectProperty<GlobalParameters.OperateurLogique> operator;
     private ObjectProperty<GlobalParameters.TypeCondition> type;
     private StringProperty id;
-    private List<Assertion> assertionList;
+    private ObservableList<Assertion> assertionList;
 
     public Condition() {
         operator = new SimpleObjectProperty<GlobalParameters.OperateurLogique>();
         type = new SimpleObjectProperty<GlobalParameters.TypeCondition>();
         id = new SimpleStringProperty();
-        //assertionList
+        this.assertionList = FXCollections.observableArrayList(Assertion.extractor());
     }
 
     public GlobalParameters.OperateurLogique getOperator() {
@@ -52,10 +56,29 @@ public class Condition {
     public void setType(GlobalParameters.TypeCondition type) { this.type.set(type); }
     public void setType(String name) { this.type.set(GlobalParameters.TypeCondition.valueOf(name)); }
 
-    public List<Assertion> getAssertionList() {
+    public ObservableList<Assertion> getAssertionList() {
         return assertionList;
     }
-    public void setAssertionList(List<Assertion> assertionList) {
+    public void setAssertionList(ObservableList<Assertion> assertionList) {
         this.assertionList = assertionList;
+    }
+    public void addAssertion(Assertion assertion)
+    {
+        if (!assertionList.contains(assertion))
+            assertionList.add(assertion);
+    }
+    public void removeAssertion(Assertion assertion)
+    {
+        if (assertionList.contains(assertion))
+            assertionList.remove(assertion);
+    }
+
+    public static Callback<Condition, Observable[]> extractor() {
+        return new Callback<Condition, Observable[]>() {
+            @Override
+            public Observable[] call(Condition param) {
+                return new Observable[]{param.idProperty(), param.typeProperty(), param.operatorProperty()};
+            }
+        };
     }
 }

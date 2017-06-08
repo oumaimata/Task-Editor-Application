@@ -101,8 +101,6 @@ public class ApplicationController {
     public void main_action (){
 
         // ceci est un exemple pour acceder a un element graphique
-        Button test = view.getButton_graph_zoomin();
-        test.setText("test test");
 
         // ajout du listener sur le bouton d'ajout de tache qui va déclancher l'ajout d'une tache par défaut
         view.getButton_graph_ajouter().setOnAction(evt -> ajoutTache());

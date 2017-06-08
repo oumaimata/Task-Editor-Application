@@ -7,10 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -37,6 +34,7 @@ public class XMLFile {
         this.XMLfilePath = new SimpleStringProperty();
         this.XMLtext = new SimpleStringProperty();
         XMLtext.setValue("");
+        XMLfilePath.setValue("test.xml");
     }
 
     public StringProperty XMLtextProperty() {
@@ -71,6 +69,20 @@ public class XMLFile {
            XMLtext.setValue(new String(Files.readAllBytes(pathToFile), StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void saveTextInFile(){
+        File newFile = new File(getXMLfilePath());
+        try{
+            if(newFile.exists()){newFile.delete();}
+            newFile.createNewFile();
+            FileWriter writer = new FileWriter(newFile);
+            writer.write(getXMLtext());
+            writer.flush();
+            writer.close();
+        }catch (Exception e){
+            System.out.println("Erreur : "+e.toString());
         }
     }
 

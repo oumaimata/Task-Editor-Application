@@ -3,6 +3,7 @@ package Model.XML;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 
@@ -24,30 +25,53 @@ import java.util.List;
  */
 public class XMLFile {
     // attribute containing the text of the XML File
-    private String XMLtext;
+    private StringProperty XMLtext;
+    private StringProperty XMLfilePath;
 
-    public XMLFile() {
-
+    public XMLFile(String XMLfilePath) {
+        this.XMLfilePath = new SimpleStringProperty(XMLfilePath);
+        this.XMLtext = new SimpleStringProperty();
     }
 
-    public void setTextFilePath() {
+    public XMLFile() {
+        this.XMLfilePath = new SimpleStringProperty();
+        this.XMLtext = new SimpleStringProperty();
+        XMLtext.setValue("");
+    }
+
+    public StringProperty XMLtextProperty() {
+        return XMLtext;
+    }
+
+    public String getXMLfilePath() {
+        return XMLfilePath.get();
+    }
+
+    public StringProperty XMLfilePathProperty() {
+        return XMLfilePath;
+    }
+
+    public void setXMLfilePath(String XMLfilePath) {
+        this.XMLfilePath.set(XMLfilePath);
+    }
+
+    public String getXMLtext() {
+        return XMLtext.get();
+    }
+
+    public void setXMLtext(String XMLtext) {
+        this.XMLtext.set(XMLtext);
+    }
+
+    public void setTextFromFilePath() {
         // creating the object path to the file
-        Path pathToFile = Paths.get("exempleXML.xml");
-        Charset charset = Charset.defaultCharset();
+        Path pathToFile = Paths.get(getXMLfilePath());
         try {
             // getting the text of the file in the string
-           XMLtext = new String(Files.readAllBytes(pathToFile), StandardCharsets.UTF_8);
+           XMLtext.setValue(new String(Files.readAllBytes(pathToFile), StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    // method that return the text of the file
-    public String getXMLtext() {
-        return XMLtext;
-    }
-
-    public void setXMLtext(String XMLtext) {
-        this.XMLtext = XMLtext;
-    }
 }

@@ -39,7 +39,8 @@ public class Tasks {
     // methode pour ajouter autant de tache que l'on veut
     public void addTask(Task task){
         System.out.println("Ajout d'une tâche à la liste des taches globale ");
-        this.tasks.add(task);
+        if (!tasks.contains(task))
+            this.tasks.add(task);
     }
 
     // methode d'ajout a la liste des taches une tache par défaut : nom + id

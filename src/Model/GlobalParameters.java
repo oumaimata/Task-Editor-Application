@@ -59,7 +59,7 @@ public class GlobalParameters {
 
     public enum Nature {
         INTERRUPTIBLE("interruptible"),
-        OPTIONELLE("optionelle"),
+        OPTIONELLE("optional"),
         ITERATIVE("iterative");
 
         private String baliseName;

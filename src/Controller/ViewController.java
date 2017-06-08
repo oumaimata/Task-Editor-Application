@@ -436,6 +436,6 @@ public class ViewController {
         System.out.println("Refresh button activated");
         save();
         System.out.println("saved!");
-
+        applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
     }
 }

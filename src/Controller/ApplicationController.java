@@ -4,6 +4,7 @@ import Model.Tree.Nodes;
 import Model.Tree.Task;
 import Model.Tree.Tasks;
 import Model.XML.XMLFile;
+import Model.XML.XMLParser;
 import com.yworks.yfiles.geometry.PointD;
 import com.yworks.yfiles.geometry.RectD;
 import com.yworks.yfiles.geometry.SizeD;
@@ -59,6 +60,8 @@ public class ApplicationController {
     Boolean panelActif;
     // contient la chaine de caractére du XML
     public XMLFile xmlFile;
+    // le parser pour le XML
+    public XMLParser xmlParser;
 
     public ApplicationController(ViewController view, GraphControl graphControl) {
         this.view = view;
@@ -84,6 +87,8 @@ public class ApplicationController {
         currentTask = null;
         // initialisation du fichier XML
         xmlFile = new XMLFile();
+        //initialisation du parser XML
+        xmlParser = new XMLParser(tasks);
     }
 
     public void initialize() {

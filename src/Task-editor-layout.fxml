@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
@@ -16,11 +21,11 @@
 <?import javafx.scene.text.Text?>
 
 <?import com.yworks.yfiles.view.GraphControl?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="1000.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="button_open" mnemonicParsing="false" text="Open" />
             <Button fx:id="button_save" mnemonicParsing="false" text="Save" />
             <Button fx:id="button_undo" mnemonicParsing="false" text="Undo" />
             <Button fx:id="button_redo" mnemonicParsing="false" text="Redo" />
@@ -43,13 +48,18 @@
                            <children>
                               <BorderPane layoutX="230.0" layoutY="133.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <left>
-                                    <VBox fx:id="vbox_tags" prefHeight="465.0" prefWidth="46.0" BorderPane.alignment="CENTER">
+                                    <VBox fx:id="vbox_tags" prefHeight="465.0" prefWidth="46.0" spacing="5.0" BorderPane.alignment="TOP_CENTER">
                                        <children>
                                           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tags" />
+                                          <Button fx:id="button_graph_ajouter_tag" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" text="+" />
+                                          <Button fx:id="button_graph_supprimer_tag" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" text="-" />
                                        </children>
                                        <BorderPane.margin>
                                           <Insets left="2.0" />
                                        </BorderPane.margin>
+                                       <padding>
+                                          <Insets top="3.0" />
+                                       </padding>
                                     </VBox>
                                  </left>
                                   <center>
@@ -58,14 +68,13 @@
                                  <right>
                                     <VBox alignment="TOP_RIGHT" prefHeight="463.0" prefWidth="88.0" spacing="8.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <Button fx:id="button_graph_ajouter" mnemonicParsing="false" prefHeight="27.0" prefWidth="82.0" text="Ajouter" />
-                                          <Button fx:id="button_graph_supprimer" mnemonicParsing="false" text="Supprimer">
+                                          <Button fx:id="button_graph_ajouter" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" text="+" />
+                                          <Button fx:id="button_graph_supprimer" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" text="-">
                                              <VBox.margin>
                                                 <Insets />
                                              </VBox.margin>
                                           </Button>
-                                          <Button fx:id="button_graph_zoomin" mnemonicParsing="false" prefHeight="27.0" prefWidth="82.0" text="Zoom-in" />
-                                          <Button fx:id="button_graph_zoomout" mnemonicParsing="false" prefHeight="27.0" prefWidth="82.0" text="Zoom-out" />
+
                                        </children>
                                        <BorderPane.margin>
                                           <Insets right="4.0" top="4.0" />

@@ -62,10 +62,10 @@ public class ViewController {
 
     // bar de menu
     @FXML
-    private  Button button_save,button_undo,button_redo,button_centrer,button_hierarchiser;
+    private  Button button_save,button_undo,button_redo,button_centrer,button_hierarchiser, button_open;
     // Graph
     @FXML
-    private  Button button_graph_ajouter,button_graph_supprimer,button_graph_zoomin,button_graph_zoomout;
+    private  Button button_graph_ajouter,button_graph_supprimer, button_graph_ajouter_tag, button_graph_supprimer_tag;
     @FXML
     private  VBox vbox_tags;
 
@@ -166,22 +166,6 @@ public class ViewController {
 
     public void setButton_graph_supprimer(Button button_graph_supprimer) {
         this.button_graph_supprimer = button_graph_supprimer;
-    }
-
-    public Button getButton_graph_zoomin() {
-        return button_graph_zoomin;
-    }
-
-    public void setButton_graph_zoomin(Button button_graph_zoomin) {
-        this.button_graph_zoomin = button_graph_zoomin;
-    }
-
-    public Button getButton_graph_zoomout() {
-        return button_graph_zoomout;
-    }
-
-    public void setButton_graph_zoomout(Button button_graph_zoomout) {
-        this.button_graph_zoomout = button_graph_zoomout;
     }
 
     public VBox getVbox_tags() {
@@ -414,5 +398,29 @@ public class ViewController {
 
     public void setSplitPane_graph_edit(SplitPane splitPane_graph_edit) {
         this.splitPane_graph_edit = splitPane_graph_edit;
+    }
+
+    public Button getButton_graph_ajouter_tag() {
+        return button_graph_ajouter_tag;
+    }
+
+    public void setButton_graph_ajouter_tag(Button button_graph_ajouter_tag) {
+        this.button_graph_ajouter_tag = button_graph_ajouter_tag;
+    }
+
+    public Button getButton_graph_supprimer_tag() {
+        return button_graph_supprimer_tag;
+    }
+
+    public void setButton_graph_supprimer_tag(Button button_graph_supprimer_tag) {
+        this.button_graph_supprimer_tag = button_graph_supprimer_tag;
+    }
+
+    public Button getButton_open() {
+        return button_open;
+    }
+
+    public void setButton_open(Button button_open) {
+        this.button_open = button_open;
     }
 }

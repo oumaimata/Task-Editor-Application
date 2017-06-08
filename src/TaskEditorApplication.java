@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.fxmisc.richtext.demo.JavaKeywordsAsync;
 
 /**
  * Created by pierrelouislacorte on 13/05/2017.
@@ -21,7 +22,7 @@ public class TaskEditorApplication extends Application {
         stage.setOnShown(windowEvent -> fxmlLoader.<ViewController>getController().onLoaded());
 
         Scene scene = new Scene(root,1000, 800);
-
+        scene.getStylesheets().add(JavaKeywordsAsync.class.getResource("xml-highlighting.css").toExternalForm());
         stage.setScene(scene);
         // Set full screen
         stage.setMaximized(true);

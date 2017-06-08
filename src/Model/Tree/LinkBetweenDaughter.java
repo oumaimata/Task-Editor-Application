@@ -7,6 +7,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.util.Callback;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Created by ladyn-totorosaure on 07/06/17.
@@ -57,6 +59,15 @@ public class LinkBetweenDaughter {
     }
     public void setRightDaughter(String rightDaughter) {
         this.rightDaughter.set(rightDaughter);
+    }
+
+    public Element toXml(Document doc)
+    {
+        Element linkElement = doc.createElement("relation");
+        linkElement.setAttribute("lh",getLeftDaughter());
+        linkElement.setAttribute("operator",getRelation().name());
+        linkElement.setAttribute("rh",getRightDaughter());
+        return linkElement;
     }
 
     public static Callback<LinkBetweenDaughter, Observable[]> extractor() {

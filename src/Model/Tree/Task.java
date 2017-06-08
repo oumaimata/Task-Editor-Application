@@ -6,6 +6,8 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.Callback;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.List;
 
@@ -95,6 +97,28 @@ public class Task {
                 return new Observable[]{param.idPropertyProperty(), param.namePropertyProperty()};
             }
         };
+    }
+
+    public Element toXml(Document doc)
+    {
+        Element taskElement = doc.createElement("task");
+        taskElement.setAttribute("id",getIdProperty());
+        taskElement.setAttribute(getNature().getBaliseName(),"true");
+        taskElement.setAttribute("name",getNameProperty());
+
+        // TODO Context
+
+        // TODO In subclass, COnstructor
+
+        Element conditionsElement = doc.createElement("conditions");
+        int nb = conditionList.size();
+        for (int condition_count=0; condition_count<nb; ++nb)
+        {
+            Element condtionElement = conditionList.get(condition_count).toXml(doc);
+            conditionsElement.appendChild(condtionElement);
+        }
+        taskElement.appendChild(conditionsElement);
+        return taskElement;
     }
 
     @Override

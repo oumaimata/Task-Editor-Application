@@ -4,6 +4,7 @@ import Model.GlobalParameters;
 import javafx.beans.Observable;
 import javafx.beans.property.*;
 import javafx.util.Callback;
+import org.w3c.dom.*;
 
 /**
  * Created by ladyn-totorosaure on 07/06/17.
@@ -68,6 +69,18 @@ public class Assertion {
     }
     public void setNot(Boolean _not) {
         this.not.set(_not);
+    }
+
+    public Element toXml(Document doc)
+    {
+        Element assertionElement = doc.createElement("statement");
+        assertionElement.setAttribute("type",getType().name() );
+        Element triple = doc.createElement("triple");
+        triple.setAttribute("subject",getSubject());
+        triple.setAttribute("predicate",getPredicate());
+        triple.setAttribute("object",getObject());
+        assertionElement.appendChild(triple);
+        return assertionElement;
     }
 
     public static Callback<Assertion, Observable[]> extractor() {

@@ -39,8 +39,10 @@ public class ViewController {
 
         // montrer les numeros de lignes
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
+
         codeArea.textProperty().addListener((obs, oldText, newText) -> {
             codeArea.setStyleSpans(0, XMLEditor.computeHighlighting(newText));
+            applicationController.xmlFile.setXMLtext(newText);
         });
         codeArea.replaceText(0,0,applicationController.xmlFile.getXMLtext());
     }
@@ -400,10 +402,6 @@ public class ViewController {
         this.splitPane_graph_edit = splitPane_graph_edit;
     }
 
-    public void refreshTreeFromXML() {
-        System.out.println("Refresh button activated");
-    }
-
     public Button getButton_graph_ajouter_tag() {
         return button_graph_ajouter_tag;
     }
@@ -426,5 +424,18 @@ public class ViewController {
 
     public void setButton_open(Button button_open) {
         this.button_open = button_open;
+    }
+
+
+    /////// FONCTION UTILISEE DANS LES LISTENERS
+    public void save(){
+        applicationController.xmlFile.saveTextInFile();
+    }
+
+    public void refreshTreeFromXML() {
+        System.out.println("Refresh button activated");
+        save();
+        System.out.println("saved!");
+
     }
 }

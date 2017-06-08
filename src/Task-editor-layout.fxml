@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -195,7 +194,7 @@
                      <top>
                         <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="495.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Button fx:id="button_xml_rafraichir" alignment="CENTER" mnemonicParsing="false" text="Rafraichir" />
+                              <Button fx:id="button_xml_rafraichir" alignment="CENTER" mnemonicParsing="false" onAction="#refreshTreeFromXML" text="Rafraichir" />
                            </children>
                            <BorderPane.margin>
                               <Insets right="2.0" />

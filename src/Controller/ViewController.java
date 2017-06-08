@@ -415,4 +415,8 @@ public class ViewController {
     public void setSplitPane_graph_edit(SplitPane splitPane_graph_edit) {
         this.splitPane_graph_edit = splitPane_graph_edit;
     }
+
+    public void refreshTreeFromXML(){
+        System.out.println("Refresh button activated");
+    }
 }

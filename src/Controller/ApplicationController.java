@@ -81,7 +81,6 @@ public class ApplicationController {
         currentTask = null;
         // initialisation du fichier XML
         xmlFile = new XMLFile();
-        xmlFile.setTextFilePath();
     }
 
     public void initialize() {

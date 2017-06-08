@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import Model.GlobalParameters;
@@ -63,7 +64,13 @@ public class XMLParser {
     static final String CONTEXT = "context";
     static final String SUBTASKS = "subtasks";
     static final String CONSTRUCTOR = "constructor";
+    static final String RELATIONS = "relations";
     static final String CONDITIONS = "conditions";
+    static final String OPERATOR = "operator";
+    static final String TYPE = "type";
+    static final String SUBJECT = "subject";
+    static final String PREDICATE = "predicate";
+    static final String OBJECT = "object";
 
     public XMLParser(Tasks tasks) {
         this.tasks = tasks;
@@ -82,12 +89,11 @@ public class XMLParser {
                 printNodeList(nodeList);
 
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
     }
-
     public void createObjectFromNodeList(NodeList nodeList){
         for (int count = 0; count < nodeList.getLength(); count++) {
 
@@ -128,78 +134,29 @@ public class XMLParser {
                         }
                         if (motherTaskNode.hasChildNodes()) {
                             NodeList taskElement = motherTaskNode.getChildNodes();
+
                             for (int task_element_count = 0; task_element_count < nodeList.getLength(); task_element_count++) {
                                 Node elementNode = taskElement.item(task_element_count);
                                 if (elementNode.getNodeName().equals(CONTEXT)) {
                                     // TODO nothing for the moment
                                 }
                                 // setting the list of subtasks
-                                if (elementNode.getNodeName().equals(SUBTASKS)) {
-                                    NodeList subtasks = elementNode.getChildNodes();
-                                    for (int subtask_count = 0; subtask_count < nodeList.getLength(); subtask_count++) {
-                                        Node subtaskNode = subtasks.item(subtask_count);
-                                        if (subtaskNode.hasAttributes()) {
-                                            // get attributes and set them
-                                            NamedNodeMap nodeMap = subtaskNode.getAttributes();
-                                            for (int i = 0; i < nodeMap.getLength(); i++) {
-                                                Node node = nodeMap.item(i);
-                                                motherTask.getSubTaskList().add(node.getNodeValue());                                            }
-                                        }
-                                    }
+                                else if (elementNode.getNodeName().equals(SUBTASKS)) {
+                                    // Getting the sub tacks list
+                                    motherTask.setSubTaskList(createSubTaskList(elementNode.getChildNodes()));
                                 }
-                                if (elementNode.getNodeName().equals(CONSTRUCTOR)){
+                                else if (elementNode.getNodeName().equals(CONSTRUCTOR)) {
                                     // setting the constructor type
-                                    GlobalParameters.TypeConstructeur typeConstructeur = null;
-                                    String nodeValue = elementNode.getAttributes().item(0).getNodeValue();
-                                    if (nodeValue.equals(GlobalParameters.TypeConstructeur.IND.getName())){ typeConstructeur = GlobalParameters.TypeConstructeur.IND;}
-                                    if (nodeValue.equals(GlobalParameters.TypeConstructeur.SEQ.getName())){ typeConstructeur = GlobalParameters.TypeConstructeur.SEQ;}
-                                    if (nodeValue.equals(GlobalParameters.TypeConstructeur.SEQ_ORD.getName())){ typeConstructeur = GlobalParameters.TypeConstructeur.SEQ_ORD;}
-                                    if (nodeValue.equals(GlobalParameters.TypeConstructeur.PAR.getName())){ typeConstructeur = GlobalParameters.TypeConstructeur.PAR;}
-                                    if (nodeValue.equals(GlobalParameters.TypeConstructeur.PAR_SIM.getName())){ typeConstructeur = GlobalParameters.TypeConstructeur.PAR_SIM;}
-                                    if (nodeValue.equals(GlobalParameters.TypeConstructeur.PAR_START.getName())){ typeConstructeur = GlobalParameters.TypeConstructeur.PAR_START;}
-                                    if (nodeValue.equals(GlobalParameters.TypeConstructeur.PAR_END.getName())){ typeConstructeur = GlobalParameters.TypeConstructeur.PAR_END;}
-                                    motherTask.setConstructor(typeConstructeur);
-
-                                    // getting the relations
-                                    NodeList relationsNodes = elementNode.getChildNodes();
-                                    for (int relation_count = 0; relation_count < nodeList.getLength(); relation_count++) {
-                                        Node relationNode = relationsNodes.item(relation_count);
-                                        NamedNodeMap nodeMap = relationNode.getAttributes();
-                                        LinkBetweenDaughter newLink = new LinkBetweenDaughter();
-                                        newLink.setLeftDaughter(nodeMap.getNamedItem("lh").getNodeValue());
-                                        newLink.setRelation(GlobalParameters.RelationAllen.fromString(nodeMap.getNamedItem("operator").getNodeValue()));
-                                        newLink.setLeftDaughter(nodeMap.getNamedItem("lh").getNodeValue());
-                                        motherTask.getLinkBetweenDaughters().add(newLink);
-                                    }
+                                    motherTask.setConstructor(elementNode.getAttributes().getNamedItem(CONSTRUCTOR).getNodeValue());
                                 }
-                                if (elementNode.getNodeName().equals(CONDITIONS)){
-                                    // getting the conditions
-                                    NodeList conditionsNode = elementNode.getChildNodes();
-                                    for (int condition_count = 0; condition_count < conditionsNode.getLength(); condition_count++) {
-                                        Node nodeCondition = conditionsNode.item(condition_count);
-                                        if (nodeCondition.getNodeName().equals(GlobalParameters.TypeCondition.satisfaction.getName())){
-                                            // setting the conditions
-                                            Condition newCondition = new Condition();
-                                            newCondition.setId(nodeCondition.getAttributes().getNamedItem(ID).getNodeValue());
-                                            if(nodeCondition.hasChildNodes()){
-                                                NodeList satisfactionNodes = nodeCondition.getChildNodes();
-                                                newCondition.setType(GlobalParameters.TypeCondition.satisfaction);
-                                                for (int satisfaction_count = 0; satisfaction_count < nodeList.getLength(); satisfaction_count++){
-                                                    Node operatorNode = satisfactionNodes.item(satisfaction_count);
-                                                    // getting the assertion
-                                                    if (operatorNode.getNodeName().equals(GlobalParameters.OperateurLogique.AND)){
-                                                        Assertion newAssertion = new Assertion();
-                                                        newAssertion.setOperator(GlobalParameters.OperateurLogique.AND);
-                                                        if (operatorNode.hasChildNodes()){
-                                                            NodeList assertionNodeList = operatorNode.getChildNodes();
-                                                            // TODO Continuer le parsing
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
+                                else if (elementNode.getNodeName().equals(RELATIONS))
+                                {
+                                    //Getting the relations
+                                    motherTask.setLinkBetweenDaughters(createLinkBetweenDaugther(elementNode.getChildNodes()));
+                                }
+                                else if (elementNode.getNodeName().equals(CONDITIONS)){
+                                    //Getting the conditions
+                                    motherTask.setConditionList(createConditionFromNode(elementNode));
                                 }
                             }
                         }
@@ -208,6 +165,71 @@ public class XMLParser {
             }
         }
     }
+
+    public List<String> createSubTaskList(NodeList subtasks)
+    {
+        int subTasksNb = subtasks.getLength();
+        List<String> subTasksList = new LinkedList<String>();
+        for (int subtask_count = 0; subtask_count < subTasksNb; subtask_count++) {
+            Node subtaskNode = subtasks.item(subtask_count);
+            subTasksList.add(subtaskNode.getAttributes().getNamedItem(NAME).getNodeValue());
+        }
+        return subTasksList;
+    }
+
+    public List<LinkBetweenDaughter> createLinkBetweenDaugther(NodeList relationsNodes)
+    {
+        List<LinkBetweenDaughter> relationsList  = new LinkedList<LinkBetweenDaughter>();
+        int relationsNb = relationsNodes.getLength();
+        for (int relation_count = 0; relation_count < relationsNb; relation_count++) {
+            Node relationNode = relationsNodes.item(relation_count);
+            NamedNodeMap nodeMap = relationNode.getAttributes();
+            LinkBetweenDaughter newLink = new LinkBetweenDaughter();
+            newLink.setLeftDaughter(nodeMap.getNamedItem("lh").getNodeValue());
+            newLink.setRelation(GlobalParameters.RelationAllen.fromString(nodeMap.getNamedItem(OPERATOR).getNodeValue()));
+            newLink.setRightDaughter(nodeMap.getNamedItem("rh").getNodeValue()); //Is it "rh" ?
+            relationsList.add(newLink);
+        }
+        return relationsList;
+    }
+
+    public List<Condition> createConditionFromNode(Node elementNode)
+    {
+        List<Condition> conditionsList = new LinkedList<Condition>();
+        NodeList conditionsNode = elementNode.getChildNodes();
+        int conditionsNb = conditionsNode.getLength();
+        for (int condition_count = 0; condition_count < conditionsNb; condition_count++) {
+            Node nodeCondition = conditionsNode.item(condition_count);
+            Condition newCondition = new Condition();
+            newCondition.setId(nodeCondition.getAttributes().getNamedItem(ID).getNodeValue());
+            newCondition.setOperator(nodeCondition.getAttributes().getNamedItem(OPERATOR).getNodeValue());
+            newCondition.setType(nodeCondition.getAttributes().getNamedItem(TYPE).getNodeValue());
+            if(nodeCondition.hasChildNodes()){
+                newCondition.setAssertionList(createAssertionFromNode(nodeCondition.getChildNodes()));
+            }
+            conditionsList.add(newCondition);
+        }
+        return conditionsList;
+    }
+
+    public List<Assertion> createAssertionFromNode(NodeList assertionNodes)
+    {
+        int assertionsNb = assertionNodes.getLength();
+        List<Assertion> assertionsList = new LinkedList<Assertion>();
+        for (int assertion_count=0; assertion_count<assertionsNb; assertion_count++)
+        {
+            Node nodeAssertion = assertionNodes.item(assertion_count);
+            Assertion newAssertion = new Assertion();
+            newAssertion.setSubject(nodeAssertion.getAttributes().getNamedItem(SUBJECT).getNodeValue());
+            newAssertion.setPredicate(nodeAssertion.getAttributes().getNamedItem(PREDICATE).getNodeValue());
+            newAssertion.setObject(nodeAssertion.getAttributes().getNamedItem(OBJECT).getNodeValue());
+            newAssertion.setType(nodeAssertion.getAttributes().getNamedItem(TYPE).getNodeValue());
+            assertionsList.add(newAssertion);
+        }
+        return assertionsList;
+    }
+
+
 
     public void printNodeList(NodeList  nodeList){
         for (int count = 0; count < nodeList.getLength(); count++) {

@@ -42,11 +42,9 @@ public class Task {
     public void setNameProperty(String nameProperty) {
         this.nameProperty.set(nameProperty);
     }
-
     public String getNameProperty() {
         return nameProperty.get();
     }
-
     public StringProperty namePropertyProperty() {
         return nameProperty;
     }
@@ -54,22 +52,21 @@ public class Task {
     public String getIdProperty() {
         return idProperty.get();
     }
-
     public StringProperty idPropertyProperty() {
         return idProperty;
     }
 
     public GlobalParameters.Nature getNature() { return nature; }
-
     public void setNature(GlobalParameters.Nature nature) { this.nature = nature; }
 
     public List<String> getSubTaskList() {return subTaskList;}
-
     public void setSubTaskList(List<String> subTaskList) {this.subTaskList = subTaskList;}
 
     public List<LinkBetweenDaughter> getLinkBetweenDaughters() {return linkBetweenDaughters;}
-
     public void setLinkBetweenDaughters(List<LinkBetweenDaughter> linkBetweenDaughters) {this.linkBetweenDaughters = linkBetweenDaughters;}
+
+    public List<Condition> getConditionList() { return conditionList; }
+    public void setConditionList(List<Condition> conditionList) { this.conditionList = conditionList; }
 
     public static Callback<Task, Observable[]> extractor() {
         return new Callback<Task, Observable[]>() {

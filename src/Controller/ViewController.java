@@ -1,13 +1,17 @@
 package Controller;
 
 import Model.Tree.Task;
-import com.yworks.yfiles.graph.IGraph;
 import com.yworks.yfiles.view.GraphControl;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.fxmisc.flowless.VirtualizedScrollPane;
+import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.LineNumberFactory;
+import View.XMLEditor;
 
 /**
  * Created by pierrelouislacorte on 29/05/2017.
@@ -28,6 +32,17 @@ public class ViewController {
         applicationController.make_binding();
         // on déclanche la méthode d'action principale du controller de l'application
         applicationController.main_action();
+        // initialisation de l'éditeur de code
+        codeArea = new CodeArea();
+        vScrollPane = new VirtualizedScrollPane(codeArea);
+        borderPane.setCenter(vScrollPane);
+
+        // montrer les numeros de lignes
+        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
+        codeArea.textProperty().addListener((obs, oldText, newText) -> {
+            codeArea.setStyleSpans(0, XMLEditor.computeHighlighting(newText));
+        });
+        codeArea.replaceText(0,0,applicationController.xmlFile.getXMLtext());
     }
 
     // méthode appelée par l'application une fois que le stage a été chargé.
@@ -35,6 +50,15 @@ public class ViewController {
         //fit graph after all element been loaded
         graphControl.fitGraphBounds();
     }
+
+    // le container de l'editeur XML
+
+    VirtualizedScrollPane vScrollPane;
+    // l'editeur
+    CodeArea codeArea;
+    // border pane contenant l'éditeur
+    @FXML
+    BorderPane borderPane;
 
     // bar de menu
     @FXML

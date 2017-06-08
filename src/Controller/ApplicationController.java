@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Tree.Task;
 import Model.Tree.Tasks;
+import Model.XML.XMLFile;
 import com.yworks.yfiles.geometry.PointD;
 import com.yworks.yfiles.geometry.RectD;
 import com.yworks.yfiles.graph.GraphItemTypes;
@@ -53,6 +54,8 @@ public class ApplicationController {
     GraphEditorInputMode graphEditorInputMode;
     // savoir si le panel est relevé
     Boolean panelActif;
+    // contient la chaine de caractére du XML
+    public XMLFile xmlFile;
 
     public ApplicationController(ViewController view, GraphControl graphControl) {
         this.view = view;
@@ -74,8 +77,11 @@ public class ApplicationController {
         LeafTaskStyle = createLeafStyle();
         // le panel est actif initialement
         panelActif = true;
-        // initialisation de la tache courrante
+        // initialisation de la tache courante
         currentTask = null;
+        // initialisation du fichier XML
+        xmlFile = new XMLFile();
+        xmlFile.setTextFilePath();
     }
 
     public void initialize() {

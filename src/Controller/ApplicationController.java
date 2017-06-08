@@ -1,13 +1,14 @@
 package Controller;
 
+import Model.Tree.Nodes;
 import Model.Tree.Task;
 import Model.Tree.Tasks;
 import Model.XML.XMLFile;
 import com.yworks.yfiles.geometry.PointD;
 import com.yworks.yfiles.geometry.RectD;
-import com.yworks.yfiles.graph.GraphItemTypes;
-import com.yworks.yfiles.graph.IGraph;
-import com.yworks.yfiles.graph.IModelItem;
+import com.yworks.yfiles.geometry.SizeD;
+import com.yworks.yfiles.graph.*;
+import com.yworks.yfiles.graph.labelmodels.ExteriorLabelModel;
 import com.yworks.yfiles.graph.styles.ShapeNodeShape;
 import com.yworks.yfiles.graph.styles.ShapeNodeStyle;
 import com.yworks.yfiles.layout.tree.TreeLayout;
@@ -46,6 +47,8 @@ public class ApplicationController {
     public Tasks tasks;
     // reference sur la tache selectionnée (dans le cas du graph notamment)
     public Task currentTask;
+    // reference sur la liste des noeuds
+    public Nodes nodes;
     // generated style
     ShapeNodeStyle MotherTaskStyle;
     ShapeNodeStyle TaskStyle;
@@ -89,6 +92,8 @@ public class ApplicationController {
         // ensemble des tâches à null initialement.
         // Dans le cas d'un chargement il faudra modifier directement cette valeur
         tasks = new Tasks();
+        // initialisation de la liste des noeuds
+        nodes = new Nodes();
     }
 
     // Méthode principale a utiliser dans le controller.
@@ -142,8 +147,8 @@ public class ApplicationController {
                 currentTask = null;
             }
         });
-    }
 
+    }
 
     /*
         Création de style pour les différents noeuds. Ces styles ne sont pas définitifs et peuvent être amenés à évoluer.
@@ -199,7 +204,8 @@ public class ApplicationController {
 
     public void ajoutTache(){
         System.out.println("lancement de la methode ajout tache du controller & creation du noeud graphique avec comme tag la tache ainsi créée");
-        graph.createNode(new PointD(),TaskStyle,tasks.addDefaultTache());
+        INode node1 = graph.createNode(new PointD(),TaskStyle,tasks.addDefaultTache());
+        nodes.addNode(node1);
     }
 
     public void changePanelState(){
@@ -214,8 +220,6 @@ public class ApplicationController {
             view.getSplitPane_graph_edit().setDividerPositions(0.63);
             panelActif = true;
         }
-
     }
-
 
 }

@@ -49,7 +49,7 @@ public class Tasks {
         Task newTask = new Task();
         newTask.setIdProperty(getId().toString());
         addTask(newTask);
-        System.out.println(contentFromTasks(tasks));
+        System.out.println(tasks.toString());
         return newTask;
     }
 
@@ -58,7 +58,7 @@ public class Tasks {
         getTasks().clear();
     }
 
-    public String contentFromTasks(ObservableList<Task> tasks){
+    public String toString(){
         StringBuilder result = new StringBuilder("liste des taches: ");
         for(Task task:tasks) {
             result.append(task.getNameProperty());

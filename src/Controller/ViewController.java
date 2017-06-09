@@ -53,16 +53,10 @@ public class ViewController {
         });
         codeArea.replaceText(0, 0, applicationController.xmlFile.getXMLtext());
         // setting the action to open a document
-        button_open.setOnAction((event) -> {
-            FileChooser fileChooser = new FileChooser();
-            Stage newStage = new Stage();
-            File file = fileChooser.showOpenDialog(newStage);
-            if (file != null) {
-                applicationController.xmlFile.setXMLfilePath(file.getPath());
-                applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
-                codeArea.replaceText(0, 0, applicationController.xmlFile.getXMLtext());
-            }
-        });
+        button_open.setOnAction((event) -> {openFile();});
+        button_save.setOnAction((event) -> {save();});
+        button_xml_rafraichir.setOnAction((event) -> {refreshTreeFromXML();});
+        applicationController.xmlFile.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
     }
 
     // méthode appelée par l'application une fois que le stage a été chargé.
@@ -455,5 +449,15 @@ public class ViewController {
         save();
         System.out.println("saved!");
         applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
+    }
+
+    public void openFile() {
+        FileChooser fileChooser = new FileChooser();
+        Stage newStage = new Stage();
+        File file = fileChooser.showOpenDialog(newStage);
+        if (file != null) {
+            applicationController.xmlFile.setXMLfilePath(file.getPath());
+            applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
+        }
     }
 }

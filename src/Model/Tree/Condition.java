@@ -9,6 +9,8 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.Callback;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.List;
 
@@ -71,6 +73,22 @@ public class Condition {
     {
         if (assertionList.contains(assertion))
             assertionList.remove(assertion);
+    }
+
+    public Element toXml(Document doc)
+    {
+        Element conditionElement = doc.createElement(getType().getName());
+        conditionElement.setAttribute("id",getId() );
+
+        Element assertions = doc.createElement(getOperator().getName());
+        int nb = assertionList.size();
+        for (int assertion_count=0; assertion_count<nb; ++assertion_count)
+        {
+            Element assertion = assertionList.get(assertion_count).toXml(doc);
+            assertions.appendChild(assertion);
+        }
+        conditionElement.appendChild(assertions);
+        return conditionElement;
     }
 
     public static Callback<Condition, Observable[]> extractor() {

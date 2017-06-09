@@ -20,6 +20,7 @@ public class Tasks {
     public Tasks() {
         System.out.println("creation de la observablelist tasks avec task.extractor()");
         this.tasks = FXCollections.observableArrayList(Task.extractor());
+        id = 0;
     }
 
     public ObservableList<Task> getTasks() {

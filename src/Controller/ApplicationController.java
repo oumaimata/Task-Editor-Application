@@ -47,6 +47,8 @@ public class ApplicationController {
     public Tasks tasks;
     // reference sur la tache selectionnée (dans le cas du graph notamment)
     public Task currentTask;
+    // reference sur la noeud selectionnée (dans le cas du graph notamment)
+    public INode currentNode;
     // reference sur la liste des noeuds
     public Nodes nodes;
     // generated style
@@ -82,6 +84,8 @@ public class ApplicationController {
         panelActif = true;
         // initialisation de la tache courante
         currentTask = null;
+        // initialisation du noeud courant
+        currentNode = null;
         // initialisation du fichier XML
         xmlFile = new XMLFile();
         xmlFile.setTextFilePath();
@@ -101,12 +105,8 @@ public class ApplicationController {
     // Y effectuer toutes les actions
     public void main_action (){
 
-        // ceci est un exemple pour acceder a un element graphique
-        Button test = view.getButton_graph_zoomin();
-        test.setText("test test");
-
         // ajout du listener sur le bouton d'ajout de tache qui va déclancher l'ajout d'une tache par défaut
-        view.getButton_graph_ajouter().setOnAction(evt -> ajoutTache());
+        view.getButton_graph_ajouter().setOnAction(evt -> handleAjoutTache());
 
         // ajout de la liste de toutes les tâches à la listview taches filles
         // ce n'est pas ce qu'il y aura dedans mais le fonctionnement est ok.
@@ -122,6 +122,12 @@ public class ApplicationController {
         // creation du listener sur le bouton pour centrer le graph
         view.getButton_centrer().setOnAction(evt -> graphFitContent());
 
+        // ajout du listener sur le bouton de hierarchisation
+        view.getButton_hierarchiser().setOnAction(evt -> handleLayoutAction(evt));
+
+        // ajout du listener sur le bouton de hierarchisation
+        view.getButton_graph_supprimer().setOnAction(evt -> handleSuppressionNoeud());
+
         // creation du listener sur le click d'un objet
         graphEditorInputMode.addItemLeftClickedListener(new IEventHandler<ItemClickedEventArgs<IModelItem>>() {
             @Override
@@ -129,7 +135,8 @@ public class ApplicationController {
                 if(iModelItemItemClickedEventArgs.getItem().getTag().getClass() == Task.class){
                     System.out.println("l'objet sélectionné est un noeud de tache: " + iModelItemItemClickedEventArgs.getItem() );
                     // on récupère l'objet sélectionné
-                    currentTask = (Task) iModelItemItemClickedEventArgs.getItem().getTag();
+                    currentNode = (INode) iModelItemItemClickedEventArgs.getItem();
+                    currentTask = (Task) currentNode.getTag();
                     System.out.println("l'objet courrant est devenu: " + currentTask );
                 }
                 // mise en place du panel d'édition
@@ -145,37 +152,11 @@ public class ApplicationController {
                 // modification de l'etat du panel d'édition
                 changePanelState();
                 // on supprime la tache courante sélectionnée
+                currentNode = null;
                 currentTask = null;
             }
         });
 
-    }
-
-    /*
-        Création de style pour les différents noeuds. Ces styles ne sont pas définitifs et peuvent être amenés à évoluer.
-        Juste mise en place du principe
-     */
-    private ShapeNodeStyle createMotherTaskStyle(){
-        // create a style which draws a node as a geometric shape with a fill and a border color
-        ShapeNodeStyle orangeNodeStyle = new ShapeNodeStyle();
-        orangeNodeStyle.setShape(ShapeNodeShape.RECTANGLE);
-        orangeNodeStyle.setPaint(Color.ORANGE);
-        orangeNodeStyle.setPen(Pen.getTransparent());
-        return orangeNodeStyle;
-    }
-
-    private ShapeNodeStyle createTaskStyle(){
-        ShapeNodeStyle blueNodeStyle = new ShapeNodeStyle();
-        blueNodeStyle.setPaint(Color.CORNFLOWERBLUE);
-        blueNodeStyle.setPen(Pen.getTransparent());
-        return blueNodeStyle;
-    }
-
-    private ShapeNodeStyle createLeafStyle(){
-        ShapeNodeStyle blueNodeStyle = new ShapeNodeStyle();
-        blueNodeStyle.setPaint(Color.CORNFLOWERBLUE);
-        blueNodeStyle.setPen(Pen.getTransparent());
-        return blueNodeStyle;
     }
 
     public void handleLayoutAction(ActionEvent event) {
@@ -203,17 +184,19 @@ public class ApplicationController {
         graphControl.fitContent();
     }
 
-    public void ajoutTache(){
+    public void handleAjoutTache(){
         System.out.println("lancement de la methode ajout tache du controller & creation du noeud graphique avec comme tag la tache ainsi créée");
         INode node1 = graph.createNode(new PointD(),TaskStyle,tasks.addDefaultTache());
         nodes.addNode(node1);
+        Task task = (Task) node1.getTag();
+        graph.addLabel(node1, task.getNameProperty());
     }
 
     public void changePanelState(){
         if(panelActif){
             // si il est actif on le cache
             System.out.println("Hide edit panel");
-            view.getSplitPane_graph_edit().setDividerPositions(1);
+            view.getSplitPane_graph_edit().setDividerPositions(0.95);
             panelActif = false;
         }else{
             // autrement on le montre
@@ -222,5 +205,51 @@ public class ApplicationController {
             panelActif = true;
         }
     }
+
+    // méthode pour changer et mettre a jour tous les labels
+    public void addLabelToNodes(){
+        // pour tous les noeuds
+        for(INode node:nodes.getNodes()) {
+            // on récupère la tâche derrière le noeud
+            Task task = (Task) node.getTag();
+            // on affecte au noeud son nom
+            graph.addLabel(node, task.getNameProperty());
+        }
+    }
+
+    public void handleSuppressionNoeud(){
+        if(currentNode!= null){
+            System.out.println("Suppression du noeud " + currentTask.getIdProperty());
+            graph.remove(currentNode);
+        }
+    }
+
+    /*
+    Création de style pour les différents noeuds. Ces styles ne sont pas définitifs et peuvent être amenés à évoluer.
+    Juste mise en place du principe
+    */
+    private ShapeNodeStyle createMotherTaskStyle(){
+        // create a style which draws a node as a geometric shape with a fill and a border color
+        ShapeNodeStyle orangeNodeStyle = new ShapeNodeStyle();
+        orangeNodeStyle.setShape(ShapeNodeShape.RECTANGLE);
+        orangeNodeStyle.setPaint(Color.ORANGE);
+        orangeNodeStyle.setPen(Pen.getTransparent());
+        return orangeNodeStyle;
+    }
+
+    private ShapeNodeStyle createTaskStyle(){
+        ShapeNodeStyle blueNodeStyle = new ShapeNodeStyle();
+        blueNodeStyle.setPaint(Color.CORNFLOWERBLUE);
+        blueNodeStyle.setPen(Pen.getTransparent());
+        return blueNodeStyle;
+    }
+
+    private ShapeNodeStyle createLeafStyle(){
+        ShapeNodeStyle blueNodeStyle = new ShapeNodeStyle();
+        blueNodeStyle.setPaint(Color.CORNFLOWERBLUE);
+        blueNodeStyle.setPen(Pen.getTransparent());
+        return blueNodeStyle;
+    }
+
 
 }

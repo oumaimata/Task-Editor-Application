@@ -6,10 +6,7 @@ import Model.Tree.Tasks;
 import Model.XML.XMLFile;
 import Model.XML.XMLParser;
 import com.yworks.yfiles.geometry.PointD;
-import com.yworks.yfiles.geometry.RectD;
-import com.yworks.yfiles.geometry.SizeD;
 import com.yworks.yfiles.graph.*;
-import com.yworks.yfiles.graph.labelmodels.ExteriorLabelModel;
 import com.yworks.yfiles.graph.styles.ShapeNodeShape;
 import com.yworks.yfiles.graph.styles.ShapeNodeStyle;
 import com.yworks.yfiles.layout.tree.TreeLayout;
@@ -20,18 +17,10 @@ import com.yworks.yfiles.view.input.ClickEventArgs;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
 import com.yworks.yfiles.view.input.ICommand;
 import com.yworks.yfiles.view.input.ItemClickedEventArgs;
-import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -65,6 +54,8 @@ public class ApplicationController {
     public XMLFile xmlFile;
     // le parser pour le XML
     public XMLParser xmlParser;
+    // layout utilisé
+    TreeLayout layout;
 
     public ApplicationController(ViewController view, GraphControl graphControl) {
         this.view = view;
@@ -92,8 +83,10 @@ public class ApplicationController {
         currentNode = null;
         // initialisation du fichier XML
         xmlFile = new XMLFile();
-        //initialisation du parser XML
+        // initialisation du parser XML
         xmlParser = new XMLParser(tasks);
+        // initialisation du layout utilisé
+        layout = new TreeLayout();
     }
 
     public void initialize() {
@@ -167,7 +160,7 @@ public class ApplicationController {
         Button layoutButton = (Button) event.getSource();
         layoutButton.setDisable(true);
 
-        //tree layout (the one that we will use
+        //tree layout (the one that we will use)
         TreeLayout layout = new TreeLayout();
 
         graphControl.morphLayout(layout, Duration.ofMillis(500),
@@ -210,8 +203,30 @@ public class ApplicationController {
         }
     }
 
+    // méthode pour mettre en place la suppression de la tache et du noeud séléctionné
+    public void handleSuppressionNoeud(){
+        if(currentNode!= null){
+            System.out.println("Suppression du noeud " + currentTask.getIdProperty());
+            graph.remove(currentNode);
+        }
+    }
+
+    // generation du graphique a partir d'une liste de taches
+    public void createGraphFromTaks(IGraph graph, Tasks tasks, Nodes nodes){
+        // creation des noeuds
+        createNodesFromTasks(graph,tasks,nodes);
+        // creation des liens
+        createEdgeBetweenNodes(graph,nodes);
+        // ajout des labels
+        setLabelToNodes(graph,nodes);
+        // mise en place du layout
+        graphControl.morphLayout(layout, Duration.ofMillis(500));
+    }
+
+
     // méthode pour changer et mettre a jour tous les labels
-    public void addLabelToNodes(){
+    public void setLabelToNodes(IGraph graph, Nodes nodes){
+        System.out.println("lancement de la methode d'ajout des labels aux noeuds");
         // pour tous les noeuds
         for(INode node:nodes.getNodes()) {
             // on récupère la tâche derrière le noeud
@@ -219,13 +234,49 @@ public class ApplicationController {
             // on affecte au noeud son nom
             graph.addLabel(node, task.getNameProperty());
         }
+        System.out.println("Fin de la methode d'ajout des labels aux noeuds");
     }
 
-    public void handleSuppressionNoeud(){
-        if(currentNode!= null){
-            System.out.println("Suppression du noeud " + currentTask.getIdProperty());
-            graph.remove(currentNode);
+    // méthode pour creer tous les noeuds à partir des taches
+    private void createNodesFromTasks(IGraph graph, Tasks tasks,Nodes nodes){
+        System.out.println("lancement de la methode de création des nodes à partir d'une liste de tache");
+        for (Task task:tasks.getTasks()){
+            // re-initialisation des nodes
+            nodes = new Nodes();
+            // création d'un nouveau noeud avec la task comme tag
+            INode node = graph.createNode(new PointD(0,0),TaskStyle,task);
+            // ajout de ce noeuds a la liste des noeuds
+            nodes.addNode(node);
+            // ajout du label de la task au noeud
+            graph.addLabel(node, task.getNameProperty());
         }
+        System.out.println("Fin de la methode de création des nodes à partir d'une liste de tache");
+    }
+
+    private void createEdgeBetweenNodes(IGraph graph, Nodes nodes){
+        System.out.println("lancement de la methode de création des liens entre nodes à partir d'une liste de noeuds");
+        // pour chaque noeuds
+        for (INode node:nodes.getNodes()){
+            // on récupère la tâche derrière le noeud
+            Task task = (Task) node.getTag();
+            // pour toutes les sous tâches
+            for(String subTaskStringId: task.getSubTaskList()){
+                // on vérifie tous les autres noeuds savoir s'il y en a un qui doit être lié
+                for (INode otherNode:nodes.getNodes()){
+                    // si on est pas sur le noeud courrant
+                    if(otherNode!= node ){
+                        // on récupère la tâche derrière le noeud
+                        Task otherTask = (Task) otherNode.getTag();
+                        // si l'id de la tache est celui d'une des sous tâches alors
+                        if(otherTask.getIdProperty()==subTaskStringId){
+                            // création du lien graphique
+                            graph.createEdge(node, otherNode);
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("Fin de la methode de création des liens entre nodes à partir d'une liste de noeuds");
     }
 
     /*
@@ -242,10 +293,10 @@ public class ApplicationController {
     }
 
     private ShapeNodeStyle createTaskStyle(){
-        ShapeNodeStyle blueNodeStyle = new ShapeNodeStyle();
-        blueNodeStyle.setPaint(Color.color(0.9882, 0.6902, 0.4941));
-        blueNodeStyle.setPen(Pen.getTransparent());
-        return blueNodeStyle;
+        ShapeNodeStyle taskNodeStyle = new ShapeNodeStyle();
+        taskNodeStyle.setPaint(Color.color(0.9882, 0.6902, 0.4941));
+        taskNodeStyle.setPen(Pen.getTransparent());
+        return taskNodeStyle;
     }
 
     private ShapeNodeStyle createLeafStyle(){
@@ -254,6 +305,7 @@ public class ApplicationController {
         blueNodeStyle.setPen(Pen.getTransparent());
         return blueNodeStyle;
     }
+
 
 
 }

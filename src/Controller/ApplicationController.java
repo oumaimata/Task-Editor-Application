@@ -212,7 +212,7 @@ public class ApplicationController {
     }
 
     // generation du graphique a partir d'une liste de taches
-    public void createGraphFromTaks(IGraph graph, Tasks tasks, Nodes nodes){
+    public void createGraphFromTasks(IGraph graph, Tasks tasks, Nodes nodes){
         // creation des noeuds
         createNodesFromTasks(graph,tasks,nodes);
         // creation des liens

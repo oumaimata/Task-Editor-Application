@@ -3,8 +3,6 @@ package Model.Tree;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.List;
-
 /**
  * Created by pierrelouislacorte on 06/06/2017.
  */
@@ -20,6 +18,7 @@ public class Tasks {
     public Tasks() {
         System.out.println("creation de la observablelist tasks avec task.extractor()");
         this.tasks = FXCollections.observableArrayList(Task.extractor());
+        id = 0;
     }
 
     public ObservableList<Task> getTasks() {

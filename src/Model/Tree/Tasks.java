@@ -3,8 +3,6 @@ package Model.Tree;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.List;
-
 /**
  * Created by pierrelouislacorte on 06/06/2017.
  */

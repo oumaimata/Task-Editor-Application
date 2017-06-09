@@ -3,15 +3,22 @@ package Controller;
 import Model.Tree.Task;
 import com.yworks.yfiles.view.GraphControl;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import View.XMLEditor;
+
+import java.io.File;
 
 /**
  * Created by pierrelouislacorte on 29/05/2017.
@@ -44,7 +51,18 @@ public class ViewController {
             codeArea.setStyleSpans(0, XMLEditor.computeHighlighting(newText));
             applicationController.xmlFile.setXMLtext(newText);
         });
-        codeArea.replaceText(0,0,applicationController.xmlFile.getXMLtext());
+        codeArea.replaceText(0, 0, applicationController.xmlFile.getXMLtext());
+        // setting the action to open a document
+        button_open.setOnAction((event) -> {
+            FileChooser fileChooser = new FileChooser();
+            Stage newStage = new Stage();
+            File file = fileChooser.showOpenDialog(newStage);
+            if (file != null) {
+                applicationController.xmlFile.setXMLfilePath(file.getPath());
+                applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
+                codeArea.replaceText(0, 0, applicationController.xmlFile.getXMLtext());
+            }
+        });
     }
 
     // méthode appelée par l'application une fois que le stage a été chargé.

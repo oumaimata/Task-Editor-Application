@@ -1,10 +1,14 @@
 package Model.Tree;
 
 import Model.GlobalParameters;
+import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.util.Callback;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Created by ladyn-totorosaure on 07/06/17.
@@ -30,11 +34,9 @@ public class LinkBetweenDaughter {
     public String getLeftDaughter() {
         return leftDaughter.get();
     }
-
     public StringProperty leftDaughterProperty() {
         return leftDaughter;
     }
-
     public void setLeftDaughter(String leftDaughter) {
         this.leftDaughter.set(leftDaughter);
     }
@@ -42,11 +44,9 @@ public class LinkBetweenDaughter {
     public GlobalParameters.RelationAllen getRelation() {
         return relation.get();
     }
-
     public ObjectProperty<GlobalParameters.RelationAllen> relationProperty() {
         return relation;
     }
-
     public void setRelation(GlobalParameters.RelationAllen relation) {
         this.relation.set(relation);
     }
@@ -54,12 +54,28 @@ public class LinkBetweenDaughter {
     public String getRightDaughter() {
         return rightDaughter.get();
     }
-
     public StringProperty rightDaughterProperty() {
         return rightDaughter;
     }
-
     public void setRightDaughter(String rightDaughter) {
         this.rightDaughter.set(rightDaughter);
+    }
+
+    public Element toXml(Document doc)
+    {
+        Element linkElement = doc.createElement("relation");
+        linkElement.setAttribute("lh",getLeftDaughter());
+        linkElement.setAttribute("operator",getRelation().name());
+        linkElement.setAttribute("rh",getRightDaughter());
+        return linkElement;
+    }
+
+    public static Callback<LinkBetweenDaughter, Observable[]> extractor() {
+        return new Callback<LinkBetweenDaughter, Observable[]>() {
+            @Override
+            public Observable[] call(LinkBetweenDaughter param) {
+                return new Observable[]{param.leftDaughterProperty(), param.relationProperty(), param.rightDaughterProperty()};
+            }
+        };
     }
 }

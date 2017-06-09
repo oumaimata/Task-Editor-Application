@@ -4,6 +4,7 @@ import Model.Tree.Nodes;
 import Model.Tree.Task;
 import Model.Tree.Tasks;
 import Model.XML.XMLFile;
+import Model.XML.XMLParser;
 import com.yworks.yfiles.geometry.PointD;
 import com.yworks.yfiles.geometry.RectD;
 import com.yworks.yfiles.geometry.SizeD;
@@ -25,6 +26,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 
 import java.time.Duration;
@@ -61,6 +63,8 @@ public class ApplicationController {
     Boolean panelActif;
     // contient la chaine de caractére du XML
     public XMLFile xmlFile;
+    // le parser pour le XML
+    public XMLParser xmlParser;
 
     public ApplicationController(ViewController view, GraphControl graphControl) {
         this.view = view;
@@ -88,7 +92,8 @@ public class ApplicationController {
         currentNode = null;
         // initialisation du fichier XML
         xmlFile = new XMLFile();
-        xmlFile.setTextFilePath();
+        //initialisation du parser XML
+        xmlParser = new XMLParser(tasks);
     }
 
     public void initialize() {
@@ -104,7 +109,6 @@ public class ApplicationController {
     // Méthode principale a utiliser dans le controller.
     // Y effectuer toutes les actions
     public void main_action (){
-
         // ajout du listener sur le bouton d'ajout de tache qui va déclancher l'ajout d'une tache par défaut
         view.getButton_graph_ajouter().setOnAction(evt -> handleAjoutTache());
 
@@ -239,7 +243,7 @@ public class ApplicationController {
 
     private ShapeNodeStyle createTaskStyle(){
         ShapeNodeStyle blueNodeStyle = new ShapeNodeStyle();
-        blueNodeStyle.setPaint(Color.CORNFLOWERBLUE);
+        blueNodeStyle.setPaint(Color.color(0.9882, 0.6902, 0.4941));
         blueNodeStyle.setPen(Pen.getTransparent());
         return blueNodeStyle;
     }

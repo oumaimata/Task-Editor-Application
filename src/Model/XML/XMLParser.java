@@ -12,6 +12,7 @@ import java.util.List;
 import Model.GlobalParameters;
 import Model.Tree.*;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -64,13 +65,13 @@ public class XMLParser {
     static final String CONTEXT = "context";
     static final String SUBTASKS = "subtasks";
     static final String CONSTRUCTOR = "constructor";
-    static final String RELATIONS = "relations";
     static final String CONDITIONS = "conditions";
     static final String OPERATOR = "operator";
     static final String TYPE = "type";
     static final String SUBJECT = "subject";
     static final String PREDICATE = "predicate";
     static final String OBJECT = "object";
+    static final String NOT = "NOT";
 
     public XMLParser(Tasks tasks) {
         this.tasks = tasks;
@@ -94,92 +95,157 @@ public class XMLParser {
         }
 
     }
-    public void createObjectFromNodeList(NodeList nodeList){
+    public void createTreeFromNodeList(NodeList nodeList){
+        tasks = new Tasks();
         for (int count = 0; count < nodeList.getLength(); count++) {
-
             Node tempNode = nodeList.item(count);
             // make sure it's element node.
             if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
                 // get node name and value
                 System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
-                // if the node name is task-m then it's the list of the mother tasks
-                if (tempNode.getNodeName().equals(MOTHER_TASK)) {
-                    // we get the list of the mother tasks
-                    NodeList motherTaskNodes = tempNode.getChildNodes();
-                    // creating a mother task for each of them
-                    for (int task_m_count = 0; task_m_count < nodeList.getLength(); task_m_count++) {
-                        Node motherTaskNode = nodeList.item(task_m_count);
-                        MotherTask motherTask = new MotherTask();
-                        if (tempNode.hasAttributes()) {
-                            // get attributes and set them
-                            NamedNodeMap nodeMap = tempNode.getAttributes();
-                            for (int i = 0; i < nodeMap.getLength(); i++) {
-
-                                Node node = nodeMap.item(i);
-                                if (node.getNodeName().equals(ID)) {
-                                    motherTask.setIdProperty(node.getNodeValue());
-                                }
-                                if (node.getNodeName().equals(NAME)) {
-                                    motherTask.setNameProperty(node.getNodeValue());
-                                }
-                                if (node.getNodeName().equals(GlobalParameters.Nature.ITERATIVE)) {
-                                    if (node.getNodeValue().equals("true")) {
-                                        motherTask.setNature(GlobalParameters.Nature.ITERATIVE);
-                                    }
-                                }
-                                if (node.getNodeName().equals(OPTIONAL)) {
-                                    // TODO nothing for the moment
-                                }
-                            }
+                switch (tempNode.getNodeName())
+                {
+                    case MOTHER_TASK :
+                        NodeList motherTaskNodes = tempNode.getChildNodes();
+                        int motherTaskNb = motherTaskNodes.getLength();
+                        // creating a mother task for each of them
+                        for (int task_m_count = 0; task_m_count < motherTaskNb; task_m_count++) {
+                            Node motherTaskNode = motherTaskNodes.item(task_m_count);
+                            MotherTask motherTask = createMotherTaskFromNode(motherTaskNode);
+                            tasks.addTask(motherTask);
                         }
-                        if (motherTaskNode.hasChildNodes()) {
-                            NodeList taskElement = motherTaskNode.getChildNodes();
-
-                            for (int task_element_count = 0; task_element_count < nodeList.getLength(); task_element_count++) {
-                                Node elementNode = taskElement.item(task_element_count);
-                                if (elementNode.getNodeName().equals(CONTEXT)) {
-                                    // TODO nothing for the moment
-                                }
-                                // setting the list of subtasks
-                                else if (elementNode.getNodeName().equals(SUBTASKS)) {
-                                    // Getting the sub tacks list
-                                    motherTask.setSubTaskList(createSubTaskList(elementNode.getChildNodes()));
-                                }
-                                else if (elementNode.getNodeName().equals(CONSTRUCTOR)) {
-                                    // setting the constructor type
-                                    motherTask.setConstructor(elementNode.getAttributes().getNamedItem(CONSTRUCTOR).getNodeValue());
-                                }
-                                else if (elementNode.getNodeName().equals(RELATIONS))
-                                {
-                                    //Getting the relations
-                                    motherTask.setLinkBetweenDaughters(createLinkBetweenDaugther(elementNode.getChildNodes()));
-                                }
-                                else if (elementNode.getNodeName().equals(CONDITIONS)){
-                                    //Getting the conditions
-                                    motherTask.setConditionList(createConditionFromNode(elementNode));
-                                }
-                            }
+                        break;
+                    case LEAF_TASK :
+                        NodeList leafTaskNodes = tempNode.getChildNodes();
+                        int leafTaskNb = leafTaskNodes.getLength();
+                        for (int task_f_count = 0; task_f_count < leafTaskNb; task_f_count++) {
+                            Node leafTaskNode = leafTaskNodes.item(task_f_count);
+                            LeafTask leafTask = createLeafTaskFromNode(leafTaskNode);
+                            tasks.addTask(leafTask);
                         }
-                    }
+                        break;
                 }
             }
         }
     }
 
-    public List<String> createSubTaskList(NodeList subtasks)
+    public MotherTask createMotherTaskFromNode(Node motherTaskNode)
     {
-        int subTasksNb = subtasks.getLength();
-        List<String> subTasksList = new LinkedList<String>();
-        for (int subtask_count = 0; subtask_count < subTasksNb; subtask_count++) {
-            Node subtaskNode = subtasks.item(subtask_count);
-            subTasksList.add(subtaskNode.getAttributes().getNamedItem(NAME).getNodeValue());
-        }
-        return subTasksList;
+        MotherTask motherTask = new MotherTask();
+        setAttributes(motherTask, motherTaskNode);
+        motherTask = setMotherElements(motherTask, motherTaskNode);
+        return motherTask;
     }
 
-    public List<LinkBetweenDaughter> createLinkBetweenDaugther(NodeList relationsNodes)
+    public void setAttributes(Task task, Node taskNode)
     {
-        List<LinkBetweenDaughter> relationsList  = new LinkedList<LinkBetweenDaughter>();
+        if (taskNode.hasAttributes()) {
+            // get attributes and set them
+            NamedNodeMap nodeMap = taskNode.getAttributes();
+            task.setIdProperty(nodeMap.getNamedItem(ID).getNodeValue());
+            task.setIdProperty(nodeMap.getNamedItem(NAME).getNodeValue());
+            Node iterativeNode = nodeMap.getNamedItem(GlobalParameters.Nature.ITERATIVE.getBaliseName());
+            Node optionalNode = nodeMap.getNamedItem(GlobalParameters.Nature.OPTIONELLE.getBaliseName());
+            Node interruptibleNode = nodeMap.getNamedItem(GlobalParameters.Nature.INTERRUPTIBLE.getBaliseName());
+            if (iterativeNode != null)
+            {
+                if (iterativeNode.getNodeValue().equals("true"))
+                    task.setNature(GlobalParameters.Nature.ITERATIVE);
+                else
+                    task.setNature(GlobalParameters.Nature.OPTIONELLE);
+            }
+            else if (optionalNode != null)
+            {
+                if (optionalNode.getNodeValue().equals("true"))
+                    task.setNature(GlobalParameters.Nature.OPTIONELLE);
+                else
+                    task.setNature(GlobalParameters.Nature.ITERATIVE);
+            }
+            else if (interruptibleNode != null)
+            {
+                if (interruptibleNode.getNodeValue().equals("true"))
+                    task.setNature(GlobalParameters.Nature.INTERRUPTIBLE);
+                else
+                    task.setNature(GlobalParameters.Nature.OPTIONELLE);
+            }
+        }
+    }
+
+    public MotherTask setMotherElements(MotherTask motherTask, Node motherTaskNode)
+    {
+        if (motherTaskNode.hasChildNodes()) {
+            NodeList taskElement = motherTaskNode.getChildNodes();
+            for (int task_element_count = 0; task_element_count < taskElement.getLength(); task_element_count++) {
+                Node elementNode = taskElement.item(task_element_count);
+                switch (elementNode.getNodeName())
+                {
+                    case CONTEXT :
+                        // TODO nothing for the moment
+                        break;
+                    case SUBTASKS :
+                        //motherTask.setSubTaskList(createSubTaskList(elementNode.getChildNodes()));
+                        createSubTaskList(motherTask, elementNode.getChildNodes());
+                        break;
+                    case CONSTRUCTOR :
+                        motherTask.setConstructor(elementNode.getAttributes().getNamedItem(TYPE).getNodeValue());
+                        // Getting the relations
+                        if (elementNode.hasChildNodes())
+                            createLinkBetweenDaugther(motherTask,elementNode.getChildNodes());
+                            // motherTask.setLinkBetweenDaughters(createLinkBetweenDaugther(motherTask,elementNode.getChildNodes()));
+                        break;
+                    case CONDITIONS :
+                        //motherTask.setConditionList(createConditionFromNode(motherTask,elementNode));
+                        createConditionFromNode(motherTask,elementNode.getChildNodes());
+                        break;
+                }
+            }
+        }
+        return motherTask;
+    }
+
+    public LeafTask createLeafTaskFromNode(Node leafTaskNode)
+    {
+        LeafTask leafTask = new LeafTask();
+        setAttributes(leafTask, leafTaskNode);
+        leafTask = setLeafElements(leafTask, leafTaskNode);
+        return leafTask;
+    }
+
+    public LeafTask setLeafElements(LeafTask leafTask, Node leafTaskNode)
+    {
+        if (leafTaskNode.hasChildNodes()) {
+            NodeList taskElement = leafTaskNode.getChildNodes();
+            for (int task_element_count = 0; task_element_count < taskElement.getLength(); task_element_count++) {
+                Node elementNode = taskElement.item(task_element_count);
+                switch (elementNode.getNodeName())
+                {
+                    case CONTEXT :
+                        // TODO nothing for the moment
+                        break;
+                    case CONDITIONS :
+                        //leafTask.setConditionList(createConditionFromNode(leafTask, elementNode));
+                        createConditionFromNode(leafTask, elementNode.getChildNodes());
+                        break;
+                }
+            }
+        }
+        return leafTask;
+    }
+
+    public ObservableList<String> createSubTaskList(MotherTask motherTask, NodeList subtasks)
+    {
+        int subTasksNb = subtasks.getLength();
+        for (int subtask_count = 0; subtask_count < subTasksNb; subtask_count++) {
+            Node subtaskNode = subtasks.item(subtask_count);
+            motherTask.addSubTask(subtaskNode.getAttributes().getNamedItem(ID).getNodeValue());
+        }
+        return motherTask.getSubTaskList();
+    }
+
+    public ObservableList<LinkBetweenDaughter> createLinkBetweenDaugther(MotherTask motherTask, NodeList relationsNodes)
+    {
+        if (relationsNodes == null)
+            return motherTask.getLinkBetweenDaughters();
         int relationsNb = relationsNodes.getLength();
         for (int relation_count = 0; relation_count < relationsNb; relation_count++) {
             Node relationNode = relationsNodes.item(relation_count);
@@ -187,49 +253,55 @@ public class XMLParser {
             LinkBetweenDaughter newLink = new LinkBetweenDaughter();
             newLink.setLeftDaughter(nodeMap.getNamedItem("lh").getNodeValue());
             newLink.setRelation(GlobalParameters.RelationAllen.fromString(nodeMap.getNamedItem(OPERATOR).getNodeValue()));
-            newLink.setRightDaughter(nodeMap.getNamedItem("rh").getNodeValue()); //Is it "rh" ?
-            relationsList.add(newLink);
+            newLink.setRightDaughter(nodeMap.getNamedItem("rh").getNodeValue());
+            motherTask.addLinkBetweenDaugther(newLink);
         }
-        return relationsList;
+        return motherTask.getLinkBetweenDaughters();
     }
 
-    public List<Condition> createConditionFromNode(Node elementNode)
+    public ObservableList<Condition> createConditionFromNode(Task task, NodeList conditionsNode)
     {
-        List<Condition> conditionsList = new LinkedList<Condition>();
-        NodeList conditionsNode = elementNode.getChildNodes();
+        if (conditionsNode == null)
+            return task.getConditionList();
         int conditionsNb = conditionsNode.getLength();
         for (int condition_count = 0; condition_count < conditionsNb; condition_count++) {
             Node nodeCondition = conditionsNode.item(condition_count);
             Condition newCondition = new Condition();
             newCondition.setId(nodeCondition.getAttributes().getNamedItem(ID).getNodeValue());
-            newCondition.setOperator(nodeCondition.getAttributes().getNamedItem(OPERATOR).getNodeValue());
-            newCondition.setType(nodeCondition.getAttributes().getNamedItem(TYPE).getNodeValue());
+            newCondition.setOperator(nodeCondition.getFirstChild().getNodeName());
+            newCondition.setType(nodeCondition.getNodeName());
             if(nodeCondition.hasChildNodes()){
-                newCondition.setAssertionList(createAssertionFromNode(nodeCondition.getChildNodes()));
+                //newCondition.setAssertionList(createAssertionFromNode(newCondition, nodeCondition.getFirstChild().getChildNodes()));
+                createAssertionFromNode(newCondition, nodeCondition.getFirstChild().getChildNodes());
             }
-            conditionsList.add(newCondition);
+            task.addCondition(newCondition);
         }
-        return conditionsList;
+        return task.getConditionList();
     }
 
-    public List<Assertion> createAssertionFromNode(NodeList assertionNodes)
+    public ObservableList<Assertion> createAssertionFromNode(Condition condition, NodeList assertionNodes)
     {
+        if (assertionNodes == null)
+            return condition.getAssertionList();
         int assertionsNb = assertionNodes.getLength();
-        List<Assertion> assertionsList = new LinkedList<Assertion>();
         for (int assertion_count=0; assertion_count<assertionsNb; assertion_count++)
         {
+            Boolean not = false;
             Node nodeAssertion = assertionNodes.item(assertion_count);
+            if (nodeAssertion.getNodeName() == NOT) {
+                nodeAssertion = nodeAssertion.getFirstChild();
+                not = true;
+            }
             Assertion newAssertion = new Assertion();
-            newAssertion.setSubject(nodeAssertion.getAttributes().getNamedItem(SUBJECT).getNodeValue());
-            newAssertion.setPredicate(nodeAssertion.getAttributes().getNamedItem(PREDICATE).getNodeValue());
-            newAssertion.setObject(nodeAssertion.getAttributes().getNamedItem(OBJECT).getNodeValue());
             newAssertion.setType(nodeAssertion.getAttributes().getNamedItem(TYPE).getNodeValue());
-            assertionsList.add(newAssertion);
+            newAssertion.setNot(not);
+            newAssertion.setSubject(nodeAssertion.getFirstChild().getAttributes().getNamedItem(SUBJECT).getNodeValue());
+            newAssertion.setPredicate(nodeAssertion.getFirstChild().getAttributes().getNamedItem(PREDICATE).getNodeValue());
+            newAssertion.setObject(nodeAssertion.getFirstChild().getAttributes().getNamedItem(OBJECT).getNodeValue());
+            condition.addAssertion(newAssertion);
         }
-        return assertionsList;
+        return condition.getAssertionList();
     }
-
-
 
     public void printNodeList(NodeList  nodeList){
         for (int count = 0; count < nodeList.getLength(); count++) {
@@ -271,90 +343,4 @@ public class XMLParser {
 
         }
     }
-
-
-//    @SuppressWarnings({ "unchecked", "null" })
-//    public List<Task> readXML(String XMLtext) {
-//        ObservableList<Task> tasksListTemp = tasks.getTasks();
-//        try {
-//            // First, create a new XMLInputFactory
-//            XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-//            // Setup a new eventReader
-//            InputStream in = new ByteArrayInputStream(XMLtext.getBytes(StandardCharsets.UTF_8));
-//            XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
-//            // read the XML document
-//            Task task = null;
-//
-//            while (eventReader.hasNext()) {
-//                XMLEvent event = eventReader.nextEvent();
-//
-//                if (event.isStartElement()) {
-//                    StartElement startElement = event.asStartElement();
-//                    // If we have an item element, we create a new item
-//                    if (startElement.getName().getLocalPart().equals(TASK)) {
-//                        task = new Task();
-//                        // We read the attributes from this tag and add the date
-//                        // attribute to our object
-//                        Iterator<Attribute> attributes = startElement.getAttributes();
-//                        while (attributes.hasNext()) {
-//                            Attribute attribute = attributes.next();
-//                            if (attribute.getName().toString().equals(ID)) {
-//                                task.setIdProperty(attribute.getValue());
-//                            }
-//                            if (attribute.getName().toString().equals(GlobalParameters.Nature.ITERATIVE.getBaliseName())) {
-//                                if(attribute.getValue() == "true"){
-//                                    task.setNature(GlobalParameters.Nature.ITERATIVE);
-//                                }
-//                            }
-//                            if (attribute.getName().toString().equals(NAME)) {
-//                                task.setNameProperty(attribute.getValue());
-//                            }
-//                        }
-//                        event = eventReader.nextEvent();
-//                    }
-//
-//                    if (event.isStartElement()) {
-//                        if (event.asStartElement().getName().getLocalPart().equals(REF_CONCEPT)) {
-//
-//                            continue;
-//                        }
-//                    }
-//                    if (event.asStartElement().getName().getLocalPart()
-//                            .equals(UNIT)) {
-//                        event = eventReader.nextEvent();
-//                        item.setUnit(event.asCharacters().getData());
-//                        continue;
-//                    }
-//
-//                    if (event.asStartElement().getName().getLocalPart()
-//                            .equals(CURRENT)) {
-//                        event = eventReader.nextEvent();
-//                        item.setCurrent(event.asCharacters().getData());
-//                        continue;
-//                    }
-//
-//                    if (event.asStartElement().getName().getLocalPart()
-//                            .equals(INTERACTIVE)) {
-//                        event = eventReader.nextEvent();
-//                        item.setInteractive(event.asCharacters().getData());
-//                        continue;
-//                    }
-//                }
-//                // If we reach the end of an item element, we add it to the list
-//                if (event.isEndElement()) {
-//                    EndElement endElement = event.asEndElement();
-//                    if (endElement.getName().getLocalPart().equals(ITEM)) {
-//                        items.add(item);
-//                    }
-//                }
-//
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (XMLStreamException e) {
-//            e.printStackTrace();
-//        }
-//        return items;
-//    }
-
 }

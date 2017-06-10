@@ -226,7 +226,7 @@ public class ApplicationController {
 
     // méthode pour changer et mettre a jour tous les labels
     public void setLabelToNodes(IGraph graph, Nodes nodes){
-        System.out.println("lancement de la methode d'ajout des labels aux noeuds");
+        //System.out.println("lancement de la methode d'ajout des labels aux noeuds");
         // pour tous les noeuds
         for(INode node:nodes.getNodes()) {
             // on récupère la tâche derrière le noeud
@@ -234,12 +234,12 @@ public class ApplicationController {
             // on affecte au noeud son nom
             graph.addLabel(node, task.getNameProperty());
         }
-        System.out.println("Fin de la methode d'ajout des labels aux noeuds");
+        //System.out.println("Fin de la methode d'ajout des labels aux noeuds");
     }
 
     // méthode pour creer tous les noeuds à partir des taches
     private void createNodesFromTasks(IGraph graph, Tasks tasks,Nodes nodes){
-        System.out.println("lancement de la methode de création des nodes à partir d'une liste de tache");
+        //System.out.println("lancement de la methode de création des nodes à partir d'une liste de tache");
         for (Task task:tasks.getTasks()){
             // re-initialisation des nodes
             nodes = new Nodes();
@@ -250,11 +250,11 @@ public class ApplicationController {
             // ajout du label de la task au noeud
             graph.addLabel(node, task.getNameProperty());
         }
-        System.out.println("Fin de la methode de création des nodes à partir d'une liste de tache");
+        //System.out.println("Fin de la methode de création des nodes à partir d'une liste de tache");
     }
 
     private void createEdgeBetweenNodes(IGraph graph, Nodes nodes){
-        System.out.println("lancement de la methode de création des liens entre nodes à partir d'une liste de noeuds");
+        //System.out.println("lancement de la methode de création des liens entre nodes à partir d'une liste de noeuds");
         // pour chaque noeuds
         for (INode node:nodes.getNodes()){
             // on récupère la tâche derrière le noeud
@@ -276,7 +276,7 @@ public class ApplicationController {
                 }
             }
         }
-        System.out.println("Fin de la methode de création des liens entre nodes à partir d'une liste de noeuds");
+        //System.out.println("Fin de la methode de création des liens entre nodes à partir d'une liste de noeuds");
     }
 
     /*

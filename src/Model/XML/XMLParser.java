@@ -53,10 +53,18 @@ import javax.xml.stream.events.XMLEvent;
  */
 public class XMLParser {
 
+    public Tasks getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Tasks tasks) {
+        this.tasks = tasks;
+    }
+
     // reference on the tasks list : Tasks
     private Tasks tasks;
 
-    static final String TASK = "task";
+    static final String TASKS = "tasks";
     static final String MOTHER_TASK = "task_m";
     static final String LEAF_TASK = "tasf_f";
     static final String ID = "id";
@@ -78,6 +86,7 @@ public class XMLParser {
     }
 
     public void createTasksFromXML(String XMLFilePath){
+        tasks = new Tasks();
         File file = new File(XMLFilePath);
 
         try{
@@ -86,8 +95,15 @@ public class XMLParser {
             System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
             if (doc.hasChildNodes()) {
-                NodeList nodeList = doc.getChildNodes();
-                printNodeList(nodeList);
+                NodeList nodeList = doc.getDocumentElement().getChildNodes();
+                for (int count = 0; count < nodeList.getLength(); count++) {
+                    Node node = nodeList.item(count);
+                    System.out.println("tested node :" + node.getNodeName());
+                    if (node.getNodeName().equals(TASKS)) {
+                        NodeList tasksTypeList = node.getChildNodes();
+                        createTreeFromNodeList(tasksTypeList);
+                    }
+                }
 
             }
         } catch (Exception e) {
@@ -96,8 +112,8 @@ public class XMLParser {
 
     }
     public void createTreeFromNodeList(NodeList nodeList){
-        tasks = new Tasks();
         for (int count = 0; count < nodeList.getLength(); count++) {
+            System.out.println("nodeList length : "+nodeList.getLength());
             Node tempNode = nodeList.item(count);
             // make sure it's element node.
             if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -110,9 +126,11 @@ public class XMLParser {
                         int motherTaskNb = motherTaskNodes.getLength();
                         // creating a mother task for each of them
                         for (int task_m_count = 0; task_m_count < motherTaskNb; task_m_count++) {
+                            System.out.println("task_m length : "+motherTaskNb);
                             Node motherTaskNode = motherTaskNodes.item(task_m_count);
                             MotherTask motherTask = createMotherTaskFromNode(motherTaskNode);
                             tasks.addTask(motherTask);
+                            System.out.println("mothertask "+motherTask.toString());
                         }
                         break;
                     case LEAF_TASK :
@@ -122,6 +140,7 @@ public class XMLParser {
                             Node leafTaskNode = leafTaskNodes.item(task_f_count);
                             LeafTask leafTask = createLeafTaskFromNode(leafTaskNode);
                             tasks.addTask(leafTask);
+                            System.out.println("leaftask"+leafTask.toString());
                         }
                         break;
                 }
@@ -132,17 +151,18 @@ public class XMLParser {
     public MotherTask createMotherTaskFromNode(Node motherTaskNode)
     {
         MotherTask motherTask = new MotherTask();
-        setAttributes(motherTask, motherTaskNode);
+        motherTask = (MotherTask)setAttributes(motherTask, motherTaskNode);
         motherTask = setMotherElements(motherTask, motherTaskNode);
         return motherTask;
     }
 
-    public void setAttributes(Task task, Node taskNode)
+    public Task setAttributes(Task task, Node taskNode)
     {
         if (taskNode.hasAttributes()) {
             // get attributes and set them
             NamedNodeMap nodeMap = taskNode.getAttributes();
             task.setIdProperty(nodeMap.getNamedItem(ID).getNodeValue());
+            System.out.println("task id : "+task.getIdProperty());
             task.setIdProperty(nodeMap.getNamedItem(NAME).getNodeValue());
             Node iterativeNode = nodeMap.getNamedItem(GlobalParameters.Nature.ITERATIVE.getBaliseName());
             Node optionalNode = nodeMap.getNamedItem(GlobalParameters.Nature.OPTIONELLE.getBaliseName());
@@ -169,6 +189,7 @@ public class XMLParser {
                     task.setNature(GlobalParameters.Nature.OPTIONELLE);
             }
         }
+        return task;
     }
 
     public MotherTask setMotherElements(MotherTask motherTask, Node motherTaskNode)

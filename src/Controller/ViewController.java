@@ -455,9 +455,17 @@ public class ViewController {
         FileChooser fileChooser = new FileChooser();
         Stage newStage = new Stage();
         File file = fileChooser.showOpenDialog(newStage);
+        System.out.println(file.toString());
         if (file != null) {
             applicationController.xmlFile.setXMLfilePath(file.getPath());
+            System.out.println(applicationController.xmlFile.getXMLfilePath());
+            applicationController.xmlFile.setTextFromFilePath();
+
             applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
+            System.out.println(applicationController.xmlParser.getTasks().toString());
+            applicationController.tasks = applicationController.xmlParser.getTasks();
+            System.out.println(applicationController.tasks.toString());
+            applicationController.createGraphFromTasks(applicationController.graph,applicationController.tasks,applicationController.nodes);
         }
     }
 }

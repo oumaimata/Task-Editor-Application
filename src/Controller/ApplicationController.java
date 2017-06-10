@@ -22,7 +22,6 @@ import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import java.time.Duration;
 
-
 /**
  * Created by pierrelouislacorte on 13/05/2017.
  */
@@ -34,6 +33,8 @@ public class ApplicationController {
     public IGraph graph;
     // reference sur le controller de la vue
     public ViewController view;
+    //
+    public ViewController.PopupController popupController;
     // reference sur l'ensemble des taches du modèle
     public Tasks tasks;
     // reference sur la tache selectionnée (dans le cas du graph notamment)
@@ -57,7 +58,7 @@ public class ApplicationController {
     // layout utilisé
     TreeLayout layout;
 
-    public ApplicationController(ViewController view, GraphControl graphControl) {
+    public ApplicationController(ViewController view, GraphControl graphControl, ViewController.PopupController popup) {
         this.view = view;
         this.graphControl = graphControl;
         // obtenir la référence du graph
@@ -97,14 +98,24 @@ public class ApplicationController {
         tasks = new Tasks();
         // initialisation de la liste des noeuds
         nodes = new Nodes();
+        // on ajoute des taches pour test
+        Task task1 = tasks.addDefaultTache();
+        Task task2 = tasks.addDefaultTache();
+        Task task3 = tasks.addDefaultTache();
+        Task task4 = tasks.addDefaultTache();
+
+        // on creer des liens entre ces taches
+        tasks.createLinkBetweenTwoTasks(task1,task2);
+        tasks.createLinkBetweenTwoTasks(task2,task3);
+        tasks.createLinkBetweenTwoTasks(task3,task4);
+
+        // on creer le graph associé
+        createGraphFromTasks(graph,tasks,nodes);
     }
 
     // Méthode principale a utiliser dans le controller.
     // Y effectuer toutes les actions
     public void main_action (){
-        // ajout du listener sur le bouton d'ajout de tache qui va déclancher l'ajout d'une tache par défaut
-        view.getButton_graph_ajouter().setOnAction(evt -> handleAjoutTache());
-
         // ajout de la liste de toutes les tâches à la listview taches filles
         // ce n'est pas ce qu'il y aura dedans mais le fonctionnement est ok.
         // /!\ A adapter /!\
@@ -115,6 +126,8 @@ public class ApplicationController {
 
     // Méthode pour réaliser les bindings des actions et des boutons
     public void make_binding (){
+        // ajout du listener sur le bouton d'ajout de tache qui va déclancher l'ajout d'une tache par défaut
+        //view.getButton_graph_ajouter().setOnAction(evt -> handleAjoutTache());
 
         // creation du listener sur le bouton pour centrer le graph
         view.getButton_centrer().setOnAction(evt -> graphFitContent());
@@ -123,7 +136,9 @@ public class ApplicationController {
         view.getButton_hierarchiser().setOnAction(evt -> handleLayoutAction(evt));
 
         // ajout du listener sur le bouton de hierarchisation
-        view.getButton_graph_supprimer().setOnAction(evt -> handleSuppressionNoeud());
+        view.getButton_graph_supprimer().setOnAction(evt -> {
+            handleSuppressionNoeud();
+        });
 
         // creation du listener sur le click d'un objet
         graphEditorInputMode.addItemLeftClickedListener(new IEventHandler<ItemClickedEventArgs<IModelItem>>() {
@@ -189,6 +204,13 @@ public class ApplicationController {
         graph.addLabel(node1, task.getNameProperty());
     }
 
+    public void addNodeFromTask(Task task){
+        System.out.println("lancement de la methode d'ajout d'un node a partir d'une tache");
+        INode node1 = graph.createNode(new PointD(),TaskStyle,task);
+        nodes.addNode(node1);
+        graph.addLabel(node1, task.getNameProperty());
+    }
+
     public void changePanelState(){
         if(panelActif){
             // si il est actif on le cache
@@ -214,48 +236,39 @@ public class ApplicationController {
     // generation du graphique a partir d'une liste de taches
     public void createGraphFromTasks(IGraph graph, Tasks tasks, Nodes nodes){
         // creation des noeuds
-        createNodesFromTasks(graph,tasks,nodes);
+        createNodesFromTasks(graph,tasks);
         // creation des liens
-        createEdgeBetweenNodes(graph,nodes);
-        // ajout des labels
-        setLabelToNodes(graph,nodes);
+        createEdgeBetweenNodes(graph);
         // mise en place du layout
         graphControl.morphLayout(layout, Duration.ofMillis(500));
-    }
-
-
-    // méthode pour changer et mettre a jour tous les labels
-    public void setLabelToNodes(IGraph graph, Nodes nodes){
-        System.out.println("lancement de la methode d'ajout des labels aux noeuds");
-        // pour tous les noeuds
-        for(INode node:nodes.getNodes()) {
-            // on récupère la tâche derrière le noeud
-            Task task = (Task) node.getTag();
-            // on affecte au noeud son nom
-            graph.addLabel(node, task.getNameProperty());
-        }
-        System.out.println("Fin de la methode d'ajout des labels aux noeuds");
+        // mise a jour des styles
+        updateNodeStyle(graph);
     }
 
     // méthode pour creer tous les noeuds à partir des taches
-    private void createNodesFromTasks(IGraph graph, Tasks tasks,Nodes nodes){
+    private void createNodesFromTasks(IGraph graph, Tasks tasks){
         System.out.println("lancement de la methode de création des nodes à partir d'une liste de tache");
+        // re-initialisation des nodes
+        nodes = new Nodes();
         for (Task task:tasks.getTasks()){
-            // re-initialisation des nodes
-            nodes = new Nodes();
             // création d'un nouveau noeud avec la task comme tag
+            System.out.println("creation d'un nouveau node avec comme tag: " + task.getNameProperty()+ " " +task.getIdProperty());
             INode node = graph.createNode(new PointD(0,0),TaskStyle,task);
             // ajout de ce noeuds a la liste des noeuds
             nodes.addNode(node);
             // ajout du label de la task au noeud
+            System.out.println("Ajout du label: " + task.getNameProperty()+ " au noeud " + node.toString());
             graph.addLabel(node, task.getNameProperty());
         }
         System.out.println("Fin de la methode de création des nodes à partir d'une liste de tache");
     }
 
-    private void createEdgeBetweenNodes(IGraph graph, Nodes nodes){
+    // méthode pour creer les liens entres tous les noeuds d'un graphes
+    private void createEdgeBetweenNodes(IGraph graph){
         System.out.println("lancement de la methode de création des liens entre nodes à partir d'une liste de noeuds");
         // pour chaque noeuds
+        System.out.println("la liste des noeuds est de longueur: "+ nodes.getNodes().size());
+
         for (INode node:nodes.getNodes()){
             // on récupère la tâche derrière le noeud
             Task task = (Task) node.getTag();
@@ -279,33 +292,71 @@ public class ApplicationController {
         System.out.println("Fin de la methode de création des liens entre nodes à partir d'une liste de noeuds");
     }
 
+    // méthode pour changer et mettre a jour tous les labels
+    public void setLabelToNodes(IGraph graph, Nodes nodes){
+        System.out.println("lancement de la methode d'ajout des labels aux noeuds");
+        // pour tous les noeuds
+        for(INode node:nodes.getNodes()) {
+            // on récupère la tâche derrière le noeud
+            Task task = (Task) node.getTag();
+            // on affecte au noeud son nom
+            graph.addLabel(node, task.getNameProperty());
+        }
+        System.out.println("Fin de la methode d'ajout des labels aux noeuds");
+    }
+
+    // methode pour creer un lien entre deux taches sous les noeuds
+    private void createLinkBetweenTwoNodes(INode Mother, INode Daugther){
+        Task motherTask = (Task) Mother.getTag();
+        Task daughterTask = (Task) Daugther.getTag();
+        System.out.println("Creation d'un lien de parenté entre "+motherTask.getIdProperty() + " et "+ daughterTask.getIdProperty());
+        motherTask.addSubTask(daughterTask.getIdProperty());
+    }
+
+
+    private void updateNodeStyle(IGraph graph){
+        System.out.println("lancement de la methode d'update des styles entre nodes à partir d'une liste de noeuds");
+        // iterating over nodes
+        for (INode node : graph.getNodes()) {
+            // do something with the node
+            Task task = (Task) node.getTag();
+            ShapeNodeStyle style;
+            if(task.getSubTaskList().size()!=0){
+                style = TaskStyle;
+            }else{
+                style = LeafTaskStyle;
+            }
+            graph.setStyle(node,style);
+        }
+        System.out.println("Fin de la methode d'update des styles entre nodes à partir d'une liste de noeuds");
+    }
+
     /*
     Création de style pour les différents noeuds. Ces styles ne sont pas définitifs et peuvent être amenés à évoluer.
     Juste mise en place du principe
     */
     private ShapeNodeStyle createMotherTaskStyle(){
         // create a style which draws a node as a geometric shape with a fill and a border color
-        ShapeNodeStyle orangeNodeStyle = new ShapeNodeStyle();
-        orangeNodeStyle.setShape(ShapeNodeShape.RECTANGLE);
-        orangeNodeStyle.setPaint(Color.ORANGE);
-        orangeNodeStyle.setPen(Pen.getTransparent());
-        return orangeNodeStyle;
+        ShapeNodeStyle motherTaskNodeStyle = new ShapeNodeStyle();
+        motherTaskNodeStyle.setShape(ShapeNodeShape.ELLIPSE);
+        motherTaskNodeStyle.setPaint(Color.color(0.1216, 0.4784, 0.549));
+        motherTaskNodeStyle.setPen(Pen.getTransparent());
+        return motherTaskNodeStyle;
     }
 
     private ShapeNodeStyle createTaskStyle(){
         ShapeNodeStyle taskNodeStyle = new ShapeNodeStyle();
         taskNodeStyle.setPaint(Color.color(0.9882, 0.6902, 0.4941));
         taskNodeStyle.setPen(Pen.getTransparent());
+        taskNodeStyle.setShape(ShapeNodeShape.ELLIPSE);
         return taskNodeStyle;
     }
 
     private ShapeNodeStyle createLeafStyle(){
-        ShapeNodeStyle blueNodeStyle = new ShapeNodeStyle();
-        blueNodeStyle.setPaint(Color.CORNFLOWERBLUE);
-        blueNodeStyle.setPen(Pen.getTransparent());
-        return blueNodeStyle;
+        ShapeNodeStyle leafNodeStyle = new ShapeNodeStyle();
+        leafNodeStyle.setPaint(Color.color(0.7255, 0.8078, 0.6784));
+        leafNodeStyle.setPen(Pen.getTransparent());
+        leafNodeStyle.setShape(ShapeNodeShape.ELLIPSE);
+        return leafNodeStyle;
     }
-
-
-
 }

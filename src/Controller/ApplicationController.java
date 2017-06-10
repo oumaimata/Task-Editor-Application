@@ -1,8 +1,6 @@
 package Controller;
 
-import Model.Tree.Nodes;
-import Model.Tree.Task;
-import Model.Tree.Tasks;
+import Model.Tree.*;
 import Model.XML.XMLFile;
 import Model.XML.XMLParser;
 import com.yworks.yfiles.geometry.PointD;
@@ -37,6 +35,10 @@ public class ApplicationController {
     public ViewController.PopupController popupController;
     // reference sur l'ensemble des taches du modèle
     public Tasks tasks;
+    // reference sur l'ensemble des taches meres du modèle
+    public MotherTasks motherTasks;
+    // reference sur l'ensemble des taches feuilles du modèle
+    public LeafTasks leafTasks;
     // reference sur la tache selectionnée (dans le cas du graph notamment)
     public Task currentTask;
     // reference sur la noeud selectionnée (dans le cas du graph notamment)
@@ -96,21 +98,28 @@ public class ApplicationController {
         // ensemble des tâches à null initialement.
         // Dans le cas d'un chargement il faudra modifier directement cette valeur
         tasks = new Tasks();
+        // initialisation de la liste des noeuds meres
+        motherTasks = new MotherTasks();
+        // initialisation de la liste des noeuds feuilles
+        leafTasks = new LeafTasks();
         // initialisation de la liste des noeuds
         nodes = new Nodes();
         // on ajoute des taches pour test
-        Task task1 = tasks.addDefaultTache();
-        Task task2 = tasks.addDefaultTache();
-        Task task3 = tasks.addDefaultTache();
+        MotherTask task1 = motherTasks.addDefaultTache();
+        System.out.println("task1: "+ task1.getIdProperty());
+        MotherTask task2 = motherTasks.addDefaultTache();
+        System.out.println("task2: "+task2.getIdProperty());
+        MotherTask task3 = motherTasks.addDefaultTache();
+        System.out.println("task3: "+task3.getIdProperty());
         Task task4 = tasks.addDefaultTache();
 
         // on creer des liens entre ces taches
-        tasks.createLinkBetweenTwoTasks(task1,task2);
-        tasks.createLinkBetweenTwoTasks(task2,task3);
-        tasks.createLinkBetweenTwoTasks(task3,task4);
+        motherTasks.createLinkBetweenTwoTasks(task1,task2);
+        motherTasks.createLinkBetweenTwoTasks(task2,task3);
+        motherTasks.createLinkBetweenTwoTasks(task3,task4);
 
         // on creer le graph associé
-        createGraphFromTasks(graph,tasks,nodes);
+        createGraphFromTasks(graph,motherTasks,tasks,leafTasks);
     }
 
     // Méthode principale a utiliser dans le controller.
@@ -196,6 +205,7 @@ public class ApplicationController {
         graphControl.fitContent();
     }
 
+    /* --  N'est plus utile pour le moment --
     public void handleAjoutTache(){
         System.out.println("lancement de la methode ajout tache du controller & creation du noeud graphique avec comme tag la tache ainsi créée");
         INode node1 = graph.createNode(new PointD(),TaskStyle,tasks.addDefaultTache());
@@ -203,6 +213,7 @@ public class ApplicationController {
         Task task = (Task) node1.getTag();
         graph.addLabel(node1, task.getNameProperty());
     }
+    */
 
     public void addNodeFromTask(Task task){
         System.out.println("lancement de la methode d'ajout d'un node a partir d'une tache");
@@ -234,9 +245,9 @@ public class ApplicationController {
     }
 
     // generation du graphique a partir d'une liste de taches
-    public void createGraphFromTasks(IGraph graph, Tasks tasks, Nodes nodes){
+    public void createGraphFromTasks(IGraph graph, MotherTasks motherTask, Tasks tasks, LeafTasks leafTasks){
         // creation des noeuds
-        createNodesFromTasks(graph,tasks);
+        createNodesFromTasks(graph,motherTask,tasks,leafTasks);
         // creation des liens
         createEdgeBetweenNodes(graph);
         // mise en place du layout
@@ -246,10 +257,23 @@ public class ApplicationController {
     }
 
     // méthode pour creer tous les noeuds à partir des taches
-    private void createNodesFromTasks(IGraph graph, Tasks tasks){
+    private void createNodesFromTasks(IGraph graph, MotherTasks motherTasks, Tasks tasks, LeafTasks leafTasks){
         System.out.println("lancement de la methode de création des nodes à partir d'une liste de tache");
         // re-initialisation des nodes
         nodes = new Nodes();
+
+        // on parcours les taches mère
+        for (MotherTask motherTask:motherTasks.getTasks()){
+            // création d'un nouveau noeud avec la la motherTask comme tag
+            System.out.println("creation d'un nouveau node avec comme tag: " + motherTask.getNameProperty()+ " " +motherTask.getIdProperty());
+            INode node = graph.createNode(new PointD(0,0),TaskStyle,motherTask);
+            // ajout de ce noeuds a la liste des noeuds
+            nodes.addNode(node);
+            // ajout du label de la task au noeud
+            System.out.println("Ajout du label: " + motherTask.getNameProperty()+ " au noeud " + node.toString());
+            graph.addLabel(node, motherTask.getNameProperty());
+        }
+        // on parcours les taches
         for (Task task:tasks.getTasks()){
             // création d'un nouveau noeud avec la task comme tag
             System.out.println("creation d'un nouveau node avec comme tag: " + task.getNameProperty()+ " " +task.getIdProperty());
@@ -260,36 +284,71 @@ public class ApplicationController {
             System.out.println("Ajout du label: " + task.getNameProperty()+ " au noeud " + node.toString());
             graph.addLabel(node, task.getNameProperty());
         }
-        System.out.println("Fin de la methode de création des nodes à partir d'une liste de tache");
+
+        // on parcours les taches mère filles
+        for (LeafTask leafTask:leafTasks.getTasks()){
+            // création d'un nouveau noeud avec la task comme tag
+            System.out.println("creation d'un nouveau node avec comme tag: " + leafTask.getNameProperty()+ " " +leafTask.getIdProperty());
+            INode node = graph.createNode(new PointD(0,0),TaskStyle,leafTask);
+            // ajout de ce noeuds a la liste des noeuds
+            nodes.addNode(node);
+            // ajout du label de la task au noeud
+            System.out.println("Ajout du label: " + leafTask.getNameProperty()+ " au noeud " + node.toString());
+            graph.addLabel(node, leafTask.getNameProperty());
+        }
+
+
+        //System.out.println("Fin de la methode de création des nodes à partir d'une liste de tache");
     }
 
     // méthode pour creer les liens entres tous les noeuds d'un graphes
     private void createEdgeBetweenNodes(IGraph graph){
         System.out.println("lancement de la methode de création des liens entre nodes à partir d'une liste de noeuds");
+
         // pour chaque noeuds
         System.out.println("la liste des noeuds est de longueur: "+ nodes.getNodes().size());
 
         for (INode node:nodes.getNodes()){
             // on récupère la tâche derrière le noeud
-            Task task = (Task) node.getTag();
-            // pour toutes les sous tâches
-            for(String subTaskStringId: task.getSubTaskList()){
-                // on vérifie tous les autres noeuds savoir s'il y en a un qui doit être lié
-                for (INode otherNode:nodes.getNodes()){
-                    // si on est pas sur le noeud courrant
-                    if(otherNode!= node ){
-                        // on récupère la tâche derrière le noeud
-                        Task otherTask = (Task) otherNode.getTag();
-                        // si l'id de la tache est celui d'une des sous tâches alors
-                        if(otherTask.getIdProperty()==subTaskStringId){
-                            // création du lien graphique
-                            graph.createEdge(node, otherNode);
+            if (node.getTag().getClass() == MotherTask.class) {
+                MotherTask task = (MotherTask) node.getTag();
+                // pour toutes les sous tâches
+                for (String subTaskStringId : task.getSubTaskList()) {
+                    // on vérifie tous les autres noeuds savoir s'il y en a un qui doit être lié
+                    for (INode otherNode : nodes.getNodes()) {
+                        // si on est pas sur le noeud courrant
+                        if (otherNode != node) {
+                            // si l'autre noeud est une tache mère
+                            if (otherNode.getTag().getClass() == MotherTask.class) {
+                                MotherTask otherTask = (MotherTask) otherNode.getTag();
+                                // si l'id de la tache est celui d'une des sous tâches alors
+                                if (otherTask.getIdProperty() == subTaskStringId) {
+                                    // création du lien graphique
+                                    graph.createEdge(node, otherNode);
+                                }
+                            } else if (otherNode.getTag().getClass() == LeafTask.class) {
+                                // si l'autre noeud est une tache fille
+                                LeafTask otherTask = (LeafTask) otherNode.getTag();
+                                // si l'id de la tache est celui d'une des sous tâches alors
+                                if (otherTask.getIdProperty() == subTaskStringId) {
+                                    // création du lien graphique
+                                    graph.createEdge(node, otherNode);
+                                }
+                            } else {
+                                // si l'autre noeud est une tache
+                                Task otherTask = (Task) otherNode.getTag();
+                                // si l'id de la tache est celui d'une des sous tâches alors
+                                if (otherTask.getIdProperty() == subTaskStringId) {
+                                    // création du lien graphique
+                                    graph.createEdge(node, otherNode);
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-        System.out.println("Fin de la methode de création des liens entre nodes à partir d'une liste de noeuds");
+        //System.out.println("Fin de la methode de création des liens entre nodes à partir d'une liste de noeuds");
     }
 
     // méthode pour changer et mettre a jour tous les labels
@@ -307,11 +366,21 @@ public class ApplicationController {
 
     // methode pour creer un lien entre deux taches sous les noeuds
     private void createLinkBetweenTwoNodes(INode Mother, INode Daugther){
-        Task motherTask = (Task) Mother.getTag();
-        Task daughterTask = (Task) Daugther.getTag();
-        System.out.println("Creation d'un lien de parenté entre "+motherTask.getIdProperty() + " et "+ daughterTask.getIdProperty());
-        motherTask.addSubTask(daughterTask.getIdProperty());
-    }
+        if(Mother.getTag().getClass() != MotherTask.class){
+            // si la tache d'origine mère n'en était pas encore
+            MotherTask motherTask = new MotherTask((Task)Mother.getTag());
+            MotherTask daughterTask = (MotherTask) Daugther.getTag();
+            System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daughterTask.getIdProperty());
+            motherTask.addSubTask(daughterTask.getIdProperty());
+            // on change l'objet derrière le node
+            Mother.setTag(motherTask);
+        }else if(Mother.getTag().getClass() == MotherTask.class){
+            // si la tache d'origine était déjà mère
+            MotherTask motherTask =  (MotherTask) Mother.getTag();
+            MotherTask daughterTask = (MotherTask) Daugther.getTag();
+            System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daughterTask.getIdProperty());
+            motherTask.addSubTask(daughterTask.getIdProperty());
+    }}
 
 
     private void updateNodeStyle(IGraph graph){
@@ -319,9 +388,9 @@ public class ApplicationController {
         // iterating over nodes
         for (INode node : graph.getNodes()) {
             // do something with the node
-            Task task = (Task) node.getTag();
+            // si le noeud est une tache mère
             ShapeNodeStyle style;
-            if(task.getSubTaskList().size()!=0){
+            if( node.getTag().getClass() == MotherTask.class){
                 style = TaskStyle;
             }else{
                 style = LeafTaskStyle;

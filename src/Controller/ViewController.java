@@ -16,11 +16,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import View.XMLEditor;
+
+import java.io.File;
 
 /**
  * Created by pierrelouislacorte on 29/05/2017.
@@ -55,7 +58,12 @@ public class ViewController {
             codeArea.setStyleSpans(0, XMLEditor.computeHighlighting(newText));
             applicationController.xmlFile.setXMLtext(newText);
         });
-        codeArea.replaceText(0,0,applicationController.xmlFile.getXMLtext());
+        codeArea.replaceText(0, 0, applicationController.xmlFile.getXMLtext());
+        // setting the action to open a document
+        button_open.setOnAction((event) -> {openFile();});
+        button_save.setOnAction((event) -> {save();});
+        button_xml_rafraichir.setOnAction((event) -> {refreshTreeFromXML();});
+        applicationController.xmlFile.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
     }
 
     // méthode appelée par l'application une fois que le stage a été chargé.
@@ -540,5 +548,23 @@ public class ViewController {
         save();
         System.out.println("saved!");
         applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
+    }
+
+    public void openFile() {
+        FileChooser fileChooser = new FileChooser();
+        Stage newStage = new Stage();
+        File file = fileChooser.showOpenDialog(newStage);
+        System.out.println(file.toString());
+        if (file != null) {
+            applicationController.xmlFile.setXMLfilePath(file.getPath());
+            System.out.println(applicationController.xmlFile.getXMLfilePath());
+            applicationController.xmlFile.setTextFromFilePath();
+
+            applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
+            System.out.println(applicationController.xmlParser.getTasks().toString());
+            applicationController.tasks = applicationController.xmlParser.getTasks();
+            System.out.println(applicationController.tasks.toString());
+            applicationController.createGraphFromTasks(applicationController.graph,applicationController.motherTasks,applicationController.tasks,applicationController.leafTasks);
+        }
     }
 }

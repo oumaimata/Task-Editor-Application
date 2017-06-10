@@ -36,7 +36,7 @@ public class Tasks {
         return id;
     }
 
-    public void createLinkBetweenTwoTasks(Task Mother, Task Daugther){
+    public void createLinkBetweenTwoTasks(MotherTask Mother, Task Daugther){
         System.out.println("Creation d'un lien de parenté entre "+Mother.getIdProperty() + " et "+ Daugther.getIdProperty());
         Mother.addSubTask(Daugther.getIdProperty());
     }
@@ -55,7 +55,7 @@ public class Tasks {
         Task newTask = new Task();
         newTask.setIdProperty(getId().toString());
         addTask(newTask);
-        System.out.println(tasks.toString());
+        System.out.println(toString());
         return newTask;
     }
 

@@ -91,4 +91,14 @@ public class Assertion {
             }
         };
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s | %s | %s | %s", getType().getName(), getSubject(), getPredicate(), getObject());
+    }
+
+    public void print()
+    {
+        System.out.println("        "+toString());
+    }
 }

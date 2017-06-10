@@ -28,6 +28,7 @@ public class GlobalParameters {
     }
 
     public enum TypeCondition {
+        nomological("nomological"), // TODO change the XML
         precondition("precondition"),
         satisfaction("satisfaction"),
         arret("arret");
@@ -40,8 +41,14 @@ public class GlobalParameters {
     }
 
     public enum TypeAssertion {
-        activity,
-        world
+        activity("activity"),
+        world("world");
+
+        private String name;
+
+        TypeAssertion(String name) {this.name = name;}
+
+        public String getName() {return name;}
     }
 
     public enum OperateurLogique {

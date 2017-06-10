@@ -32,7 +32,7 @@ public class Task {
     }
 
     public Task() {
-        System.out.println("creation d'une nouvelle tache avec les configurations par défaut : id = 0 et name = Task + id");
+        //System.out.println("creation d'une nouvelle tache avec les configurations par défaut : id = 0 et name = Task + id");
         this.idProperty = new SimpleStringProperty(0,"idproperty");
         this.nameProperty = new SimpleStringProperty("Task");
         this.conditionList = FXCollections.observableArrayList(Condition.extractor());
@@ -40,7 +40,7 @@ public class Task {
     }
 
     public void setIdProperty(String idProperty) {
-        System.out.println("update de l'id d'une tâche, ancienne valeur " + this.getIdProperty() +", nouvelle valeur : " + idProperty);
+        //System.out.println("update de l'id d'une tâche, ancienne valeur " + this.getIdProperty() +", nouvelle valeur : " + idProperty);
         this.idProperty.setValue(idProperty);
     }
 
@@ -107,8 +107,6 @@ public class Task {
         taskElement.setAttribute("name",getNameProperty());
 
         // TODO Context
-
-        // TODO In subclass, COnstructor
 
         Element conditionsElement = doc.createElement("conditions");
         int nb = conditionList.size();

@@ -125,12 +125,15 @@ public class XMLParser {
                         NodeList motherTaskNodes = tempNode.getChildNodes();
                         int motherTaskNb = motherTaskNodes.getLength();
                         // creating a mother task for each of them
+                        System.out.println("task_m length : "+motherTaskNb);
                         for (int task_m_count = 0; task_m_count < motherTaskNb; task_m_count++) {
-                            System.out.println("task_m length : "+motherTaskNb);
                             Node motherTaskNode = motherTaskNodes.item(task_m_count);
-                            MotherTask motherTask = createMotherTaskFromNode(motherTaskNode);
-                            tasks.addTask(motherTask);
-                            System.out.println("mothertask "+motherTask.toString());
+                            if (motherTaskNode.getNodeType() == Node.ELEMENT_NODE)
+                            {
+                                MotherTask motherTask = createMotherTaskFromNode(motherTaskNode);
+                                tasks.addTask(motherTask);
+                                System.out.println("mothertask "+motherTask.toString());
+                            }
                         }
                         break;
                     case LEAF_TASK :
@@ -138,9 +141,12 @@ public class XMLParser {
                         int leafTaskNb = leafTaskNodes.getLength();
                         for (int task_f_count = 0; task_f_count < leafTaskNb; task_f_count++) {
                             Node leafTaskNode = leafTaskNodes.item(task_f_count);
-                            LeafTask leafTask = createLeafTaskFromNode(leafTaskNode);
-                            tasks.addTask(leafTask);
-                            System.out.println("leaftask"+leafTask.toString());
+                            if (leafTaskNode.getNodeType() == Node.ELEMENT_NODE)
+                            {
+                                LeafTask leafTask = createLeafTaskFromNode(leafTaskNode);
+                                tasks.addTask(leafTask);
+                                System.out.println("leaftask"+leafTask.toString());
+                            }
                         }
                         break;
                 }
@@ -162,7 +168,7 @@ public class XMLParser {
             // get attributes and set them
             NamedNodeMap nodeMap = taskNode.getAttributes();
             task.setIdProperty(nodeMap.getNamedItem(ID).getNodeValue());
-            System.out.println("task id : "+task.getIdProperty());
+            System.out.println("Id : "+task.getIdProperty());
             task.setIdProperty(nodeMap.getNamedItem(NAME).getNodeValue());
             Node iterativeNode = nodeMap.getNamedItem(GlobalParameters.Nature.ITERATIVE.getBaliseName());
             Node optionalNode = nodeMap.getNamedItem(GlobalParameters.Nature.OPTIONELLE.getBaliseName());
@@ -181,13 +187,14 @@ public class XMLParser {
                 else
                     task.setNature(GlobalParameters.Nature.ITERATIVE);
             }
-            else if (interruptibleNode != null)
+            else
             {
-                if (interruptibleNode.getNodeValue().equals("true"))
+                if (interruptibleNode != null && interruptibleNode.getNodeValue().equals("true"))
                     task.setNature(GlobalParameters.Nature.INTERRUPTIBLE);
                 else
                     task.setNature(GlobalParameters.Nature.OPTIONELLE);
             }
+            System.out.println("Nature : "+task.getNature().getBaliseName());
         }
         return task;
     }
@@ -256,10 +263,17 @@ public class XMLParser {
     public ObservableList<String> createSubTaskList(MotherTask motherTask, NodeList subtasks)
     {
         int subTasksNb = subtasks.getLength();
+        System.out.println("Filles :");
         for (int subtask_count = 0; subtask_count < subTasksNb; subtask_count++) {
             Node subtaskNode = subtasks.item(subtask_count);
-            motherTask.addSubTask(subtaskNode.getAttributes().getNamedItem(ID).getNodeValue());
+            if (subtaskNode.getNodeType() == Node.ELEMENT_NODE)
+            {
+                motherTask.addSubTask(subtaskNode.getAttributes().getNamedItem(ID).getNodeValue());
+                System.out.print("  ");
+                System.out.println(subtaskNode.getAttributes().getNamedItem(ID).getNodeValue()+", ");
+            }
         }
+        System.out.println(" ");
         return motherTask.getSubTaskList();
     }
 
@@ -270,12 +284,15 @@ public class XMLParser {
         int relationsNb = relationsNodes.getLength();
         for (int relation_count = 0; relation_count < relationsNb; relation_count++) {
             Node relationNode = relationsNodes.item(relation_count);
-            NamedNodeMap nodeMap = relationNode.getAttributes();
-            LinkBetweenDaughter newLink = new LinkBetweenDaughter();
-            newLink.setLeftDaughter(nodeMap.getNamedItem("lh").getNodeValue());
-            newLink.setRelation(GlobalParameters.RelationAllen.fromString(nodeMap.getNamedItem(OPERATOR).getNodeValue()));
-            newLink.setRightDaughter(nodeMap.getNamedItem("rh").getNodeValue());
-            motherTask.addLinkBetweenDaugther(newLink);
+            if (relationNode.getNodeType() == Node.ELEMENT_NODE)
+            {
+                NamedNodeMap nodeMap = relationNode.getAttributes();
+                LinkBetweenDaughter newLink = new LinkBetweenDaughter();
+                newLink.setLeftDaughter(nodeMap.getNamedItem("lh").getNodeValue());
+                newLink.setRelation(GlobalParameters.RelationAllen.fromString(nodeMap.getNamedItem(OPERATOR).getNodeValue()));
+                newLink.setRightDaughter(nodeMap.getNamedItem("rh").getNodeValue());
+                motherTask.addLinkBetweenDaugther(newLink);
+            }
         }
         return motherTask.getLinkBetweenDaughters();
     }
@@ -287,15 +304,24 @@ public class XMLParser {
         int conditionsNb = conditionsNode.getLength();
         for (int condition_count = 0; condition_count < conditionsNb; condition_count++) {
             Node nodeCondition = conditionsNode.item(condition_count);
-            Condition newCondition = new Condition();
-            newCondition.setId(nodeCondition.getAttributes().getNamedItem(ID).getNodeValue());
-            newCondition.setOperator(nodeCondition.getFirstChild().getNodeName());
-            newCondition.setType(nodeCondition.getNodeName());
-            if(nodeCondition.hasChildNodes()){
-                //newCondition.setAssertionList(createAssertionFromNode(newCondition, nodeCondition.getFirstChild().getChildNodes()));
-                createAssertionFromNode(newCondition, nodeCondition.getFirstChild().getChildNodes());
+            if (nodeCondition.getNodeType() == Node.ELEMENT_NODE)
+            {
+                Condition newCondition = new Condition();
+                newCondition.setId(nodeCondition.getAttributes().getNamedItem(ID).getNodeValue());
+                newCondition.setType(nodeCondition.getNodeName());
+                int nb = nodeCondition.getChildNodes().getLength();
+                NodeList childs = nodeCondition.getChildNodes();
+                for (int i=0; i<nb; ++i)
+                {
+                    Node operatorNode = childs.item(i);
+                    if (operatorNode.getNodeType() == Node.ELEMENT_NODE)
+                    {
+                        newCondition.setOperator(operatorNode.getNodeName());
+                        createAssertionFromNode(newCondition, operatorNode.getChildNodes());
+                    }
+                }
+                task.addCondition(newCondition);
             }
-            task.addCondition(newCondition);
         }
         return task.getConditionList();
     }
@@ -309,17 +335,20 @@ public class XMLParser {
         {
             Boolean not = false;
             Node nodeAssertion = assertionNodes.item(assertion_count);
-            if (nodeAssertion.getNodeName() == NOT) {
-                nodeAssertion = nodeAssertion.getFirstChild();
-                not = true;
+            if (nodeAssertion.getNodeType() == Node.ELEMENT_NODE)
+            {
+                if (nodeAssertion.getNodeName() == NOT) {
+                    nodeAssertion = nodeAssertion.getFirstChild();
+                    not = true;
+                }
+                Assertion newAssertion = new Assertion();
+                newAssertion.setType(nodeAssertion.getAttributes().getNamedItem(TYPE).getNodeValue());
+                newAssertion.setNot(not);
+                newAssertion.setSubject(nodeAssertion.getFirstChild().getAttributes().getNamedItem(SUBJECT).getNodeValue());
+                newAssertion.setPredicate(nodeAssertion.getFirstChild().getAttributes().getNamedItem(PREDICATE).getNodeValue());
+                newAssertion.setObject(nodeAssertion.getFirstChild().getAttributes().getNamedItem(OBJECT).getNodeValue());
+                condition.addAssertion(newAssertion);
             }
-            Assertion newAssertion = new Assertion();
-            newAssertion.setType(nodeAssertion.getAttributes().getNamedItem(TYPE).getNodeValue());
-            newAssertion.setNot(not);
-            newAssertion.setSubject(nodeAssertion.getFirstChild().getAttributes().getNamedItem(SUBJECT).getNodeValue());
-            newAssertion.setPredicate(nodeAssertion.getFirstChild().getAttributes().getNamedItem(PREDICATE).getNodeValue());
-            newAssertion.setObject(nodeAssertion.getFirstChild().getAttributes().getNamedItem(OBJECT).getNodeValue());
-            condition.addAssertion(newAssertion);
         }
         return condition.getAssertionList();
     }

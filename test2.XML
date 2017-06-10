@@ -18,7 +18,7 @@
 			 <subtask id="Agrapher_le_Support_1"/>
             <subtask id="Degrapher_le_Support_1"/>
 		  </subtasks>
-          <constructor type="SEQ-ORD">
+          <constructor type="SEQ_ORD">
             <relation lh="Prendre_la_perceuse32" operator="&lt;" rh="Percer_la_piece"/>
             <relation lh="Percer_la_piece" operator="&lt;" rh="Controler_le_Barque_Trou01"/>
 			 <relation lh="Controler_le_Barque_Trou01" operator="&lt;" rh="Agrafer_une_piece"/>
@@ -27,14 +27,14 @@
           <conditions>
 			 <nomological id="1">
 			<AND>
-					<statement type="domain">
+					<statement type="activity">
 					  <triple predicate="nikita:has-perced-state" subject="?Support_1" object="false"/>
 					</statement>
 			</AND>
 			 </nomological>
 			  <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-perced-state" subject="?Support_1" object="true"/>
                 </statement>   
               </AND>
@@ -55,7 +55,7 @@
 			 <subtask id="Enlever_les_copeaux"/>
             <subtask id="Poser_la_Perceuse01"/>
 		  </subtasks>
-          <constructor type="SEQ-ORD">
+          <constructor type="SEQ_ORD">
             <relation lh="ControlEquerrage_Support_1" operator="&lt;" rh="Traverser_ Support1"/>
             <relation lh="Traverser_Support1" operator="&lt;" rh="Sortir_Foret_25"/>
 			 <relation lh="Sortir_Foret_25" operator="&lt;" rh="Enlever_les_copeaux"/>
@@ -64,14 +64,14 @@
           <conditions>
 			 <nomological id="1">
 			<AND>
-					<statement type="domain">
+					<statement type="activity">
 					  <triple predicate="nikita:has-perced-state" subject="?Support_1" object="false"/>
 					</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                   <triple predicate="nikita:has-perced-state" subject="?Support_1" object="true"/>
                 </statement>   
               </AND>
@@ -90,20 +90,20 @@
             <subtask id="ControlRondeur_du_Barque_Trou01"/>
             <subtask id="VerifierDiametre_Barque_Trou01"/>
 		  </subtasks>
-          <constructor type="SEQ-ORD">
+          <constructor type="SEQ_ORD">
           
 		  </constructor>             
           <conditions>
 			 <nomological id="1">
 			<AND>
-					<statement type="domain">
+					<statement type="activity">
 					  <triple predicate="nikita:has-Barque_Trou01_Quality" subject="?Barque_Trou01" object="false"/>
 					</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                      <triple predicate="nikita:has-Barque_Trou01_Quality" subject="?Barque_Trou01" object="true"/>
                 </statement>   
               </AND>
@@ -120,20 +120,20 @@
           <subtasks>					
             <subtask id="Agrapher_le_Barque_Trou01"/>
 		  </subtasks>
-          <constructor type="SEQ-ORD">
+          <constructor type="SEQ_ORD">
           
 		  </constructor>             
           <conditions>
 			 <nomological id="1">
 			<AND>
-					<statement type="domain">
+					<statement type="activity">
 					  <triple predicate="nikita:has-Agraphed" subject="?Support_1" object="false"/>
 					</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                      <triple predicate="nikita:has-Agraphed" subject="?Support_1" object="true"/>
                 </statement>   
               </AND>
@@ -150,20 +150,20 @@
           <subtasks>					
             <subtask id="Degrapher_le_Barque_Trou01"/>
 		  </subtasks>
-          <constructor type="SEQ-ORD">
+          <constructor type="SEQ_ORD">
           
 		  </constructor>             
           <conditions>
 			 <nomological id="1">
 			<AND>
-					<statement type="domain">
+					<statement type="activity">
 					  <triple predicate="nikita:has-Agraphed" subject="?Support_1" object="true"/>
 					</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                      <triple predicate="nikita:has-Agraphed" subject="?Support_1" object="false"/>
                 </statement>   
               </AND>
@@ -182,20 +182,20 @@
 			<subtask id="Prendre_la_Tete_1"/>
 			<subtask id="Monter_la_Tete_1_sur_le_BlocMoteur_1"/>
 		  </subtasks>
-          <constructor type="SEQ-ORD">
+          <constructor type="SEQ_ORD">
           
 		  </constructor>             
           <conditions>
 			 <nomological id="1">
 			<AND>
-					<statement type="domain">
+					<statement type="activity">
 					  <triple predicate="nikita:has-free_State" subject="?BlocMoteur_1" object="true"/>
 					</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                      <triple predicate="nikita:has-free_State" subject="?BlocMoteur_1" object="false"/>
                 </statement>   
               </AND>
@@ -215,20 +215,20 @@
 			<subtask id="PositionGuide_Guide_1_sur_Support_1"/>
 			<subtask id="MettreDansTrou_le_Foret_25_dans_Barque_Trou01"/>
 		  </subtasks>
-          <constructor type="SEQ-ORD">
+          <constructor type="SEQ_ORD">
           
 		  </constructor>             
           <conditions>
 			 <nomological id="1">
 			<AND>
-					<statement type="domain">
+					<statement type="activity">
 					  <triple predicate="nikita:has-Controled_Equerrage" subject="?Support_1" object="false"/>
 					</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                       <triple predicate="nikita:has-Controled_Equerrage" subject="?Support_1" object="true"/>
                 </statement>   
               </AND>
@@ -247,19 +247,19 @@
 			<subtask id="AppuyerBouton_Perceuse01"/>
 			<subtask id="Pousser_Perceuse01"/>
 		  </subtasks>
-          <constructor type="SIM_ET">
+          <constructor type="PAR_SIM">
 		  </constructor> 
 		  <conditions>
 			 <nomological id="1">
 			<AND>
-				<statement type="domain">
+				<statement type="activity">
 				  <triple predicate="nikita:a-trou" subject="?Support_1" object=""/>
 				</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                       <triple predicate="nikita:a-trou" subject="?Support_1" object="Barque_Trou01"/>
                 </statement>   
               </AND>
@@ -378,14 +378,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                   <triple predicate="nikita:has-align-state" subject="?Guide_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-align-state" subject="?Guide_1" object="true"/>
                 </statement>   
               </AND>
@@ -409,13 +409,13 @@
                  <ref-concept ref="?Perceuse01" predicate="nikita:take-object"/>
             </resources>
        </operation>
-          <constructor type="SEQ-ORD">
+          <constructor type="SEQ_ORD">
 		  </constructor>             
           <conditions>
 			 <nomological id="1">
 			<AND>
         <NOT>
-					<statement type="domain">
+					<statement type="activity">
 					  <triple predicate="nikita:porte" subject="nikita:Bob" object = "?Perceuse01"/>
 					</statement>
           </NOT>
@@ -423,7 +423,7 @@
 			 </nomological>
 			   <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:porte" subject="nikita:Bob" object = "?Perceuse01"/>
                 </statement>   
               </AND>
@@ -446,7 +446,7 @@
             <nomological id="1">	
               <AND>
 			  <NOT>
-                <statement type="domain">
+                <statement type="activity">
                   <triple predicate="nikita:porte" subject="?Agent" object="BlocMoteur_1"/>
                 </statement>
 			  </NOT>
@@ -454,7 +454,7 @@
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:porte" subject="?Agent" object="BlocMoteur_1"/>
                 </statement>   
               </AND>
@@ -477,7 +477,7 @@
             <nomological id="1">	
               <AND>
 			  <NOT>
-                <statement type="domain">
+                <statement type="activity">
                   <triple predicate="nikita:porte" subject="?Agent" object="Tete_1"/>
                 </statement>
 			  </NOT>
@@ -485,7 +485,7 @@
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:porte" subject="?Agent" object="Tete_1"/>
                 </statement>   
               </AND>
@@ -510,7 +510,7 @@
             <nomological id="1">	
               <AND>
                 <NOT>
-                  <statement type="domain">
+                  <statement type="activity">
                     <triple predicate="nikita:est-monte-sur" subject="?Tete_1" object="?object"/>
                   </statement>
                 </NOT>
@@ -518,7 +518,7 @@
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:est-monte-sur" subject="?Tete_1" object="BlocMoteur_1"/>
                 </statement>   
               </AND>
@@ -540,14 +540,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                   <triple predicate="nikita:porte" subject="?Agent" object="Guide_1"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:porte" subject="?Agent" object="Guide_1"/>
                 </statement>   
               </AND>
@@ -572,7 +572,7 @@
             <nomological id="1">	
               <AND>
 			  <NOT>
-                <statement type="domain">
+                <statement type="activity">
                   <triple predicate="nikita:est-enfile-sur" subject="?Guide_1" object="Object"/>
                 </statement>
 			  </NOT>
@@ -580,7 +580,7 @@
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:est-enfile-sur" subject="?Guide_1" object="Foret_25"/>
                 </statement>   
               </AND>
@@ -602,10 +602,10 @@
           <conditions>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="has-switch-state" subject="?Perceuse01" object="?state"/>
                 </statement>   
-				 <statement type="domain">
+				 <statement type="activity">
                 <triple predicate="nikita:value" subject="?state" object="sys:True"/>
                 </statement>   
               </AND>
@@ -627,14 +627,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                   <triple predicate="nikita:has-used-state" subject="?Perceuse01" object="Flase"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                   <triple predicate="nikita:has-used-state" subject="?Perceuse01" object="True"/>
                 </statement>   
               </AND>
@@ -656,14 +656,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                   <triple predicate="xxxxxxxxxxxxxxx" subject="?Guide_1" object=""/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxxxx" subject="?Guide_1" object="Foret_25"/>
                 </statement>   
               </AND>
@@ -685,14 +685,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                   <triple predicate="nikita:has-used-state" subject="?Perceuse01" object="True"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                   <triple predicate="nikita:has-used-state" subject="?Perceuse01" object="False"/>
                 </statement>   
               </AND>
@@ -714,14 +714,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?Perceuse01" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?Perceuse01" object="false"/>
                 </statement>   
               </AND>
@@ -743,14 +743,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?Tampon_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?Tampon_1" object="true"/>
                 </statement>   
               </AND>
@@ -772,14 +772,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?Tampon_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?Tampon_1" object="false"/>
                 </statement>   
               </AND>
@@ -801,14 +801,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?Agraphe_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?Agraphe_1" object="true"/>
                 </statement>   
               </AND>
@@ -830,14 +830,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="true"/>
                 </statement>   
               </AND>
@@ -859,14 +859,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:xxxxxxxxxxxxxx" subject="?Agraphe_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxxxxxxxx" subject="?Agraphe_1" object="true"/>
                 </statement>   
               </AND>
@@ -888,14 +888,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxxxxxx" subject="?Support_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxxxxxxxx" subject="?Support_1" object="false"/>
                 </statement>   
               </AND>
@@ -917,14 +917,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="false"/>
                 </statement>   
               </AND>
@@ -946,14 +946,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?Agraphe_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?Agraphe_1" object="true"/>
                 </statement>   
               </AND>
@@ -975,14 +975,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="true"/>
                 </statement>   
               </AND>
@@ -1004,14 +1004,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:xxxxxxxxxxxxxx" subject="?Agraphe_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxxxxxxxx" subject="?Agraphe_1" object="true"/>
                 </statement>   
               </AND>
@@ -1033,14 +1033,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?Support_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="nikita:has-taken-state" subject="?Support_1" object="false"/>
                 </statement>   
               </AND>
@@ -1062,14 +1062,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxxx" subject="?PinceAAgrapher_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxx" subject="?PinceAAgrapher_1" object="false"/>
                 </statement>   
               </AND>
@@ -1091,14 +1091,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxxx" subject="?Barque_Trou01" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxx" subject="?Barque_Trou01" object="false"/>
                 </statement>   
               </AND>
@@ -1120,14 +1120,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxxx" subject="?Barque_Trou01" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxx" subject="?Barque_Trou01" object="false"/>
                 </statement>   
               </AND>
@@ -1149,14 +1149,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxxx" subject="?copeaux" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxx" subject="?copeaux" object="false"/>
                 </statement>   
               </AND>
@@ -1178,14 +1178,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxxx" subject="?Support_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxx" subject="?Support_1" object="false"/>
                 </statement>   
               </AND>
@@ -1207,14 +1207,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxxx" subject="?Agrapher_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxx" subject="?Agrapher_1" object="false"/>
                 </statement>   
               </AND>
@@ -1236,14 +1236,14 @@
           <conditions>
             <nomological id="1">	
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxxx" subject="?Guide_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
-                <statement type="domain">
+                <statement type="activity">
                    <triple predicate="xxxxxxxxxxx" subject="?Guide_1" object="false"/>
                 </statement>   
               </AND>

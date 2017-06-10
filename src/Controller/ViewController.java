@@ -460,7 +460,7 @@ public class ViewController {
             applicationController.xmlFile.setXMLfilePath(file.getPath());
             System.out.println(applicationController.xmlFile.getXMLfilePath());
             applicationController.xmlFile.setTextFromFilePath();
-
+            codeArea.replaceText(applicationController.xmlFile.getXMLtext());
             applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
             System.out.println(applicationController.xmlParser.getTasks().toString());
             applicationController.tasks = applicationController.xmlParser.getTasks();

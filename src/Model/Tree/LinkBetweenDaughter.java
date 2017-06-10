@@ -78,4 +78,14 @@ public class LinkBetweenDaughter {
             }
         };
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s | %s | %s", getLeftDaughter(), getRelation().getName(), getRightDaughter());
+    }
+
+    public void print()
+    {
+        System.out.println("    "+toString());
+    }
 }

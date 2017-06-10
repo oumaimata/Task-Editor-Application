@@ -18,7 +18,6 @@ public class Task {
     StringProperty idProperty;
     StringProperty nameProperty;
     GlobalParameters.Nature nature;
-    ObservableList<String> subTaskList;
     List<Tag> tagList;
     ObservableList<Condition> conditionList;
     List<Object> context;
@@ -36,7 +35,6 @@ public class Task {
         this.idProperty = new SimpleStringProperty(0,"idproperty");
         this.nameProperty = new SimpleStringProperty("Task");
         this.conditionList = FXCollections.observableArrayList(Condition.extractor());
-        this.subTaskList = FXCollections.observableArrayList();
     }
 
     public void setIdProperty(String idProperty) {
@@ -64,19 +62,6 @@ public class Task {
     public GlobalParameters.Nature getNature() { return nature; }
     public void setNature(GlobalParameters.Nature nature) { this.nature = nature; }
 
-    public ObservableList<String> getSubTaskList() {return subTaskList;}
-    public void setSubTaskList(ObservableList<String> subTaskList) {this.subTaskList = subTaskList;}
-    public void addSubTask(String subTask)
-    {
-        if (!subTaskList.contains(subTask))
-            subTaskList.add(subTask);
-    }
-    public void removeSubTask(String subTask)
-    {
-        if (subTaskList.contains(subTask))
-            subTaskList.remove(subTask);
-    }
-
     public ObservableList<Condition> getConditionList() { return conditionList; }
     public void setConditionList(ObservableList<Condition> conditionList) { this.conditionList = conditionList; }
     public void addCondition(Condition condition)
@@ -103,7 +88,7 @@ public class Task {
     {
         Element taskElement = doc.createElement("task");
         taskElement.setAttribute("id",getIdProperty());
-        taskElement.setAttribute(getNature().getBaliseName(),"true");
+        taskElement.setAttribute(getNature().getName(),"true");
         taskElement.setAttribute("name",getNameProperty());
 
         // TODO Context
@@ -121,6 +106,18 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("%s | %s", getIdProperty(), getNameProperty());
+        return String.format("%s | %s | %s", getIdProperty(), getNameProperty(), getNature().getName());
     }
+
+    public void print()
+    {
+        System.out.println("\n"+toString());
+        System.out.println("Conditions : ");
+        for (int i=0; i<conditionList.size();++i)
+        {
+            conditionList.get(i).print();
+        }
+
+    }
+
 }

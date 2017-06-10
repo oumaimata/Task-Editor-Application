@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Tree.MotherTask;
 import Model.Tree.Nodes;
 import Model.Tree.Task;
 import Model.Tree.Tasks;
@@ -258,7 +259,7 @@ public class ApplicationController {
         // pour chaque noeuds
         for (INode node:nodes.getNodes()){
             // on récupère la tâche derrière le noeud
-            Task task = (Task) node.getTag();
+            MotherTask task = (MotherTask) node.getTag();
             // pour toutes les sous tâches
             for(String subTaskStringId: task.getSubTaskList()){
                 // on vérifie tous les autres noeuds savoir s'il y en a un qui doit être lié

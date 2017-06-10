@@ -23,8 +23,8 @@ public class Nodes {
             System.out.println("Ajout d'un noeud à la liste des noeuds globaux ");
             this.nodes.add(node);
         }
-        System.out.println("la liste des noeuds est de longueur: " + nodes.size());
         System.out.println(toString());
+        System.out.println("La liste des noeuds est de longueur: " + nodes.size());
     }
 
     public List<INode> getNodes() {

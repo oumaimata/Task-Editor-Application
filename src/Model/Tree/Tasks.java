@@ -1,5 +1,6 @@
 package Model.Tree;
 
+import com.yworks.yfiles.graph.INode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -33,6 +34,11 @@ public class Tasks {
     public Integer getId() {
         this.id = id + 1;
         return id;
+    }
+
+    public void createLinkBetweenTwoTasks(Task Mother, Task Daugther){
+        System.out.println("Creation d'un lien de parenté entre "+Mother.getIdProperty() + " et "+ Daugther.getIdProperty());
+        Mother.addSubTask(Daugther.getIdProperty());
     }
 
     // methode pour ajouter autant de tache que l'on veut

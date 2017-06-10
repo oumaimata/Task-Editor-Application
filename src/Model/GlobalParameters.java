@@ -69,22 +69,22 @@ public class GlobalParameters {
         OPTIONELLE("optional"),
         ITERATIVE("iterative");
 
-        private String baliseName;
+        private String name;
 
-        Nature(String baliseName) {
-            this.baliseName = baliseName;
+        Nature(String name) {
+            this.name = name;
         }
 
-        public String getBaliseName() {
-            return baliseName;
+        public String getName() {
+            return name;
         }
     }
 
     public enum RelationAllen{
         // X is the left part of the assertion and Y the right part
 
-        before("&lt"), // X takes place before Y
-        after("&gt"), // X takes place after Y
+        before("<"), // X takes place before Y
+        after(">"), // X takes place after Y
         meet("m"), // X meets Y, X est directement suivi par Y
         meetInverse("mi"), // Y meets X, Y est directement suivi par X
         overlap("o"), // X overlaps with Y
@@ -97,30 +97,30 @@ public class GlobalParameters {
         finishInverse("fi"), // Y finishes at the same time as X
         equal("="); // X happens at the same time as Y
 
-        private String symbol;
+        private String name;
         static public RelationAllen fromString(String symbol){
-            if (symbol.equals(after.getSymbol())){return after;}
-            if (symbol.equals(before.getSymbol())){return before;}
-            if (symbol.equals(meet.getSymbol())){return meet;}
-            if (symbol.equals(meetInverse.getSymbol())){return meetInverse;}
-            if (symbol.equals(overlap.getSymbol())){return overlap;}
-            if (symbol.equals(overlapInverse.getSymbol())){return overlapInverse;}
-            if (symbol.equals(start.getSymbol())){return start;}
-            if (symbol.equals(startInverse.getSymbol())){return startInverse;}
-            if (symbol.equals(during.getSymbol())){return during;}
-            if (symbol.equals(duringInverse.getSymbol())){return duringInverse;}
-            if (symbol.equals(finish.getSymbol())){return finish;}
-            if (symbol.equals(finishInverse.getSymbol())){return finishInverse;}
-            if (symbol.equals(equal.getSymbol())){return equal;}
+            if (symbol.equals(after.getName())){return after;}
+            if (symbol.equals(before.getName())){return before;}
+            if (symbol.equals(meet.getName())){return meet;}
+            if (symbol.equals(meetInverse.getName())){return meetInverse;}
+            if (symbol.equals(overlap.getName())){return overlap;}
+            if (symbol.equals(overlapInverse.getName())){return overlapInverse;}
+            if (symbol.equals(start.getName())){return start;}
+            if (symbol.equals(startInverse.getName())){return startInverse;}
+            if (symbol.equals(during.getName())){return during;}
+            if (symbol.equals(duringInverse.getName())){return duringInverse;}
+            if (symbol.equals(finish.getName())){return finish;}
+            if (symbol.equals(finishInverse.getName())){return finishInverse;}
+            if (symbol.equals(equal.getName())){return equal;}
             return null;
         }
 
-        RelationAllen(String symbol) {
-            this.symbol = symbol;
+        RelationAllen(String name) {
+            this.name = name;
         }
 
-        public String getSymbol() {
-            return symbol;
+        public String getName() {
+            return name;
         }
     }
 
@@ -139,4 +139,5 @@ public class GlobalParameters {
 
         public String getName() {return name;}
     }
+
 }

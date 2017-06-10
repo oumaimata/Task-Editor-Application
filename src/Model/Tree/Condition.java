@@ -99,4 +99,19 @@ public class Condition {
             }
         };
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s | %s | %s", getId(), getType().getName(), getOperator().getName());
+    }
+
+    public void print()
+    {
+        System.out.println("    "+toString());
+        System.out.println("    Assertions");
+        for (int i=0; i<assertionList.size();++i)
+        {
+            assertionList.get(i).print();
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Tree.MotherTask;
 import Model.Tree.Task;
 import com.yworks.yfiles.view.GraphControl;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
@@ -31,6 +32,7 @@ import java.io.File;
 public class ViewController {
     ApplicationController applicationController;
     Task createTask;
+    MotherTask createMotherTask;
 
     public GraphControl graphControl;
 
@@ -72,9 +74,18 @@ public class ViewController {
         getButton_graph_ajouter().setOnAction(e -> {
             PopupController wc = new PopupController();
             wc.showPopUp();
-            this.createTask = wc.getData();
-            System.out.println("created task: " + getCreatedTask().getNameProperty());
-            applicationController.addNodeFromTask(wc.getData());
+            if(wc.isMotherTask()){
+                this.createMotherTask = wc.getDataMotherTask();
+                System.out.println("created task: " + getCreateMotherTask().getNameProperty());
+                applicationController.addNodeFromTask(wc.getDataMotherTask());
+            }else{
+                this.createTask = wc.getDataTask();
+                System.out.println("created task: " + getCreatedTask().getNameProperty());
+                applicationController.addNodeFromTask(wc.getDataTask());
+            }
+
+
+
         });
         //fit graph after all element been loaded
         graphControl.fitGraphBounds();
@@ -85,8 +96,15 @@ public class ViewController {
         return createTask;
     }
 
+    // getter sur la mother task créée
+    public MotherTask getCreateMotherTask() {
+        return createMotherTask;
+    }
+
+    // classe pour gérer la pop up d'ajout de tâche
     class PopupController {
         private Task task;
+        private MotherTask motherTaskPopup;
 
         public PopupController(){}
 
@@ -95,7 +113,7 @@ public class ViewController {
 
             Stage popupwindow = new Stage();
             popupwindow.initModality(Modality.APPLICATION_MODAL);
-            popupwindow.setTitle("This is a pop up window");
+            popupwindow.setTitle("Ajout d'une tâche");
 
             GridPane grid = new GridPane();
             grid.setAlignment(Pos.CENTER);
@@ -119,17 +137,29 @@ public class ViewController {
             TextField nameTextField = new TextField();
             grid.add(nameTextField, 1, 2);
 
+            Label tacheMere = new Label("Creation d'une tâche mère:");
+            grid.add(tacheMere, 0, 3);
+
+            CheckBox mereCheckBox = new CheckBox();
+            grid.add(mereCheckBox, 1, 3);
+
             Button btn = new Button("Créer");
             HBox hbBtn = new HBox(10);
             hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
             hbBtn.getChildren().add(btn);
-            grid.add(hbBtn, 1, 4);
+            grid.add(hbBtn, 1, 5);
 
             btn.setOnAction(e ->{
                 if(idTextField.getText()!=null)
                     task.setIdProperty(idTextField.getText());
                 if(nameTextField.getText()!=null)
                     task.setNameProperty(nameTextField.getText());
+
+                if(mereCheckBox.isSelected()){
+                    // si la checkbox est selectionnée alors on créer une tâche mère directement
+                    this.motherTaskPopup = new MotherTask(task);
+                    this.task = null;
+                }
                 popupwindow.close();
             }
 
@@ -141,9 +171,22 @@ public class ViewController {
             popupwindow.showAndWait();
         }
 
-        Task getData() {
+        Task getDataTask() {
             return task;
         }
+
+        MotherTask getDataMotherTask() {
+            return motherTaskPopup;
+        }
+
+        boolean isMotherTask(){
+            if(getDataTask() == null){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
     }
 
     // le container de l'editeur XML

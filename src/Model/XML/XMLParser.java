@@ -128,6 +128,7 @@ public class XMLParser {
 
                             }
                         }
+                        break;
                     case LEAF_TASK :
                         NodeList leafTaskNodes = tempNode.getChildNodes();
                         int leafTaskNb = leafTaskNodes.getLength();
@@ -228,7 +229,7 @@ public class XMLParser {
     public LeafTask createLeafTaskFromNode(Node leafTaskNode)
     {
         LeafTask leafTask = new LeafTask();
-        setAttributes(leafTask, leafTaskNode);
+        leafTask = (LeafTask)setAttributes(leafTask, leafTaskNode);
         leafTask = setLeafElements(leafTask, leafTaskNode);
         return leafTask;
     }

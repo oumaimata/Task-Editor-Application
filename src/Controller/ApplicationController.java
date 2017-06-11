@@ -37,7 +37,7 @@ public class ApplicationController {
     public MotherTasks motherTasks;
     // reference sur l'ensemble des taches feuilles du modèle
     public LeafTasks leafTasks;
-    // reference sur la noeud selectionnée (dans le cas du graph notamment)
+    // reference sur le noeud selectionné (dans le cas du graph notamment)
     public INode currentNode;
     // reference sur la liste des noeuds
     public Nodes nodes;
@@ -155,6 +155,7 @@ public class ApplicationController {
                     // on récupère l'objet sélectionné
                     currentNode = (INode) iModelItemItemClickedEventArgs.getItem();
                     System.out.println("l'objet courrant est devenu: " + currentNode.getTag().getClass() );
+                    view.currentTask = (Task) currentNode.getTag();
                 }
                 // mise en place du panel d'édition
                 changePanelState(true);
@@ -171,6 +172,8 @@ public class ApplicationController {
                 currentNode = null;
             }
         });
+
+        //Binding entre currentTask et PanelEdition
 
         graphEditorInputMode
                 .getCreateEdgeInputMode()

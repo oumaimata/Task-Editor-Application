@@ -30,7 +30,6 @@ import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import View.XMLEditor;
-import sun.jvm.hotspot.runtime.posix.POSIXSignals;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -700,11 +699,9 @@ public class ViewController {
         if (file != null) {
             applicationController.tasks = new Tasks();
             applicationController.xmlFile.setXMLfilePath(file.getPath());
-            System.out.println(applicationController.xmlFile.getXMLfilePath());
             applicationController.xmlFile.setTextFromFilePath();
             codeArea.replaceText(applicationController.xmlFile.getXMLtext());
             applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
-            System.out.println(applicationController.xmlParser.getTasks().getTasks().size());
             applicationController.tasks = applicationController.xmlParser.getTasks();
             applicationController.createGraphFromTasks(applicationController.graph,applicationController.motherTasks,applicationController.tasks,applicationController.leafTasks);
         }

@@ -103,7 +103,7 @@ public class ApplicationController {
         hierarchicLayout.setNodeLabelConsiderationEnabled(true);
         orthogonalLayout = new OrthogonalLayout();
         // initialisation du xmlFile
-        xmlFile = new XMLFile();
+
     }
 
     public void initialize() {
@@ -118,10 +118,12 @@ public class ApplicationController {
         leafTasks = new LeafTasks();
         // initialisation de la liste des noeuds
         nodes = new Nodes();
+        xmlFile = new XMLFile();
+        xmlParser = new XMLParser(tasks);
 
         // on ajoute des taches pour test
 
-        MotherTask task1 = motherTasks.addDefaultTache();
+        /*MotherTask task1 = motherTasks.addDefaultTache();
         MotherTask task2 = motherTasks.addDefaultTache();
         MotherTask task3 = motherTasks.addDefaultTache();
         LeafTask task4 = leafTasks.addDefaultTache();
@@ -131,7 +133,7 @@ public class ApplicationController {
         motherTasks.createLinkBetweenTwoTasks(task1,task2);
         motherTasks.createLinkBetweenTwoTasks(task2,task3);
         motherTasks.createLinkBetweenTwoTasks(task3,task4);
-        motherTasks.createLinkBetweenTwoTasks(task3,task5);
+        motherTasks.createLinkBetweenTwoTasks(task3,task5);*/
 
 
         // on creer le graph associé

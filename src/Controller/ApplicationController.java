@@ -31,21 +31,18 @@ public class ApplicationController {
     public IGraph graph;
     // reference sur le controller de la vue
     public ViewController view;
-    //
-    public ViewController.PopupController popupController;
     // reference sur l'ensemble des taches du modèle
     public Tasks tasks;
     // reference sur l'ensemble des taches meres du modèle
     public MotherTasks motherTasks;
     // reference sur l'ensemble des taches feuilles du modèle
     public LeafTasks leafTasks;
-    // reference sur la tache selectionnée (dans le cas du graph notamment)
-    public Task currentTask;
     // reference sur la noeud selectionnée (dans le cas du graph notamment)
     public INode currentNode;
     // reference sur la liste des noeuds
     public Nodes nodes;
     // generated style
+    ShapeNodeStyle RootTaskStyle;
     ShapeNodeStyle MotherTaskStyle;
     ShapeNodeStyle TaskStyle;
     ShapeNodeStyle LeafTaskStyle;
@@ -75,13 +72,12 @@ public class ApplicationController {
         // empecher la création d'un noeud au clic sur le graphique
         graphEditorInputMode.setCreateNodeAllowed(false);
         // creation des styles
+        RootTaskStyle = createRootTaskStyle();
         MotherTaskStyle = createMotherTaskStyle();
         TaskStyle = createTaskStyle();
         LeafTaskStyle = createLeafStyle();
         // le panel est actif initialement
         panelActif = true;
-        // initialisation de la tache courante
-        currentTask = null;
         // initialisation du noeud courant
         currentNode = null;
         // initialisation du fichier XML
@@ -106,17 +102,16 @@ public class ApplicationController {
         nodes = new Nodes();
         // on ajoute des taches pour test
         MotherTask task1 = motherTasks.addDefaultTache();
-        System.out.println("task1: "+ task1.getIdProperty());
         MotherTask task2 = motherTasks.addDefaultTache();
-        System.out.println("task2: "+task2.getIdProperty());
         MotherTask task3 = motherTasks.addDefaultTache();
-        System.out.println("task3: "+task3.getIdProperty());
         Task task4 = tasks.addDefaultTache();
+        Task task5 = tasks.addDefaultTache();
 
         // on creer des liens entre ces taches
         motherTasks.createLinkBetweenTwoTasks(task1,task2);
         motherTasks.createLinkBetweenTwoTasks(task2,task3);
         motherTasks.createLinkBetweenTwoTasks(task3,task4);
+        motherTasks.createLinkBetweenTwoTasks(task3,task5);
 
         // on creer le graph associé
         createGraphFromTasks(graph,motherTasks,tasks,leafTasks);
@@ -153,12 +148,13 @@ public class ApplicationController {
         graphEditorInputMode.addItemLeftClickedListener(new IEventHandler<ItemClickedEventArgs<IModelItem>>() {
             @Override
             public void onEvent(Object o, ItemClickedEventArgs<IModelItem> iModelItemItemClickedEventArgs) {
-                if(iModelItemItemClickedEventArgs.getItem().getTag().getClass() == Task.class){
+                if(iModelItemItemClickedEventArgs.getItem().getTag().getClass() == Task.class ||
+                        iModelItemItemClickedEventArgs.getItem().getTag().getClass() ==  MotherTask.class ||
+                        iModelItemItemClickedEventArgs.getItem().getTag().getClass() ==  LeafTask.class ){
                     System.out.println("l'objet sélectionné est un noeud de tache: " + iModelItemItemClickedEventArgs.getItem() );
                     // on récupère l'objet sélectionné
                     currentNode = (INode) iModelItemItemClickedEventArgs.getItem();
-                    currentTask = (Task) currentNode.getTag();
-                    System.out.println("l'objet courrant est devenu: " + currentTask );
+                    System.out.println("l'objet courrant est devenu: " + currentNode.getTag().getClass() );
                 }
                 // mise en place du panel d'édition
                 System.out.println("Show edit panel");
@@ -174,7 +170,6 @@ public class ApplicationController {
                 changePanelState();
                 // on supprime la tache courante sélectionnée
                 currentNode = null;
-                currentTask = null;
             }
         });
 
@@ -222,6 +217,13 @@ public class ApplicationController {
         graph.addLabel(node1, task.getNameProperty());
     }
 
+    public void addNodeFromTask(MotherTask task){
+        System.out.println("lancement de la methode d'ajout d'un node a partir d'une tache");
+        INode node1 = graph.createNode(new PointD(),MotherTaskStyle,task);
+        nodes.addNode(node1);
+        graph.addLabel(node1, task.getNameProperty());
+    }
+
     public void changePanelState(){
         if(panelActif){
             // si il est actif on le cache
@@ -239,7 +241,20 @@ public class ApplicationController {
     // méthode pour mettre en place la suppression de la tache et du noeud séléctionné
     public void handleSuppressionNoeud(){
         if(currentNode!= null){
-            System.out.println("Suppression du noeud " + currentTask.getIdProperty());
+            System.out.println("Suppression du noeud " + currentNode.getTag());
+            if(currentNode.getTag().getClass() == MotherTask.class){
+                // si c'est une tache mere
+                MotherTask task = (MotherTask) currentNode.getTag();
+                motherTasks.removeTask(task);
+            }else if (currentNode.getTag().getClass() == LeafTask.class){
+                // si c'est une tache feuille
+                LeafTask task = (LeafTask) currentNode.getTag();
+                leafTasks.removeTask(task);
+            }else{
+                // si c'est une tache
+                Task task = (Task) currentNode.getTag();
+                tasks.removeTask(task);
+            }
             graph.remove(currentNode);
         }
     }
@@ -266,7 +281,7 @@ public class ApplicationController {
         for (MotherTask motherTask:motherTasks.getTasks()){
             // création d'un nouveau noeud avec la la motherTask comme tag
             System.out.println("creation d'un nouveau node avec comme tag: " + motherTask.getNameProperty()+ " " +motherTask.getIdProperty());
-            INode node = graph.createNode(new PointD(0,0),TaskStyle,motherTask);
+            INode node = graph.createNode(new PointD(0,0),MotherTaskStyle,motherTask);
             // ajout de ce noeuds a la liste des noeuds
             nodes.addNode(node);
             // ajout du label de la task au noeud
@@ -289,7 +304,7 @@ public class ApplicationController {
         for (LeafTask leafTask:leafTasks.getTasks()){
             // création d'un nouveau noeud avec la task comme tag
             System.out.println("creation d'un nouveau node avec comme tag: " + leafTask.getNameProperty()+ " " +leafTask.getIdProperty());
-            INode node = graph.createNode(new PointD(0,0),TaskStyle,leafTask);
+            INode node = graph.createNode(new PointD(0,0),LeafTaskStyle,leafTask);
             // ajout de ce noeuds a la liste des noeuds
             nodes.addNode(node);
             // ajout du label de la task au noeud
@@ -391,9 +406,11 @@ public class ApplicationController {
             // si le noeud est une tache mère
             ShapeNodeStyle style;
             if( node.getTag().getClass() == MotherTask.class){
-                style = TaskStyle;
-            }else{
+                style = MotherTaskStyle;
+            }else if (node.getTag().getClass() == LeafTask.class){
                 style = LeafTaskStyle;
+            }else {
+                style = TaskStyle;
             }
             graph.setStyle(node,style);
         }
@@ -404,18 +421,27 @@ public class ApplicationController {
     Création de style pour les différents noeuds. Ces styles ne sont pas définitifs et peuvent être amenés à évoluer.
     Juste mise en place du principe
     */
+    private ShapeNodeStyle createRootTaskStyle(){
+        // create a style which draws a node as a geometric shape with a fill and a border color
+        ShapeNodeStyle rootTaskNodeStyle = new ShapeNodeStyle();
+        rootTaskNodeStyle.setShape(ShapeNodeShape.ELLIPSE);
+        rootTaskNodeStyle.setPaint(Color.color(0.1216, 0.4784, 0.549));
+        rootTaskNodeStyle.setPen(Pen.getTransparent());
+        return rootTaskNodeStyle;
+    }
+
     private ShapeNodeStyle createMotherTaskStyle(){
         // create a style which draws a node as a geometric shape with a fill and a border color
         ShapeNodeStyle motherTaskNodeStyle = new ShapeNodeStyle();
         motherTaskNodeStyle.setShape(ShapeNodeShape.ELLIPSE);
-        motherTaskNodeStyle.setPaint(Color.color(0.1216, 0.4784, 0.549));
+        motherTaskNodeStyle.setPaint(Color.color(0.9882, 0.6902, 0.4941));
         motherTaskNodeStyle.setPen(Pen.getTransparent());
         return motherTaskNodeStyle;
     }
 
     private ShapeNodeStyle createTaskStyle(){
         ShapeNodeStyle taskNodeStyle = new ShapeNodeStyle();
-        taskNodeStyle.setPaint(Color.color(0.9882, 0.6902, 0.4941));
+        taskNodeStyle.setPaint(Color.color(0.749, 0.8588, 0.9686));
         taskNodeStyle.setPen(Pen.getTransparent());
         taskNodeStyle.setShape(ShapeNodeShape.ELLIPSE);
         return taskNodeStyle;

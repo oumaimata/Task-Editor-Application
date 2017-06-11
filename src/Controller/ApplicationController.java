@@ -49,7 +49,7 @@ public class ApplicationController {
     // edition du graph
     GraphEditorInputMode graphEditorInputMode;
     // savoir si le panel est relevé
-    Boolean panelActif;
+    //Boolean panelActif;
     // contient la chaine de caractére du XML
     public XMLFile xmlFile;
     // le parser pour le XML
@@ -77,7 +77,7 @@ public class ApplicationController {
         TaskStyle = createTaskStyle();
         LeafTaskStyle = createLeafStyle();
         // le panel est actif initialement
-        panelActif = true;
+        //panelActif = true;
         // initialisation du noeud courant
         currentNode = null;
         // initialisation du fichier XML
@@ -157,8 +157,7 @@ public class ApplicationController {
                     System.out.println("l'objet courrant est devenu: " + currentNode.getTag().getClass() );
                 }
                 // mise en place du panel d'édition
-                System.out.println("Show edit panel");
-                view.getSplitPane_graph_edit().setDividerPositions(0.63);
+                changePanelState(true);
             }
         });
 
@@ -167,7 +166,7 @@ public class ApplicationController {
             @Override
             public void onEvent(Object o, ClickEventArgs clickEventArgs) {
                 // modification de l'etat du panel d'édition
-                changePanelState();
+                changePanelState(false);
                 // on supprime la tache courante sélectionnée
                 currentNode = null;
             }
@@ -251,18 +250,17 @@ public class ApplicationController {
         graph.addLabel(node1, task.getNameProperty());
     }
 
-    public void changePanelState(){
-        if(panelActif){
+    public void changePanelState(boolean hasCurrentNode){
+        if(!hasCurrentNode){
             // si il est actif on le cache
             System.out.println("Hide edit panel");
             view.getSplitPane_graph_edit().setDividerPositions(0.95);
-            panelActif = false;
         }else{
             // autrement on le montre
             System.out.println("Show edit panel");
             view.getSplitPane_graph_edit().setDividerPositions(0.63);
-            panelActif = true;
         }
+        //panelActif = !panelActif;
     }
 
     // méthode pour mettre en place la suppression de la tache et du noeud séléctionné

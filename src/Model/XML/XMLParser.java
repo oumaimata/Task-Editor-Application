@@ -229,7 +229,7 @@ public class XMLParser {
     public LeafTask createLeafTaskFromNode(Node leafTaskNode)
     {
         LeafTask leafTask = new LeafTask();
-        setAttributes(leafTask, leafTaskNode);
+        leafTask = (LeafTask)setAttributes(leafTask, leafTaskNode);
         leafTask = setLeafElements(leafTask, leafTaskNode);
         return leafTask;
     }
@@ -341,13 +341,14 @@ public class XMLParser {
                 if (nodeAssertion.getNodeName() == NOT) {
                     NodeList list = nodeAssertion.getChildNodes();
                     int nbNodes = list.getLength();
-                    nodeAssertion = nodeAssertion.getFirstChild();
+                    Node newNodeAssertion = nodeAssertion.getFirstChild();
                     int i = 0;
-                    while (i<nbNodes || isElement(nodeAssertion))
+                    while (i<nbNodes && !isElement(newNodeAssertion))
                     {
-                        nodeAssertion = list.item(i++);
+                        newNodeAssertion = list.item(i++);
                     }
                     not = true;
+                    nodeAssertion = newNodeAssertion;
                 }
                 Assertion newAssertion = new Assertion();
                 newAssertion.setType(nodeAssertion.getAttributes().getNamedItem(TYPE).getNodeValue());

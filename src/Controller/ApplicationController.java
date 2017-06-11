@@ -104,8 +104,8 @@ public class ApplicationController {
         MotherTask task1 = motherTasks.addDefaultTache();
         MotherTask task2 = motherTasks.addDefaultTache();
         MotherTask task3 = motherTasks.addDefaultTache();
-        Task task4 = tasks.addDefaultTache();
-        Task task5 = tasks.addDefaultTache();
+        LeafTask task4 = leafTasks.addDefaultTache();
+        LeafTask task5 = leafTasks.addDefaultTache();
 
         // on creer des liens entre ces taches
         motherTasks.createLinkBetweenTwoTasks(task1,task2);
@@ -175,7 +175,33 @@ public class ApplicationController {
 
         //Binding entre currentTask et PanelEdition
 
+        graphEditorInputMode
+                .getCreateEdgeInputMode()
+                .setEdgeCreator((context, graph, sourceCandidate, targetCandidate, dummyEdge) -> {
+                    // get the source and target ports from the candidates
+                    IPort sourcePort= sourceCandidate.getPort();
+                    if (sourcePort == null) {
+                        sourcePort = sourceCandidate.createPort(context);
+                    }
+                    IPort targetPort = targetCandidate.getPort();
+                    if (targetPort == null) {
+                        targetPort = targetCandidate.createPort(context);
+                    }
+                    // create the edge between the source and target port
+                    IEdge edge = graph.createEdge(sourcePort, targetPort, dummyEdge.getStyle());
+                    // creation d'un lien entre pere et fils
+                    createLinkBetweenTwoNodes(edge.getSourceNode(),edge.getTargetNode());
+                    // create a label
+                    //graph.addLabel(edge, "A new edge");
+                    // return the created edge
+                    return edge;
+                });
+        graphEditorInputMode.getCreateEdgeInputMode().addEdgeCreatedListener(new IEventHandler<EdgeEventArgs>() {
+            @Override
+            public void onEvent(Object o, EdgeEventArgs edgeEventArgs) {
 
+            }
+        });
     }
 
     public void handleLayoutAction(ActionEvent event) {
@@ -381,23 +407,54 @@ public class ApplicationController {
         System.out.println("Fin de la methode d'ajout des labels aux noeuds");
     }
 
-    // methode pour creer un lien entre deux taches sous les noeuds
+    // methode pour creer un lien entre deux taches sur les noeuds
     private void createLinkBetweenTwoNodes(INode Mother, INode Daugther){
-        if(Mother.getTag().getClass() != MotherTask.class){
-            // si la tache d'origine mère n'en était pas encore
-            MotherTask motherTask = new MotherTask((Task)Mother.getTag());
-            MotherTask daughterTask = (MotherTask) Daugther.getTag();
-            System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daughterTask.getIdProperty());
-            motherTask.addSubTask(daughterTask.getIdProperty());
-            // on change l'objet derrière le node
-            Mother.setTag(motherTask);
-        }else if(Mother.getTag().getClass() == MotherTask.class){
-            // si la tache d'origine était déjà mère
-            MotherTask motherTask =  (MotherTask) Mother.getTag();
-            MotherTask daughterTask = (MotherTask) Daugther.getTag();
-            System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daughterTask.getIdProperty());
-            motherTask.addSubTask(daughterTask.getIdProperty());
-    }}
+        MotherTask motherTask;
+        if(Mother.getTag().getClass() == Task.class){
+            // si la tache mère était pour le moment une tache
+            motherTask = new MotherTask((Task)Mother.getTag());
+        }else if (Mother.getTag().getClass() == LeafTask.class){
+            // si la mere était une leaf
+            motherTask = new MotherTask((LeafTask) Mother.getTag());
+        }else{
+            // si la mere etait deja mere
+            motherTask = (MotherTask) Mother.getTag();
+        }
+        // on sauvegarde derrière l'ancien noeud Mother le fait que c'est maintenant une mother task
+        Mother.setTag(motherTask);
+        // update du style
+        graph.setStyle(Mother,MotherTaskStyle);
+
+        // on essaye de trouver le type de la classe fille
+        if(Daugther.getTag().getClass() == MotherTask.class){
+            // si la fille est une mother task
+            MotherTask daugthertask = (MotherTask) Daugther.getTag();
+            // ajout de cette tache a la liste des sous taches de la mère
+            motherTask.addSubTask(daugthertask.getIdProperty());
+            System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daugthertask.getIdProperty());
+
+        }else if (Daugther.getTag().getClass() == LeafTask.class){
+            // si la fille est une leaf tag
+            LeafTask daugthertask = (LeafTask) Daugther.getTag();
+            // ajout de cette tache a la liste des sous taches de la mère
+            motherTask.addSubTask(daugthertask.getIdProperty());
+            System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daugthertask.getIdProperty());
+
+        }else {
+            // si la fille est une tache
+            Task daugthertask = (Task) Daugther.getTag();
+            // changement de la tache comme leaf tache
+            LeafTask daugtherleaftask = new LeafTask(daugthertask);
+            // on sauvegarde derrière l'ancien noeud Daughet le fait que c'est maintenant une leaf task
+            Daugther.setTag(motherTask);
+            // ajout de cette tache a la liste des sous taches de la mère
+            motherTask.addSubTask(daugtherleaftask.getIdProperty());
+            // update du style
+            graph.setStyle(Daugther,LeafTaskStyle);
+            System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daugthertask.getIdProperty());
+
+        }
+    }
 
 
     private void updateNodeStyle(IGraph graph){

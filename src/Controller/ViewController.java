@@ -6,6 +6,7 @@ import Model.Tree.MotherTask;
 import Model.Tree.Tag;
 import Model.Tree.Tags;
 import Model.Tree.Task;
+import Model.Tree.Tasks;
 import com.yworks.yfiles.view.GraphControl;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
 import javafx.beans.value.ChangeListener;
@@ -29,7 +30,6 @@ import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import View.XMLEditor;
-import sun.jvm.hotspot.runtime.posix.POSIXSignals;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -697,8 +697,8 @@ public class ViewController {
         File file = fileChooser.showOpenDialog(newStage);
         System.out.println(file.toString());
         if (file != null) {
+            applicationController.tasks = new Tasks();
             applicationController.xmlFile.setXMLfilePath(file.getPath());
-            System.out.println(applicationController.xmlFile.getXMLfilePath());
             applicationController.xmlFile.setTextFromFilePath();
             codeArea.replaceText(applicationController.xmlFile.getXMLtext());
             applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());

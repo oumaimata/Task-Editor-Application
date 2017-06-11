@@ -51,7 +51,7 @@ public class XMLParser {
 
     static final String TASKS = "tasks";
     static final String MOTHER_TASK = "task_m";
-    static final String LEAF_TASK = "tasf_f";
+    static final String LEAF_TASK = "task_f";
     static final String ID = "id";
     static final String NAME = "name";
     static final String OPTIONAL = "optional";
@@ -341,13 +341,14 @@ public class XMLParser {
                 if (nodeAssertion.getNodeName() == NOT) {
                     NodeList list = nodeAssertion.getChildNodes();
                     int nbNodes = list.getLength();
-                    nodeAssertion = nodeAssertion.getFirstChild();
+                    Node newNodeAssertion = nodeAssertion.getFirstChild();
                     int i = 0;
-                    while (i<nbNodes || isElement(nodeAssertion))
+                    while (i<nbNodes && !isElement(newNodeAssertion))
                     {
-                        nodeAssertion = list.item(i++);
+                        newNodeAssertion = list.item(i++);
                     }
                     not = true;
+                    nodeAssertion = newNodeAssertion;
                 }
                 Assertion newAssertion = new Assertion();
                 newAssertion.setType(nodeAssertion.getAttributes().getNamedItem(TYPE).getNodeValue());

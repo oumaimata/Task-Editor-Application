@@ -102,6 +102,8 @@ public class ApplicationController {
         hierarchicLayout.setMinimumLayerDistance(50);
         hierarchicLayout.setNodeLabelConsiderationEnabled(true);
         orthogonalLayout = new OrthogonalLayout();
+        // initialisation du xmlFile
+        xmlFile = new XMLFile();
     }
 
     public void initialize() {

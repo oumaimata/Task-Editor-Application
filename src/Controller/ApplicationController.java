@@ -7,10 +7,14 @@ import com.yworks.yfiles.geometry.PointD;
 import com.yworks.yfiles.graph.*;
 import com.yworks.yfiles.graph.styles.ShapeNodeShape;
 import com.yworks.yfiles.graph.styles.ShapeNodeStyle;
+import com.yworks.yfiles.layout.hierarchic.HierarchicLayout;
+import com.yworks.yfiles.layout.organic.OrganicLayout;
+import com.yworks.yfiles.layout.orthogonal.OrthogonalLayout;
 import com.yworks.yfiles.layout.tree.TreeLayout;
 import com.yworks.yfiles.utils.IEventHandler;
 import com.yworks.yfiles.view.GraphControl;
 import com.yworks.yfiles.view.Pen;
+import com.yworks.yfiles.view.ViewportLimiter;
 import com.yworks.yfiles.view.input.ClickEventArgs;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
 import com.yworks.yfiles.view.input.ICommand;
@@ -22,6 +26,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by pierrelouislacorte on 13/05/2017.
@@ -46,7 +52,6 @@ public class ApplicationController {
     public Nodes nodes;
     //reference sur la liste des tags
     public Tags tags;
-
     // generated style
     ShapeNodeStyle RootTaskStyle;
     ShapeNodeStyle MotherTaskStyle;
@@ -54,6 +59,7 @@ public class ApplicationController {
     ShapeNodeStyle LeafTaskStyle;
     // edition du graph
     GraphEditorInputMode graphEditorInputMode;
+    //
     // savoir si le panel est relevé
     //Boolean panelActif;
     // contient la chaine de caractére du XML
@@ -61,7 +67,10 @@ public class ApplicationController {
     // le parser pour le XML
     public XMLParser xmlParser;
     // layout utilisé
-    TreeLayout layout;
+    TreeLayout treeLayout;
+    OrganicLayout organicLayout;
+    HierarchicLayout hierarchicLayout;
+    OrthogonalLayout orthogonalLayout;
 
     public ApplicationController(ViewController view, GraphControl graphControl, ViewController.PopupController popup) {
         this.view = view;
@@ -84,14 +93,15 @@ public class ApplicationController {
         LeafTaskStyle = createLeafStyle();
         // le panel est actif initialement
         //panelActif = true;
-        // initialisation du noeud courant
-        currentNode = null;
-        // initialisation du fichier XML
-        xmlFile = new XMLFile();
-        // initialisation du parser XML
-        xmlParser = new XMLParser(tasks);
-        // initialisation du layout utilisé
-        layout = new TreeLayout();
+        // initialisation des layout utilisés
+        treeLayout = new TreeLayout();
+        organicLayout = new OrganicLayout();
+        organicLayout.setConsiderNodeSizes(true);
+        organicLayout.setMinimumNodeDistance(50);
+        hierarchicLayout = new HierarchicLayout();
+        hierarchicLayout.setMinimumLayerDistance(50);
+        hierarchicLayout.setNodeLabelConsiderationEnabled(true);
+        orthogonalLayout = new OrthogonalLayout();
     }
 
     public void initialize() {
@@ -154,7 +164,7 @@ public class ApplicationController {
         view.getButton_centrer().setOnAction(evt -> graphFitContent());
 
         // ajout du listener sur le bouton de hierarchisation
-        view.getButton_hierarchiser().setOnAction(evt -> handleLayoutAction(evt));
+        view.getButton_hierarchiser().setOnAction(evt -> handleLayoutAction(evt, hierarchicLayout));
 
         // ajout du listener sur le bouton de hierarchisation
         view.getButton_graph_supprimer().setOnAction(evt -> {
@@ -329,12 +339,9 @@ public class ApplicationController {
         //handle removal of tags from all concerned tasks
     }
 
-    public void handleLayoutAction(ActionEvent event) {
+    public void handleLayoutAction(ActionEvent event, HierarchicLayout layout) {
         Button layoutButton = (Button) event.getSource();
         layoutButton.setDisable(true);
-
-        //tree layout (the one that we will use)
-        TreeLayout layout = new TreeLayout();
 
         graphControl.morphLayout(layout, Duration.ofMillis(500),
                 // re-enable the action/button after everything has finished
@@ -414,13 +421,13 @@ public class ApplicationController {
     }
 
     // generation du graphique a partir d'une liste de taches
-    public void createGraphFromTasks(IGraph graph, MotherTasks motherTask, Tasks tasks, LeafTasks leafTasks){
+    public void createGraphFromTasks(IGraph graph, MotherTasks motherTasks, Tasks tasks, LeafTasks leafTasks){
         // creation des noeuds
-        createNodesFromTasks(graph,motherTask,tasks,leafTasks);
+        createNodesFromTasks(graph,motherTasks,tasks,leafTasks);
         // creation des liens
         createEdgeBetweenNodes(graph);
         // mise en place du layout
-        graphControl.morphLayout(layout, Duration.ofMillis(500));
+        graphControl.morphLayout(hierarchicLayout, Duration.ofMillis(500));
         // mise a jour des styles
         updateNodeStyle(graph);
     }
@@ -430,7 +437,9 @@ public class ApplicationController {
         System.out.println("lancement de la methode de création des nodes à partir d'une liste de tache");
         // re-initialisation des nodes
         nodes = new Nodes();
-
+        System.out.println("la longueur de mothertasks est: " + motherTasks.getTasks().size());
+        System.out.println("la longueur de tasks est: " + tasks.getTasks().size());
+        System.out.println("la longueur de leaftasks est: " + leafTasks.getTasks().size());
         // on parcours les taches mère
         for (MotherTask motherTask:motherTasks.getTasks()){
             // création d'un nouveau noeud avec la la motherTask comme tag
@@ -483,8 +492,9 @@ public class ApplicationController {
                 MotherTask task = (MotherTask) node.getTag();
                 System.out.println("la tache: "+ task.getNameProperty() + " est une tache mère, la longueur de ses sous taches est: " + task.getSubTaskList().size());
                 // pour toutes les sous tâches
+                List<INode> subtask = new ArrayList<>();
                 for (String subTaskStringId : task.getSubTaskList()) {
-                    System.out.println("la sous tache a l'id "+ subTaskStringId );
+                    System.out.println("la sous tache a l'id "+ subTaskStringId + " et de longueur " + subTaskStringId.length() );
                     // on vérifie tous les autres noeuds savoir s'il y en a un qui doit être lié
                     for (INode otherNode : nodes.getNodes()) {
                         // si on est pas sur le noeud courrant
@@ -495,18 +505,22 @@ public class ApplicationController {
                                 MotherTask otherTask = (MotherTask) otherNode.getTag();
                                 // si l'id de la tache est celui d'une des sous tâches alors
                                 System.out.println("on est sur un autre noeud MOTHER, d'id: " + otherTask.getIdProperty());
-                                if (otherTask.getIdProperty() == subTaskStringId) {
+                                if (otherTask.getIdProperty().equals(subTaskStringId)) {
+                                    System.out.println("on a " + otherTask.getIdProperty() + " == " + subTaskStringId + " et de longueur " + otherTask.getIdProperty().length());
                                     // création du lien graphique
+                                    subtask.add(otherNode);
                                     graph.createEdge(node, otherNode);
                                     System.out.println("edge");
                                 }
                             } else if (otherNode.getTag().getClass() == LeafTask.class) {
                                 // si l'autre noeud est une tache fille
                                 LeafTask otherTask = (LeafTask) otherNode.getTag();
-                                System.out.println("on est sur un autre noeud LEAF, d'id: " + otherTask.getIdProperty());
+                                System.out.println("on est sur un autre noeud LEAF, d'id: " + otherTask.getIdProperty() + " et de longueur " + otherTask.getIdProperty().length());
                                 // si l'id de la tache est celui d'une des sous tâches alors
-                                if (otherTask.getIdProperty() == subTaskStringId) {
+                                if (otherTask.getIdProperty().equals(subTaskStringId)) {
+                                    System.out.println("on a " + otherTask.getIdProperty() + " == " + subTaskStringId );
                                     // création du lien graphique
+                                    subtask.add(otherNode);
                                     graph.createEdge(node, otherNode);
                                     System.out.println("edge");
                                 }
@@ -515,8 +529,10 @@ public class ApplicationController {
                                 Task otherTask = (Task) otherNode.getTag();
                                 System.out.println("on est sur un autre noeud TASK, d'id: " + otherTask.getIdProperty());
                                 // si l'id de la tache est celui d'une des sous tâches alors
-                                if (otherTask.getIdProperty() == subTaskStringId) {
+                                if (otherTask.getIdProperty().equals(subTaskStringId)) {
+                                    System.out.println("on a " + otherTask.getIdProperty() + " == " + subTaskStringId);
                                     // création du lien graphique
+                                    subtask.add(otherNode);
                                     graph.createEdge(node, otherNode);
                                     System.out.println("edge");
                                 }
@@ -524,6 +540,7 @@ public class ApplicationController {
                         }
                     }
                 }
+                //graph.groupNodes(node,subtask);
             }
         }
         System.out.println("Fin de la methode de création des liens entre nodes à partir d'une liste de noeuds");

@@ -1,7 +1,10 @@
 package Controller;
 
+
 import Model.GlobalParameters;
 import Model.Tree.MotherTask;
+import Model.Tree.Tag;
+import Model.Tree.Tags;
 import Model.Tree.Task;
 import com.yworks.yfiles.view.GraphControl;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
@@ -291,6 +294,8 @@ public class ViewController {
     private  Button button_graph_ajouter,button_graph_supprimer, button_graph_ajouter_tag, button_graph_supprimer_tag;
     @FXML
     private  VBox vbox_tags;
+    @FXML
+    private  ListView<Tag> listview_tags;
 
     // XML
     @FXML
@@ -640,6 +645,14 @@ public class ViewController {
 
     public void setButton_graph_supprimer_tag(Button button_graph_supprimer_tag) {
         this.button_graph_supprimer_tag = button_graph_supprimer_tag;
+    }
+
+    public ListView getListview_tags() {
+        return listview_tags;
+    }
+
+    public void setListview_tags(ListView listview_tags) {
+        this.listview_tags = listview_tags;
     }
 
     public Button getButton_open() {

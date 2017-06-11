@@ -103,8 +103,10 @@ public class XMLParser {
     }
     public void createTreeFromNodeList(NodeList nodeList){
         for (int count = 0; count < nodeList.getLength(); count++) {
+            System.out.println("nodeList count : "+count);
             System.out.println("nodeList length : "+nodeList.getLength());
             Node tempNode = nodeList.item(count);
+            System.out.println(tempNode.toString());
             // make sure it's element node.
             if (isElement(tempNode)) {
                 // get node name and value
@@ -117,6 +119,7 @@ public class XMLParser {
                         // creating a mother task for each of them
                         for (int task_m_count = 0; task_m_count < motherTaskNb; task_m_count++) {
                             Node motherTaskNode = motherTaskNodes.item(task_m_count);
+                            System.out.println("test mother: "+isElement(motherTaskNode));
                             if (isElement(motherTaskNode))
                             {
                                 MotherTask motherTask = createMotherTaskFromNode(motherTaskNode);
@@ -130,6 +133,7 @@ public class XMLParser {
                         int leafTaskNb = leafTaskNodes.getLength();
                         for (int task_f_count = 0; task_f_count < leafTaskNb; task_f_count++) {
                             Node leafTaskNode = leafTaskNodes.item(task_f_count);
+                            System.out.println("test leaf: "+isElement(leafTaskNode));
                             if (isElement(leafTaskNode))
                             {
                                 LeafTask leafTask = createLeafTaskFromNode(leafTaskNode);
@@ -146,8 +150,12 @@ public class XMLParser {
     public MotherTask createMotherTaskFromNode(Node motherTaskNode)
     {
         MotherTask motherTask = new MotherTask();
+        System.out.println("init mother task ");
+        System.out.println(motherTask.toString());
         motherTask = (MotherTask)setAttributes(motherTask, motherTaskNode);
+        System.out.println("attributes set"+motherTask.toString());
         motherTask = setMotherElements(motherTask, motherTaskNode);
+        System.out.println("elements set"+motherTask.toString());
         return motherTask;
     }
 

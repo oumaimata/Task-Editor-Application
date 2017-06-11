@@ -604,9 +604,7 @@ public class ViewController {
             applicationController.xmlFile.setTextFromFilePath();
             codeArea.replaceText(applicationController.xmlFile.getXMLtext());
             applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
-            System.out.println(applicationController.xmlParser.getTasks().toString());
             applicationController.tasks = applicationController.xmlParser.getTasks();
-            System.out.println(applicationController.tasks.toString());
             applicationController.createGraphFromTasks(applicationController.graph,applicationController.motherTasks,applicationController.tasks,applicationController.leafTasks);
         }
     }

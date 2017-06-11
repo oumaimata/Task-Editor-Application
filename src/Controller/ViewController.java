@@ -34,7 +34,14 @@ public class ViewController {
     Task createTask;
     MotherTask createMotherTask;
 
+    public Task currentTask;
+
     public GraphControl graphControl;
+
+    public ViewController()
+    {
+        currentTask = new Task();
+    }
 
     // méthode appelée au moment ou on parse le FMXL et grâce a laquelle tout se construit
     public void initialize() {
@@ -66,6 +73,16 @@ public class ViewController {
         button_save.setOnAction((event) -> {save();});
         button_xml_rafraichir.setOnAction((event) -> {refreshTreeFromXML();});
         applicationController.xmlFile.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
+
+        bindindTaskAndEdition();
+
+
+    }
+
+    public void bindindTaskAndEdition()
+    {
+        txtfield_edit_name.textProperty().bindBidirectional(currentTask.namePropertyProperty());
+        txt_edit_id_resume.textProperty().bindBidirectional(currentTask.idPropertyProperty());
     }
 
     // méthode appelée par l'application une fois que le stage a été chargé.

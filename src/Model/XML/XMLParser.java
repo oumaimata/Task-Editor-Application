@@ -125,9 +125,9 @@ public class XMLParser {
                                 MotherTask motherTask = createMotherTaskFromNode(motherTaskNode);
                                 tasks.addTask(motherTask);
                                 System.out.println("mothertask "+motherTask.toString());
+
                             }
                         }
-                        break;
                     case LEAF_TASK :
                         NodeList leafTaskNodes = tempNode.getChildNodes();
                         int leafTaskNb = leafTaskNodes.getLength();
@@ -150,12 +150,8 @@ public class XMLParser {
     public MotherTask createMotherTaskFromNode(Node motherTaskNode)
     {
         MotherTask motherTask = new MotherTask();
-        System.out.println("init mother task ");
-        System.out.println(motherTask.toString());
         motherTask = (MotherTask)setAttributes(motherTask, motherTaskNode);
-        System.out.println("attributes set"+motherTask.toString());
         motherTask = setMotherElements(motherTask, motherTaskNode);
-        System.out.println("elements set"+motherTask.toString());
         return motherTask;
     }
 
@@ -166,7 +162,7 @@ public class XMLParser {
             NamedNodeMap nodeMap = taskNode.getAttributes();
             task.setIdProperty(nodeMap.getNamedItem(ID).getNodeValue());
             System.out.println("Id : "+task.getIdProperty());
-            task.setIdProperty(nodeMap.getNamedItem(NAME).getNodeValue());
+            task.setNameProperty(nodeMap.getNamedItem(NAME).getNodeValue());
             Node iterativeNode = nodeMap.getNamedItem(GlobalParameters.Nature.ITERATIVE.getName());
             Node optionalNode = nodeMap.getNamedItem(GlobalParameters.Nature.OPTIONELLE.getName());
             Node interruptibleNode = nodeMap.getNamedItem(GlobalParameters.Nature.INTERRUPTIBLE.getName());

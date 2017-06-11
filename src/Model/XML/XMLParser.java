@@ -51,7 +51,7 @@ public class XMLParser {
 
     static final String TASKS = "tasks";
     static final String MOTHER_TASK = "task_m";
-    static final String LEAF_TASK = "tasf_f";
+    static final String LEAF_TASK = "task_f";
     static final String ID = "id";
     static final String NAME = "name";
     static final String OPTIONAL = "optional";

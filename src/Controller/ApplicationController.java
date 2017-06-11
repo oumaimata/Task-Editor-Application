@@ -48,6 +48,12 @@ public class ApplicationController {
     public LeafTasks leafTasks;
     // reference sur le noeud selectionné (dans le cas du graph notamment)
     public INode currentNode;
+    // reference sur la tache lorsque c'est une tache mere
+    public MotherTask currentMotherTask;
+    // reference sur la tache lorsque c'est une tache feuille
+    public LeafTask currentLeafTask;
+    // reference sur la tache lorsque c'est une tache
+    public Task currentTask;
     // reference sur la liste des noeuds
     public Nodes nodes;
     //reference sur la liste des tags
@@ -104,6 +110,10 @@ public class ApplicationController {
         orthogonalLayout = new OrthogonalLayout();
         // initialisation du xmlFile
         xmlFile = new XMLFile();
+        // initialisation des noeuds courrant
+        currentMotherTask = null;
+        currentLeafTask = null;
+        currentTask = null;
     }
 
     public void initialize() {
@@ -183,6 +193,22 @@ public class ApplicationController {
                     // on récupère l'objet sélectionné
                     currentNode = (INode) iModelItemItemClickedEventArgs.getItem();
                     System.out.println("l'objet courrant est devenu: " + currentNode.getTag().getClass() );
+                    if(currentNode.getTag().getClass() == Task.class){
+                        // si le noeud selectionné renferme une tache
+                        currentTask = (Task) currentNode.getTag();
+                        currentMotherTask = null;
+                        currentLeafTask = null;
+
+                    }else if (currentNode.getTag().getClass() == MotherTask.class){
+                        currentMotherTask = (MotherTask) currentNode.getTag();
+                        currentTask=null;
+                        currentLeafTask= null;
+                    }else{
+                        currentLeafTask = (LeafTask) currentNode.getTag();
+                        currentTask=null;
+                        currentLeafTask=null;
+                    }
+                    System.out.println("currentTask " + currentTask + "currentMotherTask " + currentMotherTask + "currentLeafTask " + currentLeafTask);
                     view.currentTask = (Task) currentNode.getTag();
                 }
                 // mise en place du panel d'édition

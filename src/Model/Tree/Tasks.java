@@ -48,6 +48,14 @@ public class Tasks {
             this.tasks.add(task);
     }
 
+    public void removeTask(Task task){
+        System.out.println("Tentative de retrait d'une tâche à la liste des taches globale ");
+        if (tasks.contains(task)){
+            System.out.println("Retrait d'une tâche à la liste des taches globale ");
+            this.tasks.remove(task);
+        }
+    }
+
     // methode d'ajout a la liste des taches une tache par défaut : nom + id
     // retourne la tache ainsi créée
     public Task addDefaultTache(){

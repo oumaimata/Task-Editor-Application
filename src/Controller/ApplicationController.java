@@ -101,7 +101,7 @@ public class ApplicationController {
         // initialisation de la liste des noeuds
         nodes = new Nodes();
         // on ajoute des taches pour test
-        MotherTask task1 = motherTasks.addDefaultTache();
+        /*MotherTask task1 = motherTasks.addDefaultTache();
         MotherTask task2 = motherTasks.addDefaultTache();
         MotherTask task3 = motherTasks.addDefaultTache();
         LeafTask task4 = leafTasks.addDefaultTache();
@@ -111,7 +111,7 @@ public class ApplicationController {
         motherTasks.createLinkBetweenTwoTasks(task1,task2);
         motherTasks.createLinkBetweenTwoTasks(task2,task3);
         motherTasks.createLinkBetweenTwoTasks(task3,task4);
-        motherTasks.createLinkBetweenTwoTasks(task3,task5);
+        motherTasks.createLinkBetweenTwoTasks(task3,task5);*/
 
         // on creer le graph associé
         createGraphFromTasks(graph,motherTasks,tasks,leafTasks);
@@ -368,6 +368,7 @@ public class ApplicationController {
                                 if (otherTask.getIdProperty() == subTaskStringId) {
                                     // création du lien graphique
                                     graph.createEdge(node, otherNode);
+                                    System.out.println("edge");
                                 }
                             } else if (otherNode.getTag().getClass() == LeafTask.class) {
                                 // si l'autre noeud est une tache fille
@@ -376,6 +377,7 @@ public class ApplicationController {
                                 if (otherTask.getIdProperty() == subTaskStringId) {
                                     // création du lien graphique
                                     graph.createEdge(node, otherNode);
+                                    System.out.println("edge");
                                 }
                             } else {
                                 // si l'autre noeud est une tache
@@ -384,6 +386,7 @@ public class ApplicationController {
                                 if (otherTask.getIdProperty() == subTaskStringId) {
                                     // création du lien graphique
                                     graph.createEdge(node, otherNode);
+                                    System.out.println("edge");
                                 }
                             }
                         }

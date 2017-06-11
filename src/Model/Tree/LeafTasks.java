@@ -46,6 +46,15 @@ public class LeafTasks {
         }
     }
 
+    public LeafTask addDefaultTache(){
+        System.out.println("lancement de la methode addDefaultTache de leaftTasks");
+        LeafTask newTask = new LeafTask();
+        newTask.setIdProperty(getId().toString());
+        addTask(newTask);
+        System.out.println(toString());
+        return newTask;
+    }
+
     // methode pour clear la liste complete des taches
     public void clear(){
         getTasks().clear();

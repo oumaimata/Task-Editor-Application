@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Tree.MotherTask;
 import Model.Tree.Task;
+import Model.Tree.Tasks;
 import com.yworks.yfiles.view.GraphControl;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
 import javafx.fxml.FXML;
@@ -616,11 +617,13 @@ public class ViewController {
         File file = fileChooser.showOpenDialog(newStage);
         System.out.println(file.toString());
         if (file != null) {
+            applicationController.tasks = new Tasks();
             applicationController.xmlFile.setXMLfilePath(file.getPath());
             System.out.println(applicationController.xmlFile.getXMLfilePath());
             applicationController.xmlFile.setTextFromFilePath();
             codeArea.replaceText(applicationController.xmlFile.getXMLtext());
             applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
+            System.out.println(applicationController.xmlParser.getTasks().getTasks().size());
             applicationController.tasks = applicationController.xmlParser.getTasks();
             applicationController.createGraphFromTasks(applicationController.graph,applicationController.motherTasks,applicationController.tasks,applicationController.leafTasks);
         }

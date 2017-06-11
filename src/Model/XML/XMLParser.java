@@ -128,6 +128,7 @@ public class XMLParser {
 
                             }
                         }
+                        break;
                     case LEAF_TASK :
                         NodeList leafTaskNodes = tempNode.getChildNodes();
                         int leafTaskNb = leafTaskNodes.getLength();

@@ -30,9 +30,13 @@ import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import View.XMLEditor;
+import org.fxmisc.richtext.model.Paragraph;
+import org.fxmisc.richtext.model.StyledText;
+import org.reactfx.collection.LiveList;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -704,6 +708,21 @@ public class ViewController {
             applicationController.xmlParser.createTasksFromXML(applicationController.xmlFile.getXMLfilePath());
             applicationController.tasks = applicationController.xmlParser.getTasks();
             applicationController.createGraphFromTasks(applicationController.graph,applicationController.motherTasks,applicationController.tasks,applicationController.leafTasks);
+        }
+    }
+
+    public void actualisationXMLFromTree(){
+        String currentTaskId = "";
+        if (currentTask != null){currentTaskId = currentTask.getIdProperty()}
+        //if (applicationController.currentMotherTask != null){currentTaskId = currentTask.getIdProperty()}
+
+        LiveList<Paragraph<Collection<String>, StyledText<Collection<String>>, Collection<String>>> paragraphs = codeArea.getParagraphs();
+        for(int i = 0; i < paragraphs.size(); i++){
+            if(paragraphs.get(i).getText().contains("<task id="+currentTask.getIdProperty())){
+                while (paragraphs.get(i).getText().contains("</task>")){
+
+                }
+            }
         }
     }
 }

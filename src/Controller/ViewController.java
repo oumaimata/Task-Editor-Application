@@ -1,16 +1,22 @@
 package Controller;
 
+import Model.Tree.MotherTask;
 import Model.Tree.Task;
 import com.yworks.yfiles.view.GraphControl;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.fxmisc.flowless.VirtualizedScrollPane;
@@ -25,13 +31,16 @@ import java.io.File;
  */
 public class ViewController {
     ApplicationController applicationController;
+    Task createTask;
+    MotherTask createMotherTask;
 
     public GraphControl graphControl;
 
     // méthode appelée au moment ou on parse le FMXL et grâce a laquelle tout se construit
     public void initialize() {
+        PopupController popup = new PopupController();
         // creation de l'application controller
-        this.applicationController = new ApplicationController(this, graphControl);
+        this.applicationController = new ApplicationController(this, graphControl, popup);
         // permettre l'edition directe du graph
         graphControl.setInputMode(new GraphEditorInputMode());
         applicationController.initialize();
@@ -61,8 +70,123 @@ public class ViewController {
 
     // méthode appelée par l'application une fois que le stage a été chargé.
     public void onLoaded() {
+        // ajout du listener sur le bouton d'ajout du graph pour ouvrir une pop-up d'ajout
+        getButton_graph_ajouter().setOnAction(e -> {
+            PopupController wc = new PopupController();
+            wc.showPopUp();
+            if(wc.isMotherTask()){
+                this.createMotherTask = wc.getDataMotherTask();
+                System.out.println("created task: " + getCreateMotherTask().getNameProperty());
+                applicationController.addNodeFromTask(wc.getDataMotherTask());
+            }else{
+                this.createTask = wc.getDataTask();
+                System.out.println("created task: " + getCreatedTask().getNameProperty());
+                applicationController.addNodeFromTask(wc.getDataTask());
+            }
+
+
+
+        });
         //fit graph after all element been loaded
         graphControl.fitGraphBounds();
+    }
+
+    // getter sur la tache créée
+    public Task getCreatedTask() {
+        return createTask;
+    }
+
+    // getter sur la mother task créée
+    public MotherTask getCreateMotherTask() {
+        return createMotherTask;
+    }
+
+    // classe pour gérer la pop up d'ajout de tâche
+    class PopupController {
+        private Task task;
+        private MotherTask motherTaskPopup;
+
+        public PopupController(){}
+
+        public void showPopUp() {
+            this.task = new Task();
+
+            Stage popupwindow = new Stage();
+            popupwindow.initModality(Modality.APPLICATION_MODAL);
+            popupwindow.setTitle("Ajout d'une tâche");
+
+            GridPane grid = new GridPane();
+            grid.setAlignment(Pos.CENTER);
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(25, 25, 25, 25));
+
+            javafx.scene.text.Text scenetitle = new Text("Ajout d'une tache");
+            scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+            grid.add(scenetitle, 0, 0, 2, 1);
+
+            Label taskID = new Label("Id:");
+            grid.add(taskID, 0, 1);
+
+            TextField idTextField = new TextField();
+            grid.add(idTextField, 1, 1);
+
+            Label name = new Label("Nom:");
+            grid.add(name, 0, 2);
+
+            TextField nameTextField = new TextField();
+            grid.add(nameTextField, 1, 2);
+
+            Label tacheMere = new Label("Creation d'une tâche mère:");
+            grid.add(tacheMere, 0, 3);
+
+            CheckBox mereCheckBox = new CheckBox();
+            grid.add(mereCheckBox, 1, 3);
+
+            Button btn = new Button("Créer");
+            HBox hbBtn = new HBox(10);
+            hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+            hbBtn.getChildren().add(btn);
+            grid.add(hbBtn, 1, 5);
+
+            btn.setOnAction(e ->{
+                if(idTextField.getText()!=null)
+                    task.setIdProperty(idTextField.getText());
+                if(nameTextField.getText()!=null)
+                    task.setNameProperty(nameTextField.getText());
+
+                if(mereCheckBox.isSelected()){
+                    // si la checkbox est selectionnée alors on créer une tâche mère directement
+                    this.motherTaskPopup = new MotherTask(task);
+                    this.task = null;
+                }
+                popupwindow.close();
+            }
+
+            );
+
+            Scene scene1 = new Scene(grid, 300, 250);
+
+            popupwindow.setScene(scene1);
+            popupwindow.showAndWait();
+        }
+
+        Task getDataTask() {
+            return task;
+        }
+
+        MotherTask getDataMotherTask() {
+            return motherTaskPopup;
+        }
+
+        boolean isMotherTask(){
+            if(getDataTask() == null){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
     }
 
     // le container de l'editeur XML
@@ -121,6 +245,9 @@ public class ViewController {
     @FXML
     private SplitPane splitPane_graph_edit;
 
+    // test
+    @FXML
+    private TextField popup_textfield_id, popup_textfield_name;
 
     /*
       All getters and setters
@@ -438,6 +565,21 @@ public class ViewController {
         this.button_open = button_open;
     }
 
+    public TextField getPopup_textfield_id() {
+        return popup_textfield_id;
+    }
+
+    public void setPopup_textfield_id(TextField popup_textfield_id) {
+        this.popup_textfield_id = popup_textfield_id;
+    }
+
+    public TextField getPopup_textfield_name() {
+        return popup_textfield_name;
+    }
+
+    public void setPopup_textfield_name(TextField popup_textfield_name) {
+        this.popup_textfield_name = popup_textfield_name;
+    }
 
     /////// FONCTION UTILISEE DANS LES LISTENERS
     public void save(){
@@ -465,7 +607,7 @@ public class ViewController {
             System.out.println(applicationController.xmlParser.getTasks().toString());
             applicationController.tasks = applicationController.xmlParser.getTasks();
             System.out.println(applicationController.tasks.toString());
-            applicationController.createGraphFromTasks(applicationController.graph,applicationController.tasks,applicationController.nodes);
+            applicationController.createGraphFromTasks(applicationController.graph,applicationController.motherTasks,applicationController.tasks,applicationController.leafTasks);
         }
     }
 }

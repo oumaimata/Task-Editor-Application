@@ -1,10 +1,12 @@
 package Model.Tree;
 
 import Model.GlobalParameters;
+import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.Callback;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -14,6 +16,7 @@ import java.util.List;
  * Created by Camille on 22/05/17.
  */
 public class MotherTask extends Task{
+
     private GlobalParameters.TypeConstructeur constructor;
     ObservableList<String> subTaskList;
     ObservableList<LinkBetweenDaughter> linkBetweenDaughters;
@@ -25,9 +28,16 @@ public class MotherTask extends Task{
         this.subTaskList = FXCollections.observableArrayList();
     }
 
+    public MotherTask(Task task) {
+        super(task.idPropertyProperty(),task.namePropertyProperty(),task.getConditionList());
+        this.linkBetweenDaughters = FXCollections.observableArrayList(LinkBetweenDaughter.extractor());
+        this.subTaskList = FXCollections.observableArrayList();
+    }
+
     public MotherTask() {
         super();
         this.linkBetweenDaughters = FXCollections.observableArrayList(LinkBetweenDaughter.extractor());
+        this.subTaskList = FXCollections.observableArrayList();
     }
 
     public GlobalParameters.TypeConstructeur getConstructor() {
@@ -42,6 +52,7 @@ public class MotherTask extends Task{
 
     public ObservableList<String> getSubTaskList() {return subTaskList;}
     public void setSubTaskList(ObservableList<String> subTaskList) {this.subTaskList = subTaskList;}
+
     public void addSubTask(String subTask)
     {
         if (!subTaskList.contains(subTask))
@@ -113,4 +124,5 @@ public class MotherTask extends Task{
             System.out.println(subTaskList.get(i));
         }
     }
+
 }

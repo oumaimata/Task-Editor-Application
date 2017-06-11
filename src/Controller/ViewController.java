@@ -1,9 +1,12 @@
 package Controller;
 
+import Model.GlobalParameters;
 import Model.Tree.MotherTask;
 import Model.Tree.Task;
 import com.yworks.yfiles.view.GraphControl;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,8 +26,11 @@ import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import View.XMLEditor;
+import sun.jvm.hotspot.runtime.posix.POSIXSignals;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by pierrelouislacorte on 29/05/2017.
@@ -126,8 +132,6 @@ public class ViewController {
         public PopupController(){}
 
         public void showPopUp() {
-            this.task = new Task();
-
             Stage popupwindow = new Stage();
             popupwindow.initModality(Modality.APPLICATION_MODAL);
             popupwindow.setTitle("Ajout d'une tâche");
@@ -157,8 +161,52 @@ public class ViewController {
             Label tacheMere = new Label("Creation d'une tâche mère:");
             grid.add(tacheMere, 0, 3);
 
+            // creation de la checkbox pour la construction d'une tache mère
             CheckBox mereCheckBox = new CheckBox();
-            grid.add(mereCheckBox, 1, 3);
+
+            // creation d'une liste qui va stocker l'ensemble des menuitems
+            List<MenuItem> listMenuItem = new ArrayList<>();
+
+            // creation des menuitems
+            MenuItem menuItem1 = new MenuItem("IND");
+            MenuItem menuItem2 = new MenuItem("SEQ");
+            MenuItem menuItem3 = new MenuItem("SEQ-ORD");
+            MenuItem menuItem4 = new MenuItem("PAR");
+            MenuItem menuItem5 = new MenuItem("PAR-SIM");
+            MenuItem menuItem6 = new MenuItem("PAR-START");
+            MenuItem menuItem7 = new MenuItem("PAR-END");
+            // creation du menubutton et ajout de tous les menuitems
+            MenuButton constructor = new MenuButton("Constructeur");
+            constructor.getItems().addAll(menuItem1,menuItem2,menuItem3,menuItem4,menuItem5,menuItem6,menuItem7);
+
+            // sauvegarde de tous les boutons dans une liste
+            listMenuItem.add(menuItem1);
+            listMenuItem.add(menuItem2);
+            listMenuItem.add(menuItem3);
+            listMenuItem.add(menuItem4);
+            listMenuItem.add(menuItem5);
+            listMenuItem.add(menuItem6);
+            listMenuItem.add(menuItem7);
+            // creation de tous les listener
+            createListenerOfMenuItem(constructor,listMenuItem,mereCheckBox);
+
+            HBox hboxmere = new HBox(mereCheckBox, constructor);
+            hboxmere.setAlignment(Pos.CENTER_LEFT);
+            grid.add(hboxmere, 1, 3);
+
+            mereCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if(newValue == true){
+                        System.out.println("la checkbox est cochée");
+                        constructor.show();
+                    }
+                    if(newValue == false){
+                        System.out.println("la checkbox est décochée");
+                        constructor.hide();
+                    }
+                }
+            });
 
             Button btn = new Button("Créer");
             HBox hbBtn = new HBox(10);
@@ -167,14 +215,22 @@ public class ViewController {
             grid.add(hbBtn, 1, 5);
 
             btn.setOnAction(e ->{
-                if(idTextField.getText()!=null)
-                    task.setIdProperty(idTextField.getText());
-                if(nameTextField.getText()!=null)
-                    task.setNameProperty(nameTextField.getText());
+                this.task = new Task();
+                if(!idTextField.getText().isEmpty()){
+                    System.out.println("On modifie la tache avec id: "+ idTextField.getText());
+                    this.task.setIdProperty(idTextField.getText());
+                }
 
-                if(mereCheckBox.isSelected()){
+                if(!nameTextField.getText().isEmpty()){
+                    System.out.println("On modifie la tache avec nom: "+ nameTextField.getText());
+                    this.task.setNameProperty(nameTextField.getText());
+                }
+
+                if(mereCheckBox.isSelected() && (constructor.getText() != "Constructeur")){
                     // si la checkbox est selectionnée alors on créer une tâche mère directement
                     this.motherTaskPopup = new MotherTask(task);
+                    this.motherTaskPopup.setConstructor(GlobalParameters.TypeConstructeur.valueOf(constructor.getText().replace("-","_")));
+                    System.out.println("On créer une tache mere, son constructeur est: "+ motherTaskPopup.getConstructor());
                     this.task = null;
                 }
                 popupwindow.close();
@@ -186,6 +242,18 @@ public class ViewController {
 
             popupwindow.setScene(scene1);
             popupwindow.showAndWait();
+        }
+
+        private void createListenerOfMenuItem(MenuButton menuButton, List<MenuItem> menuitems,CheckBox checkBox){
+            for(MenuItem menuItem: menuitems){
+                menuItem.setOnAction(event -> {
+                    if(checkBox.isSelected()){
+                        System.out.println("changement de la valeur du menu button avec " + menuItem.getText());
+                        menuButton.setText(menuItem.getText());
+                    }
+
+                });
+            }
         }
 
         Task getDataTask() {

@@ -15,8 +15,11 @@ import com.yworks.yfiles.view.input.ClickEventArgs;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
 import com.yworks.yfiles.view.input.ICommand;
 import com.yworks.yfiles.view.input.ItemClickedEventArgs;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import java.time.Duration;
 
@@ -41,6 +44,9 @@ public class ApplicationController {
     public INode currentNode;
     // reference sur la liste des noeuds
     public Nodes nodes;
+    //reference sur la liste des tags
+    public Tags tags;
+
     // generated style
     ShapeNodeStyle RootTaskStyle;
     ShapeNodeStyle MotherTaskStyle;
@@ -100,8 +106,10 @@ public class ApplicationController {
         leafTasks = new LeafTasks();
         // initialisation de la liste des noeuds
         nodes = new Nodes();
+
         // on ajoute des taches pour test
-        /*MotherTask task1 = motherTasks.addDefaultTache();
+
+        MotherTask task1 = motherTasks.addDefaultTache();
         MotherTask task2 = motherTasks.addDefaultTache();
         MotherTask task3 = motherTasks.addDefaultTache();
         LeafTask task4 = leafTasks.addDefaultTache();
@@ -111,10 +119,14 @@ public class ApplicationController {
         motherTasks.createLinkBetweenTwoTasks(task1,task2);
         motherTasks.createLinkBetweenTwoTasks(task2,task3);
         motherTasks.createLinkBetweenTwoTasks(task3,task4);
-        motherTasks.createLinkBetweenTwoTasks(task3,task5);*/
+        motherTasks.createLinkBetweenTwoTasks(task3,task5);
+
 
         // on creer le graph associé
         createGraphFromTasks(graph,motherTasks,tasks,leafTasks);
+
+        //Creation de la liste des tags
+        tags = new Tags();
     }
 
     // Méthode principale a utiliser dans le controller.
@@ -126,12 +138,17 @@ public class ApplicationController {
         view.getListview_edit_taches_filles().setItems(tasks.getTasks());
 
         graphControl.currentItemProperty();
+
+        view.getListview_tags().setItems(tags.getTags());
+
     }
 
     // Méthode pour réaliser les bindings des actions et des boutons
+
     public void make_binding (){
         // ajout du listener sur le bouton d'ajout de tache qui va déclancher l'ajout d'une tache par défaut
         //view.getButton_graph_ajouter().setOnAction(evt -> handleAjoutTache());
+
 
         // creation du listener sur le bouton pour centrer le graph
         view.getButton_centrer().setOnAction(evt -> graphFitContent());
@@ -173,6 +190,7 @@ public class ApplicationController {
             }
         });
 
+
         //Binding entre currentTask et PanelEdition
 
         graphEditorInputMode
@@ -202,6 +220,113 @@ public class ApplicationController {
 
             }
         });
+        // listener sur tags
+        view.getButton_graph_ajouter_tag().setOnAction(evt -> handleAddTag());
+        view.getButton_graph_supprimer_tag().setOnAction(evt -> handleDeleteTag());
+
+
+//        ListChangeListener<Tag> tagsListener = changed -> {
+//            if (changed.next()) {
+//                if (changed.wasAdded()) {
+//                    Tag newTag = changed.getAddedSubList().get(0);
+//                    tags.addTag(newTag);
+//
+//                }
+//
+//            } else if (changed.wasRemoved()) {
+//                Tag oldTag = changed.getRemoved().get(0);
+//                tags.removeTag(oldTag);
+//            }
+//
+//        };
+//
+//        tags.getTags().addListener(tagsListener);
+
+
+        //Edit tags names
+        class TagListCell extends ListCell<Tag> {
+            private final TextField textField = new TextField();
+
+            public TagListCell() {
+                textField.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+                    if (e.getCode() == KeyCode.ESCAPE) {
+                        cancelEdit();
+                    }
+                });
+                textField.setOnAction(e -> {
+                    getItem().setNameProperty(textField.getText());
+                    setText(textField.getText());
+                    setContentDisplay(ContentDisplay.TEXT_ONLY);
+                });
+                setGraphic(textField);
+            }
+
+            @Override
+            protected void updateItem(Tag tag, boolean empty) {
+                super.updateItem(tag, empty);
+                if (isEditing()) {
+                    textField.setText(tag.getNameProperty());
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                } else {
+                    setContentDisplay(ContentDisplay.TEXT_ONLY);
+                    if (empty) {
+                        setText(null);             // handle id null, not accept it
+                    } else {
+                        setText(tag.getNameProperty());
+                    }
+                }
+
+            }
+
+            @Override
+            public void startEdit() {
+                super.startEdit();
+                textField.setText(getItem().getNameProperty());
+                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                textField.requestFocus();
+                textField.selectAll();
+            }
+
+            @Override
+            public void cancelEdit() {
+                super.cancelEdit();
+                setText(getItem().getNameProperty());
+                setContentDisplay(ContentDisplay.TEXT_ONLY);
+            }
+        }
+
+ /*       class SimpleTagListCell extends ListCell<Tag> {
+
+            @Override
+            protected void updateItem(Tag item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(null);
+                if (!empty && item != null) {
+                    final String text = String.format("%s", item.getNameProperty());
+                    setText(text);
+                }
+            }
+        }
+
+        view.getListview_tags().setCellFactory(lvTag -> new SimpleTagListCell());
+*/
+        view.getListview_tags().setEditable(true);
+        view.getListview_tags().setCellFactory(lvTag -> new TagListCell());
+
+    }
+
+    public void handleAddTag(){
+        System.out.println("ajout tag");
+        tags.addTag();
+
+    }
+
+    public void handleDeleteTag(){
+        Tag currentTag = (Tag) view.getListview_tags().getSelectionModel().getSelectedItem();
+
+        tags.removeTag(currentTag);
+
+        //handle removal of tags from all concerned tasks
     }
 
     public void handleLayoutAction(ActionEvent event) {
@@ -245,6 +370,7 @@ public class ApplicationController {
         nodes.addNode(node1);
         graph.addLabel(node1, task.getNameProperty());
     }
+
 
     public void addNodeFromTask(MotherTask task){
         System.out.println("lancement de la methode d'ajout d'un node a partir d'une tache");
@@ -355,16 +481,20 @@ public class ApplicationController {
             // on récupère la tâche derrière le noeud
             if (node.getTag().getClass() == MotherTask.class) {
                 MotherTask task = (MotherTask) node.getTag();
+                System.out.println("la tache: "+ task.getNameProperty() + " est une tache mère, la longueur de ses sous taches est: " + task.getSubTaskList().size());
                 // pour toutes les sous tâches
                 for (String subTaskStringId : task.getSubTaskList()) {
+                    System.out.println("la sous tache a l'id "+ subTaskStringId );
                     // on vérifie tous les autres noeuds savoir s'il y en a un qui doit être lié
                     for (INode otherNode : nodes.getNodes()) {
                         // si on est pas sur le noeud courrant
                         if (otherNode != node) {
                             // si l'autre noeud est une tache mère
+                            //System.out.println("on est sur un autre noeud" );
                             if (otherNode.getTag().getClass() == MotherTask.class) {
                                 MotherTask otherTask = (MotherTask) otherNode.getTag();
                                 // si l'id de la tache est celui d'une des sous tâches alors
+                                System.out.println("on est sur un autre noeud MOTHER, d'id: " + otherTask.getIdProperty());
                                 if (otherTask.getIdProperty() == subTaskStringId) {
                                     // création du lien graphique
                                     graph.createEdge(node, otherNode);
@@ -373,6 +503,7 @@ public class ApplicationController {
                             } else if (otherNode.getTag().getClass() == LeafTask.class) {
                                 // si l'autre noeud est une tache fille
                                 LeafTask otherTask = (LeafTask) otherNode.getTag();
+                                System.out.println("on est sur un autre noeud LEAF, d'id: " + otherTask.getIdProperty());
                                 // si l'id de la tache est celui d'une des sous tâches alors
                                 if (otherTask.getIdProperty() == subTaskStringId) {
                                     // création du lien graphique
@@ -382,6 +513,7 @@ public class ApplicationController {
                             } else {
                                 // si l'autre noeud est une tache
                                 Task otherTask = (Task) otherNode.getTag();
+                                System.out.println("on est sur un autre noeud TASK, d'id: " + otherTask.getIdProperty());
                                 // si l'id de la tache est celui d'une des sous tâches alors
                                 if (otherTask.getIdProperty() == subTaskStringId) {
                                     // création du lien graphique
@@ -394,7 +526,7 @@ public class ApplicationController {
                 }
             }
         }
-        //System.out.println("Fin de la methode de création des liens entre nodes à partir d'une liste de noeuds");
+        System.out.println("Fin de la methode de création des liens entre nodes à partir d'une liste de noeuds");
     }
 
     // méthode pour changer et mettre a jour tous les labels

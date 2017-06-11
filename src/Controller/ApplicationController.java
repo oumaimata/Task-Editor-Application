@@ -128,10 +128,12 @@ public class ApplicationController {
         leafTasks = new LeafTasks();
         // initialisation de la liste des noeuds
         nodes = new Nodes();
+        xmlFile = new XMLFile();
+        xmlParser = new XMLParser(tasks);
 
         // on ajoute des taches pour test
-        /*
-        MotherTask task1 = motherTasks.addDefaultTache();
+
+        /*MotherTask task1 = motherTasks.addDefaultTache();
         MotherTask task2 = motherTasks.addDefaultTache();
         MotherTask task3 = motherTasks.addDefaultTache();
         LeafTask task4 = leafTasks.addDefaultTache();
@@ -141,8 +143,9 @@ public class ApplicationController {
         motherTasks.createLinkBetweenTwoTasks(task1,task2);
         motherTasks.createLinkBetweenTwoTasks(task2,task3);
         motherTasks.createLinkBetweenTwoTasks(task3,task4);
-        motherTasks.createLinkBetweenTwoTasks(task3,task5);
-        */
+        motherTasks.createLinkBetweenTwoTasks(task3,task5);*/
+
+
         // on creer le graph associé
         createGraphFromTasks(graph,motherTasks,tasks,leafTasks);
 
@@ -537,6 +540,7 @@ public class ApplicationController {
                                     // création du lien graphique
                                     subtask.add(otherNode);
                                     graph.createEdge(node, otherNode);
+                                    System.out.println("edge");
                                 }
                             } else if (otherNode.getTag().getClass() == LeafTask.class) {
                                 // si l'autre noeud est une tache fille
@@ -548,6 +552,7 @@ public class ApplicationController {
                                     // création du lien graphique
                                     subtask.add(otherNode);
                                     graph.createEdge(node, otherNode);
+                                    System.out.println("edge");
                                 }
                             } else {
                                 // si l'autre noeud est une tache
@@ -559,6 +564,7 @@ public class ApplicationController {
                                     // création du lien graphique
                                     subtask.add(otherNode);
                                     graph.createEdge(node, otherNode);
+                                    System.out.println("edge");
                                 }
                             }
                         }

@@ -101,6 +101,7 @@ public class ApplicationController {
         // initialisation de la liste des noeuds
         nodes = new Nodes();
         // on ajoute des taches pour test
+        /*
         MotherTask task1 = motherTasks.addDefaultTache();
         MotherTask task2 = motherTasks.addDefaultTache();
         MotherTask task3 = motherTasks.addDefaultTache();
@@ -112,7 +113,7 @@ public class ApplicationController {
         motherTasks.createLinkBetweenTwoTasks(task2,task3);
         motherTasks.createLinkBetweenTwoTasks(task3,task4);
         motherTasks.createLinkBetweenTwoTasks(task3,task5);
-
+        */
         // on creer le graph associé
         createGraphFromTasks(graph,motherTasks,tasks,leafTasks);
     }
@@ -355,16 +356,20 @@ public class ApplicationController {
             // on récupère la tâche derrière le noeud
             if (node.getTag().getClass() == MotherTask.class) {
                 MotherTask task = (MotherTask) node.getTag();
+                System.out.println("la tache: "+ task.getNameProperty() + " est une tache mère, la longueur de ses sous taches est: " + task.getSubTaskList().size());
                 // pour toutes les sous tâches
                 for (String subTaskStringId : task.getSubTaskList()) {
+                    System.out.println("la sous tache a l'id "+ subTaskStringId );
                     // on vérifie tous les autres noeuds savoir s'il y en a un qui doit être lié
                     for (INode otherNode : nodes.getNodes()) {
                         // si on est pas sur le noeud courrant
                         if (otherNode != node) {
                             // si l'autre noeud est une tache mère
+                            //System.out.println("on est sur un autre noeud" );
                             if (otherNode.getTag().getClass() == MotherTask.class) {
                                 MotherTask otherTask = (MotherTask) otherNode.getTag();
                                 // si l'id de la tache est celui d'une des sous tâches alors
+                                System.out.println("on est sur un autre noeud MOTHER, d'id: " + otherTask.getIdProperty());
                                 if (otherTask.getIdProperty() == subTaskStringId) {
                                     // création du lien graphique
                                     graph.createEdge(node, otherNode);
@@ -372,6 +377,7 @@ public class ApplicationController {
                             } else if (otherNode.getTag().getClass() == LeafTask.class) {
                                 // si l'autre noeud est une tache fille
                                 LeafTask otherTask = (LeafTask) otherNode.getTag();
+                                System.out.println("on est sur un autre noeud LEAF, d'id: " + otherTask.getIdProperty());
                                 // si l'id de la tache est celui d'une des sous tâches alors
                                 if (otherTask.getIdProperty() == subTaskStringId) {
                                     // création du lien graphique
@@ -380,6 +386,7 @@ public class ApplicationController {
                             } else {
                                 // si l'autre noeud est une tache
                                 Task otherTask = (Task) otherNode.getTag();
+                                System.out.println("on est sur un autre noeud TASK, d'id: " + otherTask.getIdProperty());
                                 // si l'id de la tache est celui d'une des sous tâches alors
                                 if (otherTask.getIdProperty() == subTaskStringId) {
                                     // création du lien graphique
@@ -391,7 +398,7 @@ public class ApplicationController {
                 }
             }
         }
-        //System.out.println("Fin de la methode de création des liens entre nodes à partir d'une liste de noeuds");
+        System.out.println("Fin de la methode de création des liens entre nodes à partir d'une liste de noeuds");
     }
 
     // méthode pour changer et mettre a jour tous les labels

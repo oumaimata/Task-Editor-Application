@@ -227,6 +227,9 @@ public class ApplicationController {
                 changePanelState(false);
                 // on supprime la tache courante sélectionnée
                 currentNode = null;
+                currentMotherTask = null;
+                currentLeafTask = null;
+                currentTask = null;
             }
         });
 

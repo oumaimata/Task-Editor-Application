@@ -11,6 +11,7 @@ import com.yworks.yfiles.view.GraphControl;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -33,7 +34,12 @@ import View.XMLEditor;
 import org.fxmisc.richtext.model.Paragraph;
 import org.fxmisc.richtext.model.StyledText;
 import org.reactfx.collection.LiveList;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -88,7 +94,6 @@ public class ViewController {
         applicationController.xmlFile.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
 
         bindindTaskAndEdition();
-
 
     }
 
@@ -711,18 +716,9 @@ public class ViewController {
         }
     }
 
-    public void actualisationXMLFromTree(){
-        String currentTaskId = "";
-        if (currentTask != null){currentTaskId = currentTask.getIdProperty()}
-        //if (applicationController.currentMotherTask != null){currentTaskId = currentTask.getIdProperty()}
-
-        LiveList<Paragraph<Collection<String>, StyledText<Collection<String>>, Collection<String>>> paragraphs = codeArea.getParagraphs();
-        for(int i = 0; i < paragraphs.size(); i++){
-            if(paragraphs.get(i).getText().contains("<task id="+currentTask.getIdProperty())){
-                while (paragraphs.get(i).getText().contains("</task>")){
-
-                }
-            }
-        }
+    public void refreshXMLfromTree(){
+        applicationController.xmlParser.toXMLFromTree(applicationController.tasks,applicationController.xmlFile.getXMLfilePath());
+        applicationController.xmlFile.setTextFromFilePath();
+        codeArea.replaceText(applicationController.xmlFile.getXMLtext());
     }
 }

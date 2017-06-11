@@ -12,6 +12,11 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 
 /* soit paring DOM soit parsing SAX
@@ -41,6 +46,8 @@ public class XMLParser {
     public Tasks getTasks() {
         return tasks;
     }
+
+    public Document doc;
 
     public void setTasks(Tasks tasks) {
         this.tasks = tasks;
@@ -73,6 +80,56 @@ public class XMLParser {
 
     public XMLParser(Tasks tasks) {
         this.tasks = tasks;
+        try {
+            DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            doc = dBuilder.parse("init.xml");
+        }catch (Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+    public void toXMLFromTree(Tasks tasks,String filePathName){
+        try{
+            if (doc.hasChildNodes()) {
+                NodeList nodeList = doc.getDocumentElement().getChildNodes();
+                for (int count = 0; count < nodeList.getLength(); count++) {
+                    Node node = nodeList.item(count);
+                    System.out.println("tested node :" + node.getNodeName());
+                    if (node.getNodeName().equals(TASKS)) {
+                        if(node.hasChildNodes()){
+                            NodeList childList = node.getChildNodes();
+                            for(int i = 0; i < childList.getLength(); i++){
+                                node.removeChild(childList.item(i));
+                            }
+                        }
+                        for(int i = 0; i < tasks.getTasks().size(); i++){
+                            if (tasks.getTasks().get(i).getClass() == MotherTask.class){
+                                MotherTask motherTask = (MotherTask) tasks.getTasks().get(i);
+                                node.appendChild(motherTask.toXml(doc));
+                            }
+                            if (tasks.getTasks().get(i).getClass() == LeafTask.class){
+                                LeafTask leafTask = (LeafTask) tasks.getTasks().get(i);
+                                node.appendChild(leafTask.toXml(doc));
+                            }
+                        }
+                    }
+                }
+            }
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            //for pretty print
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            DOMSource source = new DOMSource(doc);
+
+
+            StreamResult file = new StreamResult(new File(filePathName));
+
+            //write data
+            transformer.transform(source, file);
+            System.out.println("DONE");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void createTasksFromXML(String XMLFilePath){
@@ -81,7 +138,7 @@ public class XMLParser {
 
         try{
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = dBuilder.parse(file);
+            doc = dBuilder.parse(file);
             System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
             if (doc.hasChildNodes()) {

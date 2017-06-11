@@ -118,6 +118,7 @@ public class ApplicationController {
         leafTasks = new LeafTasks();
         // initialisation de la liste des noeuds
         nodes = new Nodes();
+        // initilisation de l'objet qui contient l'adresse du fichier et le texte de ce fichier
         xmlFile = new XMLFile();
         xmlParser = new XMLParser(tasks);
 

@@ -210,10 +210,17 @@ public class ApplicationController {
                     }else{
                         currentLeafTask = (LeafTask) currentNode.getTag();
                         currentTask=null;
-                        currentLeafTask=null;
+                        currentMotherTask=null;
                     }
                     System.out.println("currentTask " + currentTask + "currentMotherTask " + currentMotherTask + "currentLeafTask " + currentLeafTask);
                     view.currentTask = (Task) currentNode.getTag();
+//                    view.getTxt_edit_id_resume().textProperty().bindBidirectional(view.currentTask.idPropertyProperty());
+//                    view.getTxtfield_edit_name().textProperty().bindBidirectional(view.currentTask.namePropertyProperty());
+                    view.getTxt_edit_id_resume().setText(view.currentTask.getIdProperty().toString());
+                    view.getTxtfield_edit_name().setText(view.currentTask.getNameProperty().toString());
+                    if(view.currentTask.getClass()==MotherTask.class)
+                        view.getMenubutton_edit_constructeur().setText(currentMotherTask.getConstructor().getName());
+
                 }
                 // mise en place du panel d'édition
                 changePanelState(true);
@@ -356,6 +363,26 @@ public class ApplicationController {
 */
         view.getListview_tags().setEditable(true);
         view.getListview_tags().setCellFactory(lvTag -> new TagListCell());
+
+
+//        //Listeners Panel D'edition:
+//
+//        //methode pour recuperer les elements de la tache dans le resume
+//
+//        public void showTaskResume(Task ){
+//            if(currentTask != null){
+//                t = currentTask;
+//
+//                view.getTxt_edit_id_resume().setText(currentTask.getIdProperty().toString());
+//                view.getTxtfield_edit_name().setText(currentTask.getNameProperty().toString());
+//                if(currentTask.getClass() == MotherTask.class)
+//                    menubutton_edit_constructeur.setText(currentTask.);
+//            }
+//            else{
+//                txt_edit_id_resume.setText("");
+//                txtfield_edit_name.setText("");
+//            }
+//        }
 
     }
 

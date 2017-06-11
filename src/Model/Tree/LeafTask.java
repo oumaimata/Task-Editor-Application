@@ -3,6 +3,7 @@ package Model.Tree;
 import Model.GlobalParameters;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -19,6 +20,11 @@ public class LeafTask extends Task{
     public LeafTask(StringProperty idProperty, StringProperty nameProperty, ObservableList<Operation> operationList) {
         super(idProperty, nameProperty);
         this.operationList = operationList;
+    }
+
+    public LeafTask(Task task) {
+        super(task.idPropertyProperty(), task.namePropertyProperty());
+        this.operationList = FXCollections.observableArrayList();
     }
 
     public LeafTask()

@@ -22,12 +22,15 @@ public class Task {
     ObservableList<Condition> conditionList;
     List<Object> context;
 
-
-
-
     public Task(StringProperty idProperty, StringProperty nameProperty) {
         this.idProperty = idProperty;
         this.nameProperty = nameProperty;
+    }
+
+    public Task(StringProperty idProperty, StringProperty nameProperty, ObservableList<Condition> observableList) {
+        this.idProperty = idProperty;
+        this.nameProperty = nameProperty;
+        this.conditionList = observableList;
     }
 
     public Task() {
@@ -45,9 +48,11 @@ public class Task {
     public void setNameProperty(String nameProperty) {
         this.nameProperty.set(nameProperty);
     }
+
     public String getNameProperty() {
         return nameProperty.get();
     }
+
     public StringProperty namePropertyProperty() {
         return nameProperty;
     }
@@ -60,10 +65,13 @@ public class Task {
     }
 
     public GlobalParameters.Nature getNature() { return nature; }
+
     public void setNature(GlobalParameters.Nature nature) { this.nature = nature; }
 
     public ObservableList<Condition> getConditionList() { return conditionList; }
+
     public void setConditionList(ObservableList<Condition> conditionList) { this.conditionList = conditionList; }
+
     public void addCondition(Condition condition)
     {
         if (!conditionList.contains(condition))
@@ -106,7 +114,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("%s | %s | %s", getIdProperty(), getNameProperty(), getNature().getName());
+        return ""; //String.format("%s | %s | %s", getIdProperty(), getNameProperty(), getNature().getName());
     }
 
     public void print()

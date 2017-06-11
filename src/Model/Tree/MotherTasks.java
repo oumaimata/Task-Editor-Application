@@ -1,33 +1,28 @@
 package Model.Tree;
 
-import com.yworks.yfiles.graph.INode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * Created by pierrelouislacorte on 06/06/2017.
+ * Created by pierrelouislacorte on 10/06/2017.
  */
-
-/*
- Necessite de création d'un liste observable de toutes les taches du modèle
- */
-public class Tasks {
-    private ObservableList<Task> tasks;
+public class MotherTasks {
+    private ObservableList<MotherTask> motherTasks;
     private Integer id;
 
     // constructeur sans argument
-    public Tasks() {
+    public MotherTasks() {
         System.out.println("creation de la observablelist tasks avec task.extractor()");
-        this.tasks = FXCollections.observableArrayList(Task.extractor());
+        this.motherTasks = FXCollections.observableArrayList();
         id = 0;
     }
 
-    public ObservableList<Task> getTasks() {
-        return tasks;
+    public ObservableList<MotherTask> getTasks() {
+        return motherTasks;
     }
 
-    public void setTasks(ObservableList<Task> tasks) {
-        this.tasks = tasks;
+    public void setTasks(ObservableList<MotherTask> motherTask) {
+        this.motherTasks = motherTask;
     }
 
     // getter sur un id qui va s'incrementer a chaque call
@@ -41,26 +36,35 @@ public class Tasks {
         Mother.addSubTask(Daugther.getIdProperty());
     }
 
-    // methode pour ajouter autant de tache que l'on veut
-    public void addTask(Task task){
-        System.out.println("Ajout d'une tâche à la liste des taches globale ");
-        if (!tasks.contains(task))
-            this.tasks.add(task);
+    public void createLinkBetweenTwoTasks(MotherTask Mother, MotherTask Daugther){
+        System.out.println("Creation d'un lien de parenté entre "+Mother.getIdProperty() + " et "+ Daugther.getIdProperty());
+        Mother.addSubTask(Daugther.getIdProperty());
     }
 
-    public void removeTask(Task task){
+    // methode pour ajouter autant de tache que l'on veut
+    public void addTask(MotherTask task){
+        System.out.println("Tentative d'ajout d'une tâche à la liste des taches globale ");
+        if (!motherTasks.contains(task)){
+            System.out.println("Ajout d'une tâche à la liste des taches meres globale ");
+            this.motherTasks.add(task);
+        }
+
+    }
+
+    // méthode pour supprimer une task de la liste des taches meres
+    public void removeTask(MotherTask task){
         System.out.println("Tentative de retrait d'une tâche à la liste des taches globale ");
-        if (tasks.contains(task)){
-            System.out.println("Retrait d'une tâche à la liste des taches globale ");
-            this.tasks.remove(task);
+        if (motherTasks.contains(task)){
+            System.out.println("Retrait d'une tâche à la liste des taches meres globale ");
+            this.motherTasks.remove(task);
         }
     }
 
     // methode d'ajout a la liste des taches une tache par défaut : nom + id
     // retourne la tache ainsi créée
-    public Task addDefaultTache(){
+    public MotherTask addDefaultTache(){
         System.out.println("lancement de la methode addDefaultTache de Tasks");
-        Task newTask = new Task();
+        MotherTask newTask = new MotherTask();
         newTask.setIdProperty(getId().toString());
         addTask(newTask);
         System.out.println(toString());
@@ -73,8 +77,8 @@ public class Tasks {
     }
 
     public String toString(){
-        StringBuilder result = new StringBuilder("liste des taches: ");
-        for(Task task:tasks) {
+        StringBuilder result = new StringBuilder("liste des tache meres: ");
+        for(MotherTask task:motherTasks) {
             result.append(task.getNameProperty());
             result.append(" ");
             result.append(task.getIdProperty());
@@ -82,6 +86,4 @@ public class Tasks {
         }
         return result.toString();
     }
-
-
 }

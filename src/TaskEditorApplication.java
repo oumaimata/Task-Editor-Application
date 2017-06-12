@@ -26,7 +26,7 @@ public class TaskEditorApplication extends Application {
         stage.setScene(scene);
         // Set full screen
         stage.setMaximized(true);
-        stage.setFullScreen(true);
+        //stage.setFullScreen(true);
         stage.show();
     }
 

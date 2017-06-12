@@ -717,7 +717,7 @@ public class ViewController {
     }
 
     public void refreshXMLfromTree(){
-        applicationController.xmlParser.toXMLFromTree(applicationController.tasks,applicationController.xmlFile.getXMLfilePath());
+        applicationController.xmlParser.toXMLFromTree(applicationController.motherTasks,applicationController.leafTasks,applicationController.xmlFile.getXMLfilePath());
         applicationController.xmlFile.setTextFromFilePath();
         codeArea.replaceText(applicationController.xmlFile.getXMLtext());
     }

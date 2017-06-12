@@ -88,30 +88,36 @@ public class XMLParser {
         }
     }
 
-    public void toXMLFromTree(Tasks tasks,String filePathName){
+    public void toXMLFromTree(MotherTasks motherTasks,LeafTasks leafTasks,String filePathName){
         try{
             if (doc.hasChildNodes()) {
                 NodeList nodeList = doc.getDocumentElement().getChildNodes();
                 for (int count = 0; count < nodeList.getLength(); count++) {
                     Node node = nodeList.item(count);
                     System.out.println("tested node :" + node.getNodeName());
-                    if (node.getNodeName().equals(TASKS)) {
-                        if(node.hasChildNodes()){
+                    if (node.getNodeName().equals(MOTHER_TASK)) {
+                        if (node.hasChildNodes()) {
                             NodeList childList = node.getChildNodes();
-                            for(int i = 0; i < childList.getLength(); i++){
+                            for (int i = 0; i < childList.getLength(); i++) {
                                 node.removeChild(childList.item(i));
                             }
-                        }
-                        for(int i = 0; i < tasks.getTasks().size(); i++){
-                            if (tasks.getTasks().get(i).getClass() == MotherTask.class){
-                                MotherTask motherTask = (MotherTask) tasks.getTasks().get(i);
+                            for (int i = 0; i < motherTasks.getTasks().size(); i++) {
+                                MotherTask motherTask = motherTasks.getTasks().get(i);
                                 node.appendChild(motherTask.toXml(doc));
                             }
-                            if (tasks.getTasks().get(i).getClass() == LeafTask.class){
-                                LeafTask leafTask = (LeafTask) tasks.getTasks().get(i);
+                        }
+                    } else if (node.getNodeName().equals(LEAF_TASK)){
+                        if (node.hasChildNodes()) {
+                            NodeList childList = node.getChildNodes();
+                            for (int i = 0; i < childList.getLength(); i++) {
+                                node.removeChild(childList.item(i));
+                            }
+                            for (int i = 0; i < leafTasks.getTasks().size(); i++) {
+                                LeafTask leafTask = leafTasks.getTasks().get(i);
                                 node.appendChild(leafTask.toXml(doc));
                             }
                         }
+
                     }
                 }
             }

@@ -47,4 +47,12 @@ public class LeafTask extends Task{
 
         return leafTaskElement;
     }
+
+    public MotherTask getMother() {
+        return mother;
+    }
+
+    public void setMother(MotherTask mother) {
+        this.mother = mother;
+    }
 }

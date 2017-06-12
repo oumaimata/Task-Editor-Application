@@ -93,15 +93,16 @@ public class ViewController {
         button_xml_rafraichir.setOnAction((event) -> {refreshTreeFromXML();});
         applicationController.xmlFile.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
 
-        bindindTaskAndEdition();
+        bindingTaskAndEdition();
 
     }
 
-    public void bindindTaskAndEdition()
+    public void bindingTaskAndEdition()
     {
         txtfield_edit_name.textProperty().bindBidirectional(currentTask.namePropertyProperty());
         txt_edit_id_resume.textProperty().bindBidirectional(currentTask.idPropertyProperty());
     }
+
 
     // méthode appelée par l'application une fois que le stage a été chargé.
     public void onLoaded() {

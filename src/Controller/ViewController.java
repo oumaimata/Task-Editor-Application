@@ -93,7 +93,61 @@ public class ViewController {
         button_xml_rafraichir.setOnAction((event) -> {refreshTreeFromXML();});
         applicationController.xmlFile.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
 
+        MenuItem menuItem1 = new MenuItem("Interruptible");
+        MenuItem menuItem2 = new MenuItem("Optionnelle");
+        MenuItem menuItem3 = new MenuItem("Interratif");
+
+        menubutton_edit_nature.getItems().clear();
+        menubutton_edit_nature.getItems().addAll(menuItem1,menuItem2,menuItem3);
+
+        // creation des menuitems
+        MenuItem menuItem4 = new MenuItem("IND");
+        MenuItem menuItem5 = new MenuItem("SEQ");
+        MenuItem menuItem6 = new MenuItem("SEQ-ORD");
+        MenuItem menuItem7 = new MenuItem("PAR");
+        MenuItem menuItem8 = new MenuItem("PAR-SIM");
+        MenuItem menuItem9 = new MenuItem("PAR-START");
+        MenuItem menuItem10 = new MenuItem("PAR-END");
+        // creation du menubutton et ajout de tous les menuitems
+        menubutton_edit_constructeur.getItems().clear();
+        menubutton_edit_constructeur.getItems().addAll(menuItem4,menuItem5,menuItem6,menuItem7,menuItem8,menuItem9,menuItem10);
+
+
+        MenuItem menuItem11 = new MenuItem(">");
+        MenuItem menuItem12 = new MenuItem("<");
+        MenuItem menuItem13 = new MenuItem("m");
+        MenuItem menuItem14 = new MenuItem("mi");
+        MenuItem menuItem15 = new MenuItem("o");
+        MenuItem menuItem16 = new MenuItem("s");
+        MenuItem menuItem17 = new MenuItem("si");
+        MenuItem menuItem18 = new MenuItem("d");
+        MenuItem menuItem19 = new MenuItem("di");
+        MenuItem menuItem20 = new MenuItem("f");
+        MenuItem menuItem21 = new MenuItem("fi");
+        MenuItem menuItem22 = new MenuItem("=");
+        menubutton_edit_lien_entre_taches.getItems().clear();
+        menubutton_edit_lien_entre_taches.getItems().addAll(menuItem11,menuItem12,menuItem13,menuItem14,menuItem15,menuItem16,menuItem17,menuItem18,menuItem19,menuItem20,menuItem21,menuItem22);
+
+        menubutton_edit_premiere_tache_fille.getItems().clear();
+        menubutton_edit_deuxieme_tache_fille.getItems().clear();
+
+        MenuItem menuItem23 = new MenuItem("nomologique");
+        MenuItem menuItem26 = new MenuItem("satisfaction");
+        MenuItem menuItem25 = new MenuItem("arret");
+        MenuItem menuItem24 = new MenuItem("precondition");
+        menubutton_edit_type_condition.getItems().clear();
+        menubutton_edit_type_condition.getItems().addAll(menuItem23,menuItem24,menuItem25,menuItem26);
+
+        MenuItem menuItem27 = new MenuItem("AND");
+        MenuItem menuItem28 = new MenuItem("OR");
+        MenuItem menuItem29 = new MenuItem("XOR");
+        MenuItem menuItem30 = new MenuItem("N0T");
+        menubutton_edit_operateur_logique_condition.getItems().clear();
+        menubutton_edit_operateur_logique_condition.getItems().addAll(menuItem27,menuItem28,menuItem29,menuItem30);
+
+
         bindingTaskAndEdition();
+
 
     }
 

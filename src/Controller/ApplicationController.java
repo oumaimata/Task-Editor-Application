@@ -629,8 +629,13 @@ public class ApplicationController {
         }else {
             // si la fille est une tache
             Task daugthertask = (Task) Daugther.getTag();
+            //suppression de la tache a la liste des taches
+            tasks.removeTask(daugthertask);
             // changement de la tache comme leaf tache
             LeafTask daugtherleaftask = new LeafTask(daugthertask);
+            // sauvegarde de la mère
+            daugtherleaftask.setMother(motherTask);
+            // ajout de la leaf tache 
             // on sauvegarde derrière l'ancien noeud Daughet le fait que c'est maintenant une leaf task
             Daugther.setTag(motherTask);
             // ajout de cette tache a la liste des sous taches de la mère

@@ -17,7 +17,7 @@
 
 <?import com.yworks.yfiles.view.GraphControl?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-border-color: #022b3a;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-border-color: #022b3a;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ApplicationController">
 
    <top>
       <AnchorPane prefHeight="32.0" prefWidth="890.0" style="-fx-background-color: #1f7a8c; -fx-border-color: #022b3a;">

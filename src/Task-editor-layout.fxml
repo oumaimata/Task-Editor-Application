@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -16,8 +21,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import com.yworks.yfiles.view.GraphControl?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-border-color: #022b3a;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ApplicationController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-border-color: #022b3a;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ApplicationController">
 
    <top>
       <AnchorPane prefHeight="32.0" prefWidth="890.0" style="-fx-background-color: #1f7a8c; -fx-border-color: #022b3a;">
@@ -142,7 +146,7 @@
                                                 <Text layoutX="392.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Autres Tâches :" AnchorPane.rightAnchor="284.9091796875" />
                                                 <Button fx:id="button_edit_ajout_tache_fille" layoutX="302.0" layoutY="128.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="59.0" style="-fx-background-radius: 30 30 30 30; -fx-border-radius: 30 30 30 30; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="&lt;" AnchorPane.leftAnchor="302.0" AnchorPane.rightAnchor="412.0" />
                                                 <Button fx:id="button_edit_retrait_tache_fille" layoutX="303.0" layoutY="183.0" mnemonicParsing="false" style="-fx-background-radius: 30 30 30 30; -fx-border-radius: 30 30 30 30; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="&gt;" AnchorPane.leftAnchor="302.0" AnchorPane.rightAnchor="412.0" />
-                                                <ComboBox fx:id="cbb_nature" layoutX="112.0" layoutY="47.0" prefHeight="28.0" prefWidth="137.0" promptText="Interruptible" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="222.0" AnchorPane.topAnchor="47.0" />
+                                                <ComboBox fx:id="cbb_nature" layoutX="112.0" layoutY="47.0" prefHeight="28.0" prefWidth="137.0" promptText="Interruptible" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="112.0" AnchorPane.topAnchor="47.0" />
                                                 <ComboBox fx:id="cbb_constructeur" layoutX="381.0" layoutY="47.0" prefHeight="28.0" prefWidth="137.0" promptText="SEQ" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" />
                                              </children>
                                           </AnchorPane>

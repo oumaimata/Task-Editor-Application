@@ -160,7 +160,7 @@ public class ApplicationController {
         // ajout de la liste de toutes les tâches à la listview taches filles
         // ce n'est pas ce qu'il y aura dedans mais le fonctionnement est ok.
         // /!\ A adapter /!\
-        view.getListview_edit_taches_filles().setItems(tasks.getTasks());
+        view.getListview_edit_taches_filles().setItems(leafTasks.getTasks());
 
         graphControl.currentItemProperty();
 
@@ -513,7 +513,7 @@ public class ApplicationController {
             graph.addLabel(node, motherTask.getNameProperty());
         }
         // on parcours les taches
-        for (Task task:tasks.getTasks()){
+        /*for (Task task:tasks.getTasks()){
             // création d'un nouveau noeud avec la task comme tag
             System.out.println("creation d'un nouveau node avec comme tag: " + task.getNameProperty()+ " " +task.getIdProperty());
             INode node = graph.createNode(new PointD(0,0),TaskStyle,task);
@@ -522,7 +522,7 @@ public class ApplicationController {
             // ajout du label de la task au noeud
             System.out.println("Ajout du label: " + task.getNameProperty()+ " au noeud " + node.toString());
             graph.addLabel(node, task.getNameProperty());
-        }
+        }*/
 
         // on parcours les taches mère filles
         for (LeafTask leafTask:leafTasks.getTasks()){

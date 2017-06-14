@@ -57,8 +57,6 @@ public class ApplicationController {
 
     // reference sur le controller du graph
     public GraphControl graphControl;
-    // reference sur le graph
-    public IGraph graph;
     // reference sur le controller de la vue
     //public ViewController view;
     // reference sur l'ensemble des taches du modèle
@@ -167,9 +165,7 @@ public class ApplicationController {
 
     public ApplicationController() {
         //currentTask = new Task();
-        this.graphControl = new GraphControl();
-        // obtenir la référence du graph
-        this.graph = graphControl.getGraph();
+        graphControl = new GraphControl();
         // reference sur l'edition du graph
         graphEditorInputMode = new GraphEditorInputMode();
         // mise en place de preference sur les objets des click : d'abord les noeuds, puis les fleches, puis les labels
@@ -497,19 +493,19 @@ public class ApplicationController {
     }
     */
 
-    private void addNodeFromTask(Task task){
+    private void addNodeFromTask(LeafTask task){
         System.out.println("lancement de la methode d'ajout d'un node a partir d'une tache");
-        INode node1 = graph.createNode(new PointD(),TaskStyle,task);
+        INode node1 = graphControl.getGraph().createNode(new PointD(),TaskStyle,task);
         nodes.addNode(node1);
-        graph.addLabel(node1, task.getNameProperty());
+        graphControl.getGraph().addLabel(node1, task.getNameProperty());
     }
 
 
     private void addNodeFromTask(MotherTask task){
         System.out.println("lancement de la methode d'ajout d'un node a partir d'une tache");
-        INode node1 = graph.createNode(new PointD(),MotherTaskStyle,task);
+        INode node1 = graphControl.getGraph().createNode(new PointD(),MotherTaskStyle,task);
         nodes.addNode(node1);
-        graph.addLabel(node1, task.getNameProperty());
+        graphControl.getGraph().addLabel(node1, task.getNameProperty());
     }
 
     private void changePanelState(boolean hasCurrentNode){
@@ -542,7 +538,7 @@ public class ApplicationController {
                 Task task = (Task) currentNode.getTag();
                 tasks.removeTask(task);
             }
-            graph.remove(currentNode);
+            graphControl.getGraph().remove(currentNode);
         }
     }
 
@@ -556,7 +552,6 @@ public class ApplicationController {
         graphControl.morphLayout(hierarchicLayout, Duration.ofMillis(500));
         // mise a jour des styles
         updateNodeStyle();
-        graphControl.setGraph(graph);
     }
 
     // méthode pour creer tous les noeuds à partir des taches
@@ -571,35 +566,35 @@ public class ApplicationController {
         for (MotherTask motherTask:motherTasks.getTasks()){
             // création d'un nouveau noeud avec la la motherTask comme tag
             System.out.println("creation d'un nouveau node avec comme tag: " + motherTask.getNameProperty()+ " " +motherTask.getIdProperty());
-            INode node = graph.createNode(new PointD(0,0),MotherTaskStyle,motherTask);
+            INode node = graphControl.getGraph().createNode(new PointD(0,0),MotherTaskStyle,motherTask);
             // ajout de ce noeuds a la liste des noeuds
             nodes.addNode(node);
             // ajout du label de la task au noeud
             System.out.println("Ajout du label: " + motherTask.getNameProperty()+ " au noeud " + node.toString());
-            graph.addLabel(node, motherTask.getNameProperty());
+            graphControl.getGraph().addLabel(node, motherTask.getNameProperty());
         }
         // on parcours les taches
         for (Task task:tasks.getTasks()){
             // création d'un nouveau noeud avec la task comme tag
             System.out.println("creation d'un nouveau node avec comme tag: " + task.getNameProperty()+ " " +task.getIdProperty());
-            INode node = graph.createNode(new PointD(0,0),TaskStyle,task);
+            INode node = graphControl.getGraph().createNode(new PointD(0,0),TaskStyle,task);
             // ajout de ce noeuds a la liste des noeuds
             nodes.addNode(node);
             // ajout du label de la task au noeud
             System.out.println("Ajout du label: " + task.getNameProperty()+ " au noeud " + node.toString());
-            graph.addLabel(node, task.getNameProperty());
+            graphControl.getGraph().addLabel(node, task.getNameProperty());
         }
 
         // on parcours les taches mère filles
         for (LeafTask leafTask:leafTasks.getTasks()){
             // création d'un nouveau noeud avec la task comme tag
             System.out.println("creation d'un nouveau node avec comme tag: " + leafTask.getNameProperty()+ " " +leafTask.getIdProperty());
-            INode node = graph.createNode(new PointD(0,0),LeafTaskStyle,leafTask);
+            INode node = graphControl.getGraph().createNode(new PointD(0,0),LeafTaskStyle,leafTask);
             // ajout de ce noeuds a la liste des noeuds
             nodes.addNode(node);
             // ajout du label de la task au noeud
             System.out.println("Ajout du label: " + leafTask.getNameProperty()+ " au noeud " + node.toString());
-            graph.addLabel(node, leafTask.getNameProperty());
+            graphControl.getGraph().addLabel(node, leafTask.getNameProperty());
         }
 
     }
@@ -634,7 +629,7 @@ public class ApplicationController {
                                     System.out.println("on a " + otherTask.getIdProperty() + " == " + subTaskStringId + " et de longueur " + otherTask.getIdProperty().length());
                                     // création du lien graphique
                                     subtask.add(otherNode);
-                                    graph.createEdge(node, otherNode);
+                                    graphControl.getGraph().createEdge(node, otherNode);
                                     System.out.println("edge");
                                 }
                             } else if (otherNode.getTag().getClass() == LeafTask.class) {
@@ -646,7 +641,7 @@ public class ApplicationController {
                                     System.out.println("on a " + otherTask.getIdProperty() + " == " + subTaskStringId );
                                     // création du lien graphique
                                     subtask.add(otherNode);
-                                    graph.createEdge(node, otherNode);
+                                    graphControl.getGraph().createEdge(node, otherNode);
                                     System.out.println("edge");
                                 }
                             } else {
@@ -658,7 +653,7 @@ public class ApplicationController {
                                     System.out.println("on a " + otherTask.getIdProperty() + " == " + subTaskStringId);
                                     // création du lien graphique
                                     subtask.add(otherNode);
-                                    graph.createEdge(node, otherNode);
+                                    graphControl.getGraph().createEdge(node, otherNode);
                                     System.out.println("edge");
                                 }
                             }
@@ -700,7 +695,7 @@ public class ApplicationController {
         // on sauvegarde derrière l'ancien noeud Mother le fait que c'est maintenant une mother task
         Mother.setTag(motherTask);
         // update du style
-        graph.setStyle(Mother,MotherTaskStyle);
+        graphControl.getGraph().setStyle(Mother,MotherTaskStyle);
 
         // on essaye de trouver le type de la classe fille
         if(Daugther.getTag().getClass() == MotherTask.class){
@@ -732,7 +727,7 @@ public class ApplicationController {
             // ajout de cette tache a la liste des sous taches de la mère
             motherTask.addSubTask(daugtherleaftask.getIdProperty());
             // update du style
-            graph.setStyle(Daugther,LeafTaskStyle);
+            graphControl.getGraph().setStyle(Daugther,LeafTaskStyle);
             System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daugthertask.getIdProperty());
 
         }
@@ -742,7 +737,7 @@ public class ApplicationController {
     private void updateNodeStyle(){
         System.out.println("lancement de la methode d'update des styles entre nodes à partir d'une liste de noeuds");
         // iterating over nodes
-        for (INode node : graph.getNodes()) {
+        for (INode node : graphControl.getGraph().getNodes()) {
             // do something with the node
             // si le noeud est une tache mère
             ShapeNodeStyle style;
@@ -753,7 +748,7 @@ public class ApplicationController {
             }else {
                 style = TaskStyle;
             }
-            graph.setStyle(node,style);
+            graphControl.getGraph().setStyle(node,style);
         }
         System.out.println("Fin de la methode d'update des styles entre nodes à partir d'une liste de noeuds");
     }
@@ -875,6 +870,7 @@ public class ApplicationController {
             pop_cbb_constructeur.getItems().addAll("IND","SEQ","SEQ_ORD","PAR","PAR_SIM","PAR_START","PAR_END");
 
             HBox hboxmere = new HBox(mereCheckBox, pop_cbb_constructeur);
+            pop_cbb_constructeur.setVisible(false);
             hboxmere.setAlignment(Pos.CENTER_LEFT);
             grid.add(hboxmere, 1, 3);
 
@@ -882,14 +878,14 @@ public class ApplicationController {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                     pop_cbb_constructeur.setVisible(newValue);
-                    /*if(newValue == true){
+                    if(newValue == true){
                         System.out.println("la checkbox est cochée");
                         pop_cbb_constructeur.show();
                     }
                     if(newValue == false){
                         System.out.println("la checkbox est décochée");
                         pop_cbb_constructeur.hide();
-                    }*/
+                    }
                 }
             });
 
@@ -911,7 +907,7 @@ public class ApplicationController {
                                 System.out.println("On modifie la tache avec nom: "+ nameTextField.getText());
                                 motherTask.setNameProperty(nameTextField.getText());
                             }
-                            motherTask.setConstructor(GlobalParameters.TypeConstructeur.valueOf(pop_cbb_constructeur.getValue().replace("-","_")));
+                            motherTask.setConstructor(GlobalParameters.TypeConstructeur.valueOf(pop_cbb_constructeur.getValue()));
                             System.out.println("On créer une tache mere, son constructeur est: "+ motherTask.getConstructor());
                             leafTask = null;
                         }

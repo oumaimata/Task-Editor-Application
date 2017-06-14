@@ -166,7 +166,7 @@ public class ApplicationController {
     private TextField popup_textfield_id, popup_textfield_name;
 
     public ApplicationController() {
-        currentTask = new Task();
+        //currentTask = new Task();
         this.graphControl = new GraphControl();
         // obtenir la référence du graph
         this.graph = graphControl.getGraph();
@@ -184,7 +184,7 @@ public class ApplicationController {
         MotherTaskStyle = createMotherTaskStyle();
         TaskStyle = createTaskStyle();
         LeafTaskStyle = createLeafStyle();
-        currentTask = new Task();
+        //currentTask = new Task();
         // le panel est actif initialement
         //panelActif = true;
         // initialisation des layout utilisés
@@ -201,7 +201,7 @@ public class ApplicationController {
         // initialisation des noeuds courrant
         currentMotherTask = null;
         currentLeafTask = null;
-        currentTask = null;
+        //currentTask = null;
     }
 
     public void initialize() {
@@ -252,12 +252,12 @@ public class ApplicationController {
         button_xml_rafraichir.setOnAction((event) -> {refreshTreeFromXML();});
         xmlFile.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
 
-        cbb_nature.getItems().addAll("Interruptible", "Optionnelle","Itérative");
-        cbb_constructeur.getItems().addAll("IND","SEQ","SEQ-ORD","PAR","PAR-SIM","PAR-START","PAR-END");
+        cbb_nature.getItems().addAll("interruptible", "optional","iterative");
+        cbb_constructeur.getItems().addAll("IND","SEQ","SEQ_ORD","PAR","PAR_SIM","PAR_START","PAR_END");
 
-        cbb_lien_taches.getItems().addAll(">","<","m","mi","o","s","si","d","di","f","fi");
+        cbb_lien_taches.getItems().addAll(">","<","m","mi","o","oi","s","si","d","di","f","fi","=");
 
-        cbb_type_condition.getItems().addAll("nomologique","satisfaction","arret");
+        cbb_type_condition.getItems().addAll("nomological","satisfaction","arret");
         cbb_operateur_condition.getItems().addAll("AND","OR","XOR","NOT");
 
 //        bindingTaskAndEdition();
@@ -308,27 +308,34 @@ public class ApplicationController {
                     System.out.println("l'objet courrant est devenu: " + currentNode.getTag().getClass() );
                     if(currentNode.getTag().getClass() == Task.class){
                         // si le noeud selectionné renferme une tache
-                        currentTask = (Task) currentNode.getTag();
+                        //currentTask = (Task) currentNode.getTag();
                         currentMotherTask = null;
                         currentLeafTask = null;
 
                     }else if (currentNode.getTag().getClass() == MotherTask.class){
                         currentMotherTask = (MotherTask) currentNode.getTag();
-                        currentTask=null;
+                        //currentTask=null;
                         currentLeafTask= null;
                     }else{
                         currentLeafTask = (LeafTask) currentNode.getTag();
-                        currentTask=null;
+                        //currentTask=null;
                         currentMotherTask=null;
                     }
-                    System.out.println("currentTask " + currentTask + "currentMotherTask " + currentMotherTask + "currentLeafTask " + currentLeafTask);
-                    currentTask = (Task) currentNode.getTag();
-//                    view.getTxt_edit_id_resume().textProperty().bindBidirectional(view.currentTask.idPropertyProperty());
-//                    view.getTxtfield_edit_name().textProperty().bindBidirectional(view.currentTask.namePropertyProperty());
-                    getTxt_edit_id_resume().setText(currentTask.getIdProperty());
-                    getTxtfield_edit_name().setText(currentTask.getNameProperty());
-                    if(currentTask.getClass()==MotherTask.class)
+                    //System.out.println("currentTask " + currentTask + "currentMotherTask " + currentMotherTask + "currentLeafTask " + currentLeafTask);
+                    //currentTask = (Task) currentNode.getTag();
+
+                    //getTxt_edit_id_resume().setText(currentTask.getIdProperty());
+                    //getTxtfield_edit_name().setText(currentTask.getNameProperty());
+                    if(currentMotherTask != null)
+                    {
+                        txtfield_edit_name.setText(currentMotherTask.getNameProperty());
                         cbb_constructeur.setValue(currentMotherTask.getConstructor().getName());
+                        cbb_nature.setValue(currentMotherTask.getNature().getName());
+                    }
+                    else if (currentLeafTask != null)
+                    {
+                        txtfield_edit_name.setText(currentLeafTask.getNameProperty());
+                    }
 
                 }
                 // mise en place du panel d'édition
@@ -346,7 +353,7 @@ public class ApplicationController {
                 currentNode = null;
                 currentMotherTask = null;
                 currentLeafTask = null;
-                currentTask = null;
+                //currentTask = null;
             }
         });
 
@@ -380,6 +387,7 @@ public class ApplicationController {
 
             }
         });
+        graphControl.setInputMode(graphEditorInputMode);
         // listener sur tags
         getButton_graph_ajouter_tag().setOnAction(evt -> handleAddTag());
         getButton_graph_supprimer_tag().setOnAction(evt -> handleDeleteTag());
@@ -789,14 +797,6 @@ public class ApplicationController {
     }
 
 
-
-    public void bindingTaskAndEdition()
-    {
-        txtfield_edit_name.textProperty().bindBidirectional(currentTask.namePropertyProperty());
-        txt_edit_id_resume.textProperty().bindBidirectional(currentTask.idPropertyProperty());
-    }
-
-
     // méthode appelée par l'application une fois que le stage a été chargé.
     public void onLoaded() {
         // ajout du listener sur le bouton d'ajout du graph pour ouvrir une pop-up d'ajout
@@ -872,7 +872,7 @@ public class ApplicationController {
 
             // Choix du constructeur
             ComboBox<String> pop_cbb_constructeur = new ComboBox<String>();
-            pop_cbb_constructeur.getItems().addAll("IND","SEQ","SEQ-ORD","PAR","PAR-SIM","PAR-START","PAR-END");
+            pop_cbb_constructeur.getItems().addAll("IND","SEQ","SEQ_ORD","PAR","PAR_SIM","PAR_START","PAR_END");
 
             HBox hboxmere = new HBox(mereCheckBox, pop_cbb_constructeur);
             hboxmere.setAlignment(Pos.CENTER_LEFT);

@@ -3,6 +3,7 @@ package Controller;
 
 import Model.GlobalParameters;
 import Model.Tree.MotherTask;
+import Model.Tree.LeafTask;
 import Model.Tree.Tag;
 import Model.Tree.Tags;
 import Model.Tree.Task;
@@ -50,8 +51,8 @@ import java.util.List;
  */
 public class ViewController {
     ApplicationController applicationController;
-    Task createTask;
-    MotherTask createMotherTask;
+    LeafTask createdLeafTask;
+    MotherTask createdMotherTask;
 
     public Task currentTask;
 
@@ -165,16 +166,16 @@ public class ViewController {
             PopupController wc = new PopupController();
             wc.showPopUp();
             if(wc.isMotherTask()){
-                this.createMotherTask = wc.getDataMotherTask();
+                this.createdMotherTask = wc.getDataMotherTask();
                 System.out.println("created task: " + getCreateMotherTask().getNameProperty());
-                applicationController.addNodeFromTask(wc.getDataMotherTask());
+                applicationController.addNodeFromTask(createdMotherTask);
+                applicationController.motherTasks.addTask(createdMotherTask);
             }else{
-                this.createTask = wc.getDataTask();
-                System.out.println("created task: " + getCreatedTask().getNameProperty());
-                applicationController.addNodeFromTask(wc.getDataTask());
+                this.createdLeafTask = wc.getDataLeafTask();
+                System.out.println("created task: " + getCreatedLeafTask().getNameProperty());
+                applicationController.addNodeFromTask(createdLeafTask);
+                applicationController.leafTasks.addTask(createdLeafTask);
             }
-
-
 
         });
         //fit graph after all element been loaded
@@ -182,19 +183,19 @@ public class ViewController {
     }
 
     // getter sur la tache créée
-    public Task getCreatedTask() {
-        return createTask;
+    public Task getCreatedLeafTask() {
+        return createdLeafTask;
     }
 
     // getter sur la mother task créée
     public MotherTask getCreateMotherTask() {
-        return createMotherTask;
+        return createdMotherTask;
     }
 
     // classe pour gérer la pop up d'ajout de tâche
     class PopupController {
-        private Task task;
-        private MotherTask motherTaskPopup;
+        private LeafTask leafTask;
+        private MotherTask motherTask;
 
         public PopupController(){}
 
@@ -282,23 +283,33 @@ public class ViewController {
             grid.add(hbBtn, 1, 5);
 
             btn.setOnAction(e ->{
-                this.task = new Task();
-                if(!idTextField.getText().isEmpty()){
-                    System.out.println("On modifie la tache avec id: "+ idTextField.getText());
-                    this.task.setIdProperty(idTextField.getText());
+                if (mereCheckBox.isSelected())
+                {
+                    motherTask = new MotherTask();
+                    if(!idTextField.getText().isEmpty()){
+                        System.out.println("On modifie la tache avec id: "+ idTextField.getText());
+                        motherTask.setIdProperty(idTextField.getText());
+                    }
+                    if(!nameTextField.getText().isEmpty()){
+                        System.out.println("On modifie la tache avec nom: "+ nameTextField.getText());
+                        motherTask.setNameProperty(nameTextField.getText());
+                    }
+                    motherTask.setConstructor(GlobalParameters.TypeConstructeur.valueOf(constructor.getText().replace("-","_")));
+                    System.out.println("On créer une tache mere, son constructeur est: "+ motherTask.getConstructor());
+                    leafTask = null;
                 }
-
-                if(!nameTextField.getText().isEmpty()){
-                    System.out.println("On modifie la tache avec nom: "+ nameTextField.getText());
-                    this.task.setNameProperty(nameTextField.getText());
-                }
-
-                if(mereCheckBox.isSelected() && (constructor.getText() != "Constructeur")){
-                    // si la checkbox est selectionnée alors on créer une tâche mère directement
-                    this.motherTaskPopup = new MotherTask(task);
-                    this.motherTaskPopup.setConstructor(GlobalParameters.TypeConstructeur.valueOf(constructor.getText().replace("-","_")));
-                    System.out.println("On créer une tache mere, son constructeur est: "+ motherTaskPopup.getConstructor());
-                    this.task = null;
+                else
+                {
+                    leafTask = new LeafTask();
+                    if(!idTextField.getText().isEmpty()){
+                        System.out.println("On modifie la tache avec id: "+ idTextField.getText());
+                        leafTask.setIdProperty(idTextField.getText());
+                    }
+                    if(!nameTextField.getText().isEmpty()){
+                        System.out.println("On modifie la tache avec nom: "+ nameTextField.getText());
+                        leafTask.setNameProperty(nameTextField.getText());
+                    }
+                    motherTask = null;
                 }
                 popupwindow.close();
             }
@@ -323,21 +334,11 @@ public class ViewController {
             }
         }
 
-        Task getDataTask() {
-            return task;
-        }
-
+        LeafTask getDataLeafTask() { return leafTask; }
         MotherTask getDataMotherTask() {
-            return motherTaskPopup;
+            return motherTask;
         }
-
-        boolean isMotherTask(){
-            if(getDataTask() == null){
-                return true;
-            }else{
-                return false;
-            }
-        }
+        boolean isMotherTask(){  return (motherTask != null); }
 
     }
 

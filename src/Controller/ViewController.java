@@ -3,15 +3,14 @@ package Controller;
 
 import Model.GlobalParameters;
 import Model.Tree.MotherTask;
+import Model.Tree.LeafTask;
 import Model.Tree.Tag;
-import Model.Tree.Tags;
 import Model.Tree.Task;
 import Model.Tree.Tasks;
 import com.yworks.yfiles.view.GraphControl;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -31,27 +30,18 @@ import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import View.XMLEditor;
-import org.fxmisc.richtext.model.Paragraph;
-import org.fxmisc.richtext.model.StyledText;
-import org.reactfx.collection.LiveList;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by pierrelouislacorte on 29/05/2017.
  */
 public class ViewController {
-    ApplicationController applicationController;
-    Task createTask;
-    MotherTask createMotherTask;
+    /*ApplicationController applicationController;
+    LeafTask createdLeafTask;
+    MotherTask createdMotherTask;
 
     public Task currentTask;
 
@@ -93,62 +83,15 @@ public class ViewController {
         button_xml_rafraichir.setOnAction((event) -> {refreshTreeFromXML();});
         applicationController.xmlFile.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
 
-        MenuItem menuItem1 = new MenuItem("Interruptible");
-        MenuItem menuItem2 = new MenuItem("Optionnelle");
-        MenuItem menuItem3 = new MenuItem("Interratif");
+        cbb_nature.getItems().addAll("Interruptible", "Optionnelle","Itérative");
+        cbb_constructeur.getItems().addAll("IND","SEQ","SEQ-ORD","PAR","PAR-SIM","PAR-START","PAR-END");
 
-        menubutton_edit_nature.getItems().clear();
-        menubutton_edit_nature.getItems().addAll(menuItem1,menuItem2,menuItem3);
+        cbb_lien_taches.getItems().addAll(">","<","m","mi","o","s","si","d","di","f","fi");
 
-        // creation des menuitems
-        MenuItem menuItem4 = new MenuItem("IND");
-        MenuItem menuItem5 = new MenuItem("SEQ");
-        MenuItem menuItem6 = new MenuItem("SEQ-ORD");
-        MenuItem menuItem7 = new MenuItem("PAR");
-        MenuItem menuItem8 = new MenuItem("PAR-SIM");
-        MenuItem menuItem9 = new MenuItem("PAR-START");
-        MenuItem menuItem10 = new MenuItem("PAR-END");
-        // creation du menubutton et ajout de tous les menuitems
-        menubutton_edit_constructeur.getItems().clear();
-        menubutton_edit_constructeur.getItems().addAll(menuItem4,menuItem5,menuItem6,menuItem7,menuItem8,menuItem9,menuItem10);
-
-
-        MenuItem menuItem11 = new MenuItem(">");
-        MenuItem menuItem12 = new MenuItem("<");
-        MenuItem menuItem13 = new MenuItem("m");
-        MenuItem menuItem14 = new MenuItem("mi");
-        MenuItem menuItem15 = new MenuItem("o");
-        MenuItem menuItem16 = new MenuItem("s");
-        MenuItem menuItem17 = new MenuItem("si");
-        MenuItem menuItem18 = new MenuItem("d");
-        MenuItem menuItem19 = new MenuItem("di");
-        MenuItem menuItem20 = new MenuItem("f");
-        MenuItem menuItem21 = new MenuItem("fi");
-        MenuItem menuItem22 = new MenuItem("=");
-        menubutton_edit_lien_entre_taches.getItems().clear();
-        menubutton_edit_lien_entre_taches.getItems().addAll(menuItem11,menuItem12,menuItem13,menuItem14,menuItem15,menuItem16,menuItem17,menuItem18,menuItem19,menuItem20,menuItem21,menuItem22);
-
-        menubutton_edit_premiere_tache_fille.getItems().clear();
-        menubutton_edit_deuxieme_tache_fille.getItems().clear();
-
-        MenuItem menuItem23 = new MenuItem("nomologique");
-        MenuItem menuItem26 = new MenuItem("satisfaction");
-        MenuItem menuItem25 = new MenuItem("arret");
-        MenuItem menuItem24 = new MenuItem("precondition");
-        menubutton_edit_type_condition.getItems().clear();
-        menubutton_edit_type_condition.getItems().addAll(menuItem23,menuItem24,menuItem25,menuItem26);
-
-        MenuItem menuItem27 = new MenuItem("AND");
-        MenuItem menuItem28 = new MenuItem("OR");
-        MenuItem menuItem29 = new MenuItem("XOR");
-        MenuItem menuItem30 = new MenuItem("N0T");
-        menubutton_edit_operateur_logique_condition.getItems().clear();
-        menubutton_edit_operateur_logique_condition.getItems().addAll(menuItem27,menuItem28,menuItem29,menuItem30);
-
+        cbb_type_condition.getItems().addAll("nomologique","satisfaction","arret");
+        cbb_operateur_condition.getItems().addAll("AND","OR","XOR","NOT");
 
         bindingTaskAndEdition();
-
-
     }
 
     public void bindingTaskAndEdition()
@@ -165,16 +108,16 @@ public class ViewController {
             PopupController wc = new PopupController();
             wc.showPopUp();
             if(wc.isMotherTask()){
-                this.createMotherTask = wc.getDataMotherTask();
+                this.createdMotherTask = wc.getDataMotherTask();
                 System.out.println("created task: " + getCreateMotherTask().getNameProperty());
-                applicationController.addNodeFromTask(wc.getDataMotherTask());
+                applicationController.addNodeFromTask(createdMotherTask);
+                applicationController.motherTasks.addTask(createdMotherTask);
             }else{
-                this.createTask = wc.getDataTask();
-                System.out.println("created task: " + getCreatedTask().getNameProperty());
-                applicationController.addNodeFromTask(wc.getDataTask());
+                this.createdLeafTask = wc.getDataLeafTask();
+                System.out.println("created task: " + getCreatedLeafTask().getNameProperty());
+                applicationController.addNodeFromTask(createdLeafTask);
+                applicationController.leafTasks.addTask(createdLeafTask);
             }
-
-
 
         });
         //fit graph after all element been loaded
@@ -182,19 +125,19 @@ public class ViewController {
     }
 
     // getter sur la tache créée
-    public Task getCreatedTask() {
-        return createTask;
+    public Task getCreatedLeafTask() {
+        return createdLeafTask;
     }
 
     // getter sur la mother task créée
     public MotherTask getCreateMotherTask() {
-        return createMotherTask;
+        return createdMotherTask;
     }
 
     // classe pour gérer la pop up d'ajout de tâche
     class PopupController {
-        private Task task;
-        private MotherTask motherTaskPopup;
+        private LeafTask leafTask;
+        private MotherTask motherTask;
 
         public PopupController(){}
 
@@ -231,47 +174,18 @@ public class ViewController {
             // creation de la checkbox pour la construction d'une tache mère
             CheckBox mereCheckBox = new CheckBox();
 
-            // creation d'une liste qui va stocker l'ensemble des menuitems
-            List<MenuItem> listMenuItem = new ArrayList<>();
+            // Choix du constructeur
+            ComboBox<String> pop_cbb_constructeur = new ComboBox<String>();
+            pop_cbb_constructeur.getItems().addAll("IND","SEQ","SEQ-ORD","PAR","PAR-SIM","PAR-START","PAR-END");
 
-            // creation des menuitems
-            MenuItem menuItem1 = new MenuItem("IND");
-            MenuItem menuItem2 = new MenuItem("SEQ");
-            MenuItem menuItem3 = new MenuItem("SEQ-ORD");
-            MenuItem menuItem4 = new MenuItem("PAR");
-            MenuItem menuItem5 = new MenuItem("PAR-SIM");
-            MenuItem menuItem6 = new MenuItem("PAR-START");
-            MenuItem menuItem7 = new MenuItem("PAR-END");
-            // creation du menubutton et ajout de tous les menuitems
-            MenuButton constructor = new MenuButton("Constructeur");
-            constructor.getItems().addAll(menuItem1,menuItem2,menuItem3,menuItem4,menuItem5,menuItem6,menuItem7);
-
-            // sauvegarde de tous les boutons dans une liste
-            listMenuItem.add(menuItem1);
-            listMenuItem.add(menuItem2);
-            listMenuItem.add(menuItem3);
-            listMenuItem.add(menuItem4);
-            listMenuItem.add(menuItem5);
-            listMenuItem.add(menuItem6);
-            listMenuItem.add(menuItem7);
-            // creation de tous les listener
-            createListenerOfMenuItem(constructor,listMenuItem,mereCheckBox);
-
-            HBox hboxmere = new HBox(mereCheckBox, constructor);
+            HBox hboxmere = new HBox(mereCheckBox, pop_cbb_constructeur);
             hboxmere.setAlignment(Pos.CENTER_LEFT);
             grid.add(hboxmere, 1, 3);
 
             mereCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    if(newValue == true){
-                        System.out.println("la checkbox est cochée");
-                        constructor.show();
-                    }
-                    if(newValue == false){
-                        System.out.println("la checkbox est décochée");
-                        constructor.hide();
-                    }
+                    pop_cbb_constructeur.setVisible(newValue);
                 }
             });
 
@@ -282,23 +196,33 @@ public class ViewController {
             grid.add(hbBtn, 1, 5);
 
             btn.setOnAction(e ->{
-                this.task = new Task();
-                if(!idTextField.getText().isEmpty()){
-                    System.out.println("On modifie la tache avec id: "+ idTextField.getText());
-                    this.task.setIdProperty(idTextField.getText());
+                if (mereCheckBox.isSelected())
+                {
+                    motherTask = new MotherTask();
+                    if(!idTextField.getText().isEmpty()){
+                        System.out.println("On modifie la tache avec id: "+ idTextField.getText());
+                        motherTask.setIdProperty(idTextField.getText());
+                    }
+                    if(!nameTextField.getText().isEmpty()){
+                        System.out.println("On modifie la tache avec nom: "+ nameTextField.getText());
+                        motherTask.setNameProperty(nameTextField.getText());
+                    }
+                    motherTask.setConstructor(GlobalParameters.TypeConstructeur.valueOf(pop_cbb_constructeur.getValue().replace("-","_")));
+                    System.out.println("On créer une tache mere, son constructeur est: "+ motherTask.getConstructor());
+                    leafTask = null;
                 }
-
-                if(!nameTextField.getText().isEmpty()){
-                    System.out.println("On modifie la tache avec nom: "+ nameTextField.getText());
-                    this.task.setNameProperty(nameTextField.getText());
-                }
-
-                if(mereCheckBox.isSelected() && (constructor.getText() != "Constructeur")){
-                    // si la checkbox est selectionnée alors on créer une tâche mère directement
-                    this.motherTaskPopup = new MotherTask(task);
-                    this.motherTaskPopup.setConstructor(GlobalParameters.TypeConstructeur.valueOf(constructor.getText().replace("-","_")));
-                    System.out.println("On créer une tache mere, son constructeur est: "+ motherTaskPopup.getConstructor());
-                    this.task = null;
+                else
+                {
+                    leafTask = new LeafTask();
+                    if(!idTextField.getText().isEmpty()){
+                        System.out.println("On modifie la tache avec id: "+ idTextField.getText());
+                        leafTask.setIdProperty(idTextField.getText());
+                    }
+                    if(!nameTextField.getText().isEmpty()){
+                        System.out.println("On modifie la tache avec nom: "+ nameTextField.getText());
+                        leafTask.setNameProperty(nameTextField.getText());
+                    }
+                    motherTask = null;
                 }
                 popupwindow.close();
             }
@@ -311,33 +235,11 @@ public class ViewController {
             popupwindow.showAndWait();
         }
 
-        private void createListenerOfMenuItem(MenuButton menuButton, List<MenuItem> menuitems,CheckBox checkBox){
-            for(MenuItem menuItem: menuitems){
-                menuItem.setOnAction(event -> {
-                    if(checkBox.isSelected()){
-                        System.out.println("changement de la valeur du menu button avec " + menuItem.getText());
-                        menuButton.setText(menuItem.getText());
-                    }
-
-                });
-            }
-        }
-
-        Task getDataTask() {
-            return task;
-        }
-
+        LeafTask getDataLeafTask() { return leafTask; }
         MotherTask getDataMotherTask() {
-            return motherTaskPopup;
+            return motherTask;
         }
-
-        boolean isMotherTask(){
-            if(getDataTask() == null){
-                return true;
-            }else{
-                return false;
-            }
-        }
+        boolean isMotherTask(){  return (motherTask != null); }
 
     }
 
@@ -371,7 +273,7 @@ public class ViewController {
     @FXML
     private  TextField txtfield_edit_name;
     @FXML
-    private  MenuButton menubutton_edit_nature,menubutton_edit_constructeur;
+    private ComboBox<String> cbb_nature, cbb_constructeur;
     @FXML
     private  ListView<Task> listview_edit_taches_filles,listview_edit_autres_taches;
     @FXML
@@ -380,8 +282,9 @@ public class ViewController {
     // Panel d'édition - Liens
     @FXML
     private  Button button_edit_enregistrer_liens;
+
     @FXML
-    private  MenuButton menubutton_edit_premiere_tache_fille,menubutton_edit_deuxieme_tache_fille,menubutton_edit_lien_entre_taches;
+    private ComboBox<String> cbb_tache_fille_1, cbb_tache_fille_2, cbb_lien_taches;
     @FXML
     private  Text txt_edit_id_liens;
 
@@ -393,7 +296,7 @@ public class ViewController {
     @FXML
     private  ListView listview_edit_conditions,listview_edit_assertions;
     @FXML
-    private  MenuButton menubutton_edit_type_condition,menubutton_edit_operateur_logique_condition;
+    private ComboBox<String> cbb_type_condition, cbb_operateur_condition;
 
     // Split pane
     @FXML
@@ -403,9 +306,6 @@ public class ViewController {
     @FXML
     private TextField popup_textfield_id, popup_textfield_name;
 
-    /*
-      All getters and setters
-     */
 
     public Button getButton_save() {
         return button_save;
@@ -511,22 +411,6 @@ public class ViewController {
         this.txtfield_edit_name = txtfield_edit_name;
     }
 
-    public MenuButton getMenubutton_edit_nature() {
-        return menubutton_edit_nature;
-    }
-
-    public void setMenubutton_edit_nature(MenuButton menubutton_edit_nature) {
-        this.menubutton_edit_nature = menubutton_edit_nature;
-    }
-
-    public MenuButton getMenubutton_edit_constructeur() {
-        return menubutton_edit_constructeur;
-    }
-
-    public void setMenubutton_edit_constructeur(MenuButton menubutton_edit_constructeur) {
-        this.menubutton_edit_constructeur = menubutton_edit_constructeur;
-    }
-
     public ListView getListview_edit_taches_filles() {
         return listview_edit_taches_filles;
     }
@@ -557,30 +441,6 @@ public class ViewController {
 
     public void setButton_edit_enregistrer_liens(Button button_edit_enregistrer_liens) {
         this.button_edit_enregistrer_liens = button_edit_enregistrer_liens;
-    }
-
-    public MenuButton getMenubutton_edit_premiere_tache_fille() {
-        return menubutton_edit_premiere_tache_fille;
-    }
-
-    public void setMenubutton_edit_premiere_tache_fille(MenuButton menubutton_edit_premiere_tache_fille) {
-        this.menubutton_edit_premiere_tache_fille = menubutton_edit_premiere_tache_fille;
-    }
-
-    public MenuButton getMenubutton_edit_deuxieme_tache_fille() {
-        return menubutton_edit_deuxieme_tache_fille;
-    }
-
-    public void setMenubutton_edit_deuxieme_tache_fille(MenuButton menubutton_edit_deuxieme_tache_fille) {
-        this.menubutton_edit_deuxieme_tache_fille = menubutton_edit_deuxieme_tache_fille;
-    }
-
-    public MenuButton getMenubutton_edit_lien_entre_taches() {
-        return menubutton_edit_lien_entre_taches;
-    }
-
-    public void setMenubutton_edit_lien_entre_taches(MenuButton menubutton_edit_lien_entre_taches) {
-        this.menubutton_edit_lien_entre_taches = menubutton_edit_lien_entre_taches;
     }
 
     public Text getTxt_edit_id_liens() {
@@ -671,22 +531,6 @@ public class ViewController {
         this.listview_edit_assertions = listview_edit_assertions;
     }
 
-    public MenuButton getMenubutton_edit_type_condition() {
-        return menubutton_edit_type_condition;
-    }
-
-    public void setMenubutton_edit_type_condition(MenuButton menubutton_edit_type_condition) {
-        this.menubutton_edit_type_condition = menubutton_edit_type_condition;
-    }
-
-    public MenuButton getMenubutton_edit_operateur_logique_condition() {
-        return menubutton_edit_operateur_logique_condition;
-    }
-
-    public void setMenubutton_edit_operateur_logique_condition(MenuButton menubutton_edit_operateur_logique_condition) {
-        this.menubutton_edit_operateur_logique_condition = menubutton_edit_operateur_logique_condition;
-    }
-
     public SplitPane getSplitPane_graph_edit() {
         return splitPane_graph_edit;
     }
@@ -775,5 +619,5 @@ public class ViewController {
         applicationController.xmlParser.toXMLFromTree(applicationController.motherTasks,applicationController.leafTasks,applicationController.xmlFile.getXMLfilePath());
         applicationController.xmlFile.setTextFromFilePath();
         codeArea.replaceText(applicationController.xmlFile.getXMLtext());
-    }
+    }*/
 }

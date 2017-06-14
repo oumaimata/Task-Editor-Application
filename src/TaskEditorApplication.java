@@ -1,4 +1,4 @@
-import Controller.ViewController;
+import Controller.ApplicationController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,7 +19,7 @@ public class TaskEditorApplication extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./Task-editor-layout.fxml"));
         Parent root = fxmlLoader.load();
-        stage.setOnShown(windowEvent -> fxmlLoader.<ViewController>getController().onLoaded());
+        stage.setOnShown(windowEvent -> fxmlLoader.<ApplicationController>getController().onLoaded());
 
         Scene scene = new Scene(root,1000, 800);
         scene.getStylesheets().add(JavaKeywordsAsync.class.getResource("xml-highlighting.css").toExternalForm());

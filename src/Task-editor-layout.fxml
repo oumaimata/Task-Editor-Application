@@ -2,9 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -132,29 +131,19 @@
                                              <children>
                                                 <Text fx:id="txt_edit_id_resume" layoutX="683.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="XXXX" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="21.0" />
                                                 <Text layoutY="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom :" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="10.0" />
-                                                <MenuButton fx:id="menubutton_edit_nature" layoutX="112.0" layoutY="44.0" mnemonicParsing="false" prefWidth="112.0" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="Interruptible" AnchorPane.leftAnchor="112.0" AnchorPane.topAnchor="47.0">
-                                                  <items>
-                                                    <MenuItem mnemonicParsing="false" text="Action 1" />
-                                                    <MenuItem mnemonicParsing="false" text="Action 2" />
-                                                  </items>
-                                                </MenuButton>
-                                                <MenuButton fx:id="menubutton_edit_constructeur" layoutX="370.0" layoutY="45.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="112.0" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="SEQ" AnchorPane.leftAnchor="370.0" AnchorPane.topAnchor="47.0">
-                                                  <items>
-                                                    <MenuItem mnemonicParsing="false" text="Action 1" />
-                                                    <MenuItem mnemonicParsing="false" text="Action 2" />
-                                                  </items>
-                                                </MenuButton>
                                                 <Button fx:id="button_edit_enregistrer_resume" layoutX="662.0" layoutY="195.0" mnemonicParsing="false" style="-fx-background-radius: 30 30 30 30; -fx-border-radius: 30 30 30 30; -fx-border-color: #022b3a; -fx-background-color: #fcb07e;" text="Enregistrer" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="25.0" />
                                                 <Text layoutX="18.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nature :" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="52.0" />
                                                 <Text layoutX="17.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tâches filles :" AnchorPane.leftAnchor="18.0" />
                                                 <ListView fx:id="listview_edit_taches_filles" layoutX="18.0" layoutY="114.0" prefHeight="116.0" prefWidth="262.0" style="-fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="18.0" />
                                                 <Text layoutX="607.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identifiant :" AnchorPane.rightAnchor="97.0" AnchorPane.topAnchor="21.0" />
                                                 <TextField fx:id="txtfield_edit_name" layoutX="71.0" prefHeight="27.0" prefWidth="163.0" promptText="Tâche mère" style="-fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="112.0" AnchorPane.topAnchor="5.0" />
-                                                <Text layoutX="260.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Constructeur :" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="52.0" />
+                                                <Text layoutX="284.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Constructeur :" AnchorPane.leftAnchor="284.0" AnchorPane.topAnchor="53.0" />
                                                 <ListView fx:id="listview_edit_autres_taches" layoutX="381.0" layoutY="111.0" prefHeight="116.0" prefWidth="262.0" style="-fx-border-color: #1f7a8c;" AnchorPane.rightAnchor="128.0" />
                                                 <Text layoutX="392.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Autres Tâches :" AnchorPane.rightAnchor="284.9091796875" />
                                                 <Button fx:id="button_edit_ajout_tache_fille" layoutX="302.0" layoutY="128.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="59.0" style="-fx-background-radius: 30 30 30 30; -fx-border-radius: 30 30 30 30; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="&lt;" AnchorPane.leftAnchor="302.0" AnchorPane.rightAnchor="412.0" />
                                                 <Button fx:id="button_edit_retrait_tache_fille" layoutX="303.0" layoutY="183.0" mnemonicParsing="false" style="-fx-background-radius: 30 30 30 30; -fx-border-radius: 30 30 30 30; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="&gt;" AnchorPane.leftAnchor="302.0" AnchorPane.rightAnchor="412.0" />
+                                                <ComboBox fx:id="cbb_nature" layoutX="112.0" layoutY="47.0" prefHeight="28.0" prefWidth="137.0" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="522.0" AnchorPane.topAnchor="47.0" />
+                                                <ComboBox fx:id="cbb_constructeur" layoutX="381.0" layoutY="47.0" prefHeight="28.0" prefWidth="137.0" promptText="SEQ" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" />
                                              </children>
                                           </AnchorPane>
                                        </content>
@@ -165,28 +154,13 @@
                                              <children>
                                                 <Text layoutX="27.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Première tâche fille :" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="25.0" />
                                                 <Text layoutX="-2.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deuxième tâche fille :" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="75.0" />
-                                                <Text layoutX="14.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lien entre tâches :" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="125.0" />
-                                                <MenuButton fx:id="menubutton_edit_premiere_tache_fille" layoutX="176.0" layoutY="4.0" mnemonicParsing="false" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="Tâche 1" AnchorPane.leftAnchor="176.0" AnchorPane.topAnchor="20.0">
-                                                  <items>
-                                                    <MenuItem mnemonicParsing="false" text="Action 1" />
-                                                    <MenuItem mnemonicParsing="false" text="Action 2" />
-                                                  </items>
-                                                </MenuButton>
-                                                <MenuButton fx:id="menubutton_edit_deuxieme_tache_fille" layoutX="176.0" layoutY="52.0" mnemonicParsing="false" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="Tâche 2" AnchorPane.leftAnchor="176.0" AnchorPane.topAnchor="70.0">
-                                                   <items>
-                                                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                                                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                                                   </items>
-                                                </MenuButton>
-                                                <MenuButton fx:id="menubutton_edit_lien_entre_taches" layoutX="170.0" layoutY="95.0" mnemonicParsing="false" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="176.0" AnchorPane.topAnchor="120.0">
-                                                   <items>
-                                                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                                                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                                                   </items>
-                                                </MenuButton>
+                                                <Text layoutX="18.0" layoutY="136.06689453125" strokeType="OUTSIDE" strokeWidth="0.0" text="Lien entre tâches :" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="124.0" />
                                                 <Button fx:id="button_edit_enregistrer_liens" layoutX="670.0" layoutY="199.0" mnemonicParsing="false" style="-fx-background-radius: 30 30 30 30; -fx-border-radius: 30 30 30 30; -fx-background-color: #fcb07e; -fx-border-color: #022b3a;" text="Enregistrer" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="25.0" />
                                                 <Text layoutX="621.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identifiant : " AnchorPane.rightAnchor="97.0" AnchorPane.topAnchor="21.0" />
                                                 <Text fx:id="txt_edit_id_liens" layoutX="700.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="XXXX" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="21.0" />
+                                                <ComboBox fx:id="cbb_tache_fille_1" layoutX="176.0" layoutY="19.0" prefHeight="28.0" prefWidth="137.0" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" />
+                                                <ComboBox fx:id="cbb_tache_fille_2" layoutX="176.0" layoutY="69.0" prefHeight="28.0" prefWidth="137.0" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" />
+                                                <ComboBox fx:id="cbb_lien_taches" layoutX="176.0" layoutY="119.0" prefHeight="28.0" prefWidth="137.0" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" />
                                              </children>
                                           </AnchorPane>
                                        </content>
@@ -204,18 +178,6 @@
                                                 <Text fx:id="txt_edit_condition_selectionne" layoutX="485.1396484375" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1 précondition AND" AnchorPane.leftAnchor="490.0" AnchorPane.topAnchor="4.0" />
                                                 <Text layoutX="318.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Condition séléctionnée :" AnchorPane.leftAnchor="330.0" AnchorPane.topAnchor="4.0" />
                                                 <Text layoutX="333.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type :" AnchorPane.leftAnchor="330.0" AnchorPane.topAnchor="37.0" />
-                                                <MenuButton fx:id="menubutton_edit_type_condition" layoutX="384.0" layoutY="31.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="116.0" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="Précondition" AnchorPane.leftAnchor="384.0" AnchorPane.topAnchor="31.0">
-                                                  <items>
-                                                    <MenuItem mnemonicParsing="false" text="Action 1" />
-                                                    <MenuItem mnemonicParsing="false" text="Action 2" />
-                                                  </items>
-                                                </MenuButton>
-                                                <MenuButton fx:id="menubutton_edit_operateur_logique_condition" layoutX="656.0" layoutY="29.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="71.0" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="AND" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="29.0">
-                                                   <items>
-                                                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                                                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                                                   </items>
-                                                </MenuButton>
                                                 <Text layoutX="527.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opérateur logique :" AnchorPane.rightAnchor="128.0" AnchorPane.topAnchor="36.0" />
                                                 <ListView fx:id="listview_edit_assertions" layoutX="327.0" layoutY="80.0" prefHeight="104.0" prefWidth="398.0" style="-fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="330.0" AnchorPane.rightAnchor="45.0" />
                                                 <Button fx:id="button_edit_modifier_assertions" layoutX="395.0" layoutY="196.0" mnemonicParsing="false" style="-fx-background-radius: 30 30 30 30; -fx-border-radius: 30 30 30 30; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="Modifier" AnchorPane.leftAnchor="395.0" AnchorPane.topAnchor="196.0" />
@@ -223,6 +185,8 @@
                                                 <Button fx:id="button_edit_supprimer_assertions" layoutX="363.0" layoutY="196.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" style="-fx-background-radius: 30 30 30 30; -fx-border-radius: 30 30 30 30; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="-" AnchorPane.leftAnchor="363.0" AnchorPane.topAnchor="196.0" />
                                                 <Button fx:id="button_edit_enregistrer_conditions" layoutX="677.0" layoutY="196.0" mnemonicParsing="false" style="-fx-background-radius: 30 30 30 30; -fx-border-radius: 30 30 30 30; -fx-background-color: #fcb07e; -fx-border-color: #022b3a;" text="Enregistrer" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="25.0" />
                                                 <Text layoutX="330.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Assertions :" AnchorPane.leftAnchor="330.0" />
+                                                <ComboBox fx:id="cbb_type_condition" layoutX="377.0" layoutY="31.0" prefHeight="28.0" prefWidth="129.0" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" />
+                                                <ComboBox fx:id="cbb_operateur_condition" layoutX="653.0" layoutY="31.0" prefHeight="28.0" prefWidth="96.0" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" />
                                              </children>
                                           </AnchorPane>
                                       </content>

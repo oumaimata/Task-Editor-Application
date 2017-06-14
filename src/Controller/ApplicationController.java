@@ -124,6 +124,16 @@ public class ApplicationController {
     @FXML
     private  Button button_xml_rafraichir;
 
+
+    @FXML
+    private TabPane panel;
+    @FXML
+    private Tab tab_resume;
+    @FXML
+    private Tab tab_liens;
+    @FXML
+    private Tab tab_condition;
+
     // Panel d'édition - Resume
     @FXML
     private  Button button_edit_ajout_tache_fille,button_edit_retrait_tache_fille,button_edit_enregistrer_resume;
@@ -132,9 +142,12 @@ public class ApplicationController {
     @FXML
     private ComboBox<String> cbb_nature, cbb_constructeur;
     @FXML
-    private  ListView<Task> listview_edit_taches_filles,listview_edit_autres_taches;
+    private  ListView<String> listview_edit_taches_filles,listview_edit_autres_taches;
     @FXML
     private  Text txt_edit_id_resume;
+
+    @FXML
+    private Text label_nature, label_constructeur,label_filles,label_autres;
 
     // Panel d'édition - Liens
     @FXML
@@ -151,7 +164,8 @@ public class ApplicationController {
     @FXML
     private  Text txt_edit_nom_tache_conditions,txt_edit_condition_selectionne;
     @FXML
-    private  ListView listview_edit_conditions,listview_edit_assertions;
+    private  ListView<Condition> listview_edit_conditions;
+    private  ListView<Assertion> listview_edit_assertions;
     @FXML
     private ComboBox<String> cbb_type_condition, cbb_operateur_condition;
 
@@ -259,13 +273,28 @@ public class ApplicationController {
 //        bindingTaskAndEdition();
     }
 
+    public void adjust_panel(boolean isMotherTask)
+    {
+        label_constructeur.setVisible(isMotherTask);
+        cbb_constructeur.setVisible(isMotherTask);
+        label_nature.setVisible(isMotherTask);
+        cbb_nature.setVisible(isMotherTask);
+        button_edit_ajout_tache_fille.setVisible(isMotherTask);
+        button_edit_retrait_tache_fille.setVisible(isMotherTask);
+        listview_edit_taches_filles.setVisible(isMotherTask);
+        label_filles.setVisible(isMotherTask);
+        listview_edit_autres_taches.setVisible(isMotherTask);
+        label_autres.setVisible(isMotherTask);
+        tab_liens.setDisable(!isMotherTask);
+    }
+
     // Méthode principale a utiliser dans le controller.
     // Y effectuer toutes les actions
     public void main_action (){
         // ajout de la liste de toutes les tâches à la listview taches filles
         // ce n'est pas ce qu'il y aura dedans mais le fonctionnement est ok.
         // /!\ A adapter /!\
-        getListview_edit_taches_filles().setItems(leafTasks.getTasks());
+       // getListview_edit_taches_filles().setItems(leafTasks.getTasks());
 
         graphControl.currentItemProperty();
 
@@ -302,13 +331,13 @@ public class ApplicationController {
                     // on récupère l'objet sélectionné
                     currentNode = (INode) iModelItemItemClickedEventArgs.getItem();
                     System.out.println("l'objet courrant est devenu: " + currentNode.getTag().getClass() );
-                    if(currentNode.getTag().getClass() == Task.class){
+                    /*if(currentNode.getTag().getClass() == Task.class){
                         // si le noeud selectionné renferme une tache
                         //currentTask = (Task) currentNode.getTag();
                         currentMotherTask = null;
                         currentLeafTask = null;
 
-                    }else if (currentNode.getTag().getClass() == MotherTask.class){
+                    }else */if (currentNode.getTag().getClass() == MotherTask.class){
                         currentMotherTask = (MotherTask) currentNode.getTag();
                         //currentTask=null;
                         currentLeafTask= null;
@@ -324,15 +353,13 @@ public class ApplicationController {
                     //getTxtfield_edit_name().setText(currentTask.getNameProperty());
                     if(currentMotherTask != null)
                     {
-                        txtfield_edit_name.setText(currentMotherTask.getNameProperty());
-                        cbb_constructeur.setValue(currentMotherTask.getConstructor().getName());
-                        cbb_nature.setValue(currentMotherTask.getNature().getName());
+                        fillPanel(currentMotherTask);
                     }
                     else if (currentLeafTask != null)
                     {
-                        txtfield_edit_name.setText(currentLeafTask.getNameProperty());
+                        fillPanel(currentLeafTask);
                     }
-
+                    adjust_panel(currentMotherTask != null);
                 }
                 // mise en place du panel d'édition
                 changePanelState(true);
@@ -447,6 +474,27 @@ public class ApplicationController {
 
     }
 
+    private void fillPanel(MotherTask task)
+    {
+        txtfield_edit_name.setText(task.getNameProperty());
+        cbb_constructeur.setValue(task.getConstructor().getName());
+        cbb_nature.setValue(task.getNature().getName());
+        listview_edit_taches_filles.getItems().clear();
+        listview_edit_taches_filles.setItems(task.getSubTaskList());
+        fillConditions(task);
+    }
+
+    private void fillConditions(Task task)
+    {
+        listview_edit_conditions.getItems().clear();
+        listview_edit_conditions.setItems(task.getConditionList());
+    }
+
+    private void fillPanel(LeafTask task)
+    {
+        txtfield_edit_name.setText(task.getNameProperty());
+        fillConditions(task);
+    }
     private void handleAddTag(){
         System.out.println("ajout tag");
         tags.addTag();

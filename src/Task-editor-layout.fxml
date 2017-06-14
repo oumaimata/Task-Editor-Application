@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -21,7 +16,8 @@
 <?import javafx.scene.text.Text?>
 
 <?import com.yworks.yfiles.view.GraphControl?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-border-color: #022b3a;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ApplicationController">
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-border-color: #022b3a;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ApplicationController">
 
    <top>
       <AnchorPane prefHeight="32.0" prefWidth="890.0" style="-fx-background-color: #1f7a8c; -fx-border-color: #022b3a;">
@@ -127,32 +123,32 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="289.0" prefWidth="661.0">
                            <children>
-                              <TabPane layoutX="234.0" layoutY="39.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: f8fff4;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TabPane fx:id="panel" layoutX="234.0" layoutY="39.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: f8fff4;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <tabs>
-                                  <Tab text="Résumé">
+                                  <Tab fx:id="tab_resume" text="Résumé">
                                        <content>
                                           <AnchorPane>
                                              <children>
                                                 <Text fx:id="txt_edit_id_resume" layoutX="683.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="XXXX" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="21.0" />
                                                 <Text layoutY="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom :" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="10.0" />
                                                 <Button fx:id="button_edit_enregistrer_resume" layoutX="662.0" layoutY="195.0" mnemonicParsing="false" style="-fx-background-radius: 30 30 30 30; -fx-border-radius: 30 30 30 30; -fx-border-color: #022b3a; -fx-background-color: #fcb07e;" text="Enregistrer" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="25.0" />
-                                                <Text layoutX="18.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nature :" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="52.0" />
-                                                <Text layoutX="17.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tâches filles :" AnchorPane.leftAnchor="18.0" />
+                                                <Text fx:id="label_nature" layoutX="18.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nature :" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="52.0" />
+                                                <Text fx:id="label_filles" layoutX="17.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tâches filles :" AnchorPane.leftAnchor="18.0" />
                                                 <ListView fx:id="listview_edit_taches_filles" layoutX="18.0" layoutY="114.0" prefHeight="116.0" prefWidth="262.0" style="-fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="18.0" />
                                                 <Text layoutX="607.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identifiant :" AnchorPane.rightAnchor="97.0" AnchorPane.topAnchor="21.0" />
                                                 <TextField fx:id="txtfield_edit_name" layoutX="71.0" prefHeight="27.0" prefWidth="163.0" promptText="Tâche mère" style="-fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="112.0" AnchorPane.topAnchor="5.0" />
-                                                <Text layoutX="284.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Constructeur :" AnchorPane.leftAnchor="284.0" AnchorPane.topAnchor="53.0" />
+                                                <Text fx:id="label_constructeur" layoutX="284.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Constructeur :" AnchorPane.leftAnchor="284.0" AnchorPane.topAnchor="53.0" />
                                                 <ListView fx:id="listview_edit_autres_taches" layoutX="381.0" layoutY="111.0" prefHeight="116.0" prefWidth="262.0" style="-fx-border-color: #1f7a8c;" AnchorPane.rightAnchor="128.0" />
-                                                <Text layoutX="392.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Autres Tâches :" AnchorPane.rightAnchor="284.9091796875" />
+                                                <Text fx:id="label_autres" layoutX="392.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Autres Tâches :" AnchorPane.rightAnchor="284.9091796875" />
                                                 <Button fx:id="button_edit_ajout_tache_fille" layoutX="302.0" layoutY="128.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="59.0" style="-fx-background-radius: 30 30 30 30; -fx-border-radius: 30 30 30 30; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="&lt;" AnchorPane.leftAnchor="302.0" AnchorPane.rightAnchor="412.0" />
                                                 <Button fx:id="button_edit_retrait_tache_fille" layoutX="303.0" layoutY="183.0" mnemonicParsing="false" style="-fx-background-radius: 30 30 30 30; -fx-border-radius: 30 30 30 30; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" text="&gt;" AnchorPane.leftAnchor="302.0" AnchorPane.rightAnchor="412.0" />
-                                                <ComboBox fx:id="cbb_nature" layoutX="112.0" layoutY="47.0" prefHeight="28.0" prefWidth="137.0" promptText="Interruptible" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="112.0" AnchorPane.topAnchor="47.0" />
-                                                <ComboBox fx:id="cbb_constructeur" layoutX="381.0" layoutY="47.0" prefHeight="28.0" prefWidth="137.0" promptText="SEQ" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" />
+                                                <ComboBox fx:id="cbb_nature" layoutX="112.0" layoutY="47.0" prefHeight="28.0" prefWidth="137.0" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="112.0" AnchorPane.topAnchor="47.0" />
+                                                <ComboBox fx:id="cbb_constructeur" layoutX="381.0" layoutY="47.0" prefHeight="28.0" prefWidth="137.0" style="-fx-background-radius: 7 7 7 7; -fx-border-radius: 7 7 7 7; -fx-background-color: #bfdbf7; -fx-border-color: #1f7a8c;" />
                                              </children>
                                           </AnchorPane>
                                        </content>
                                     </Tab>
-                                  <Tab text="Liens entre filles">
+                                  <Tab fx:id="tab_liens" text="Liens entre filles">
                                        <content>
                                           <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                              <children>
@@ -169,7 +165,7 @@
                                           </AnchorPane>
                                        </content>
                                     </Tab>
-                                    <Tab text="Conditions">
+                                    <Tab fx:id="tab_condition" text="Conditions">
                                       <content>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>

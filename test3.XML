@@ -1,0 +1,1253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model version="1.0">
+    <namespaces>
+      <prefix name="nikita" iri="http://www.utc.fr/hds/ici/humans/nikita/nikita#"/>
+    </namespaces>
+<tasks>
+	<task_m>	
+	<task id="Contre-percer_Support_1" iterative="false" name="Contre_percer le Support_1">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Support_1" ref="?Support_1"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="Prendre_la_Perceuse01"/>
+            <subtask id="Percer_le_Support_1"/>
+            <subtask id="Controler_le_Barque_Trou01"/>
+			 <subtask id="Agrapher_le_Support_1"/>
+            <subtask id="Degrapher_le_Support_1"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+            <relation lh="Prendre_la_perceuse32" operator="&lt;" rh="Percer_la_piece"/>
+            <relation lh="Percer_la_piece" operator="&lt;" rh="Controler_le_Barque_Trou01"/>
+			 <relation lh="Controler_le_Barque_Trou01" operator="&lt;" rh="Agrafer_une_piece"/>
+			  <relation lh="Agrafer_une_piece" operator="&lt;" rh="Degrafer_une_piece"/>
+          </constructor>             
+          <conditions>
+			 <nomological id="1">
+			<AND>
+					<statement type="activity">
+					  <triple predicate="nikita:has-perced-state" subject="?Support_1" object="false"/>
+					</statement>
+			</AND>
+			 </nomological>
+			  <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-perced-state" subject="?Support_1" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+
+          </conditions>
+    </task>
+     <task id="Percer_le_Support_1" iterative="false" name="Percer le Support_1">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Support_1" ref="?Support_1"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="ControlEquerrage_Support_1"/>
+            <subtask id="Traverser_Support_1"/>
+            <subtask id="Sortir_Foret_25"/>
+			 <subtask id="Enlever_les_copeaux"/>
+            <subtask id="Poser_la_Perceuse01"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+            <relation lh="ControlEquerrage_Support_1" operator="&lt;" rh="Traverser_ Support1"/>
+            <relation lh="Traverser_Support1" operator="&lt;" rh="Sortir_Foret_25"/>
+			 <relation lh="Sortir_Foret_25" operator="&lt;" rh="Enlever_les_copeaux"/>
+			  <relation lh="Enlever_les_copeaux" operator="&lt;" rh="Poser_la_Perceuse01"/>
+		  </constructor>             
+          <conditions>
+			 <nomological id="1">
+			<AND>
+					<statement type="activity">
+					  <triple predicate="nikita:has-perced-state" subject="?Support_1" object="false"/>
+					</statement>
+			</AND>
+			 </nomological>
+			 <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                  <triple predicate="nikita:has-perced-state" subject="?Support_1" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+			
+          </conditions>
+     </task> 
+	<task id="Controler_le_Barque_Trou01" iterative="false" name="Controler le Barque_Trou01">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Barque_Trou01" ref="?Barque_Trou01"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="ControlEquerrage_du_Barque_Trou01"/>
+            <subtask id="ControlRondeur_du_Barque_Trou01"/>
+            <subtask id="VerifierDiametre_Barque_Trou01"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+          
+		  </constructor>             
+          <conditions>
+			 <nomological id="1">
+			<AND>
+					<statement type="activity">
+					  <triple predicate="nikita:has-Barque_Trou01_Quality" subject="?Barque_Trou01" object="false"/>
+					</statement>
+			</AND>
+			 </nomological>
+			 <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                     <triple predicate="nikita:has-Barque_Trou01_Quality" subject="?Barque_Trou01" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+
+          </conditions>
+     </task> 
+	<task id="Agrapher_le_Support_1" iterative="false" name="Agrapher le Support_1">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Support_1" ref="?Support_1"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="Agrapher_le_Barque_Trou01"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+          
+		  </constructor>             
+          <conditions>
+			 <nomological id="1">
+			<AND>
+					<statement type="activity">
+					  <triple predicate="nikita:has-Agraphed" subject="?Support_1" object="false"/>
+					</statement>
+			</AND>
+			 </nomological>
+			 <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                     <triple predicate="nikita:has-Agraphed" subject="?Support_1" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+
+          </conditions>
+     </task>
+	<task id="Degrapher_le_Support_1" iterative="false" name="Degrapher le Support_1">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Support_1" ref="?Support_1"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="Degrapher_le_Barque_Trou01"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+          
+		  </constructor>             
+          <conditions>
+			 <nomological id="1">
+			<AND>
+					<statement type="activity">
+					  <triple predicate="nikita:has-Agraphed" subject="?Support_1" object="true"/>
+					</statement>
+			</AND>
+			 </nomological>
+			 <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                     <triple predicate="nikita:has-Agraphed" subject="?Support_1" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+
+          </conditions>
+     </task>
+	<task id="Assembler_le_BlocMoteur_1" iterative="false" name="Assembler le BlocMoteur_1">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:BlocMoteur_1" ref="?BlocMoteur_1"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="Prendre_le_BlocMoteur_1"/>
+			<subtask id="Prendre_la_Tete_1"/>
+			<subtask id="Monter_la_Tete_1_sur_le_BlocMoteur_1"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+          
+		  </constructor>             
+          <conditions>
+			 <nomological id="1">
+			<AND>
+					<statement type="activity">
+					  <triple predicate="nikita:has-free_State" subject="?BlocMoteur_1" object="true"/>
+					</statement>
+			</AND>
+			 </nomological>
+			 <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                     <triple predicate="nikita:has-free_State" subject="?BlocMoteur_1" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+
+          </conditions>
+     </task>
+	<task id="ControlEquerrage_Support_1" iterative="false" name="ControlEquerrage le Support_1">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Support_1" ref="?Support_1"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="Prendre_le_Guide_1"/>
+			<subtask id="Enfiler_le_Guide_1_sur_Foret_25"/>
+			<subtask id="PositionGuide_Guide_1_sur_Support_1"/>
+			<subtask id="MettreDansTrou_le_Foret_25_dans_Barque_Trou01"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+          
+		  </constructor>             
+          <conditions>
+			 <nomological id="1">
+			<AND>
+					<statement type="activity">
+					  <triple predicate="nikita:has-Controled_Equerrage" subject="?Support_1" object="false"/>
+					</statement>
+			</AND>
+			 </nomological>
+			 <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                      <triple predicate="nikita:has-Controled_Equerrage" subject="?Support_1" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+
+          </conditions>
+     </task>
+	<task id="Traverser_Support_1" iterative="false" name="Traverser le Support_1">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Support_1" ref="?Support_1"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="MaintenirEquerrage_Support_1"/>
+			<subtask id="AppuyerBouton_Perceuse01"/>
+			<subtask id="Pousser_Perceuse01"/>
+		  </subtasks>
+          <constructor type="PAR_SIM">
+		  </constructor> 
+		  <conditions>
+			 <nomological id="1">
+			<AND>
+				<statement type="activity">
+				  <triple predicate="nikita:a-trou" subject="?Support_1" object=""/>
+				</statement>
+			</AND>
+			 </nomological>
+			 <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                      <triple predicate="nikita:a-trou" subject="?Support_1" object="Barque_Trou01"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+
+          </conditions>		  
+         
+     </task>
+	<task id="Sortir_Foret_25" iterative="false" name="Sortir le Foret_25">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Foret_25" ref="?Foret_25"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="MaintenirEquerrage_Support_1"/>
+			<subtask id="AppuyerBouton_Perceuse01"/>
+			<subtask id="Lacher_Perceuse01"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+          
+		  </constructor>             
+         
+     </task>
+	<task id="VerifierDiametre_Barque_Trou01" iterative="false" name="VerifierDiametre du Barque_Trou01">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Barque_Trou01" ref="?Barque_Trou01"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="Prendre_Tampon_1"/>
+			<subtask id="Poser_Tampon_1"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+          
+		  </constructor>             
+         
+    </task>	
+	<task id="Agrapher_le_Barque_Trou01" iterative="false" name="Agrapher le Barque_Trou01">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Barque_Trou01" ref="?Barque_Trou01"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="Mettre_Agraphe_1"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+          
+		  </constructor>             
+         
+     </task>
+	<task id="Degrapher_le_Barque_Trou01" iterative="false" name="Degrapher le Barque_Trou01">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Barque_Trou01" ref="?Barque_Trou01"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="Enlever_Agraphe_1"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+          
+		  </constructor>             
+         
+     </task>
+	<task id="Mettre_Agraphe_1" iterative="false" name="Mettre Agraphe_1">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Agraphe_1" ref="?Agraphe_1"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+            <subtask id="Prendre_Agraphe_1"/>
+			<subtask id="Prendre_PinceAAgrapher_1"/>
+			<subtask id="Pincer_Agraphe_1"/>
+			<subtask id="Agrapher_Support_1"/>
+			<subtask id="Poser_PinceAAgrapher_1"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+          
+		  </constructor>             
+         
+     </task>
+	<task id="Enlever_Agraphe_1" iterative="false" name="Enlever Agraphe_1">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Agraphe_1" ref="?Agraphe_1"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+			<subtask id="Degrapher_Support_1"/>
+			<subtask id="Ranger_Agrapher_1"/>
+			<subtask id="Poser_la_PinceAAgrapher_1"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD">
+          
+		  </constructor>             
+         
+     </task>
+	<task id="PositionGuide_Guide_1_sur_Support_1" iterative="false" name="PositionGuide Guide_1 sur Support_1">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Guide_1" ref="?Guide_1"/> 
+			  <ref-concept concept="nikita:Support_1" ref="?Support_1"/> 
+            </refs>
+          </context>                 
+          <subtasks>					
+			<subtask id="Remonter_Guide_1"/>
+		  </subtasks>
+          <constructor type="SEQ_ORD"> 
+		  </constructor>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                  <triple predicate="nikita:has-align-state" subject="?Guide_1" object="false"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-align-state" subject="?Guide_1" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>		  
+         
+     </task>	 
+	</task_m>
+	
+	 <task_f>
+	   
+	 	<task id="Prendre_la_Perceuse01" iterative="false" name="Prendre la Perceuse01">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Perceuse" ref="?Perceuse01"/> 
+            </refs>
+          </context>      
+          <operation>						
+            <action id="nikita:Prendre"/>
+            <resources>
+                 <ref-concept ref="?Perceuse01" predicate="nikita:take-object"/>
+            </resources>
+       </operation>
+          <constructor type="SEQ_ORD">
+		  </constructor>             
+          <conditions>
+			 <nomological id="1">
+			<AND>
+        <NOT>
+					<statement type="activity">
+					  <triple predicate="nikita:porte" subject="nikita:Bob" object = "?Perceuse01"/>
+					</statement>
+          </NOT>
+			</AND>
+			 </nomological>
+			   <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:porte" subject="nikita:Bob" object = "?Perceuse01"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+		  </conditions>
+     </task>
+        <task id="Prendre_le_BlocMoteur_1" name="Prendre le BlocMoteur_1" optional="false">
+          <context>
+            <refs>
+              <ref-concept concept="nikita:BlocMoteur_1" ref="?BlocMoteur_1"/>  
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Prendre"/>
+            <resources>
+                 <ref-concept ref="?BlocMoteur_1" predicate="nikita:Prendre"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+			  <NOT>
+                <statement type="activity">
+                  <triple predicate="nikita:porte" subject="?Agent" object="BlocMoteur_1"/>
+                </statement>
+			  </NOT>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:porte" subject="?Agent" object="BlocMoteur_1"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Prendre_la_Tete_1" name="Prendre la Tete_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Tete_1" ref="?Tete_1"/>  
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Prendre"/>
+            <resources>
+                 <ref-concept ref="?Tete_1" predicate="nikita:Prendre"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+			  <NOT>
+                <statement type="activity">
+                  <triple predicate="nikita:porte" subject="?Agent" object="Tete_1"/>
+                </statement>
+			  </NOT>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:porte" subject="?Agent" object="Tete_1"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Monter_la_Tete_1_sur_le_BlocMoteur_1" name="Monter la Tete_1 sur le BlocMoteur_1" optional="fase">  
+          <context>
+            <refs>
+			  <ref-concept concept="nikita:BlocMoteur_1" ref="?BlocMoteur_1"/>
+              <ref-concept concept="nikita:Tete_1" ref="?Tete_1"/>  
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Monter"/>
+            <resources>
+                 <ref-concept ref="?Tete_1" predicate="nikita:Monter"/>
+				 <ref-concept ref="?BlocMoteur_1" predicate="nikita:Monter"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <NOT>
+                  <statement type="activity">
+                    <triple predicate="nikita:est-monte-sur" subject="?Tete_1" object="?object"/>
+                  </statement>
+                </NOT>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:est-monte-sur" subject="?Tete_1" object="BlocMoteur_1"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Prendre_le_Guide_1" name="Prendre le Guide_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Guide_1" ref="?Guide_1"/>  
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Prendre"/>
+            <resources>
+                 <ref-concept ref="?Guide_1" predicate="nikita:Prendre"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                  <triple predicate="nikita:porte" subject="?Agent" object="Guide_1"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:porte" subject="?Agent" object="Guide_1"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>	
+		<task id="Enfiler_le_Guide_1_sur_Foret_25" name="Enfiler le Guide_1 sur Foret_25" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Guide_1" ref="?Guide_1"/> 
+			  <ref-concept concept="nikita:Guide_1" ref="?Foret_25"/>
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Enfiler"/>
+            <resources>
+                 <ref-concept ref="?Guide_1" predicate="nikita:Enfiler"/>
+				  <ref-concept ref="?Foret_25" predicate="nikita:Enfiler"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+			  <NOT>
+                <statement type="activity">
+                  <triple predicate="nikita:est-enfile-sur" subject="?Guide_1" object="Object"/>
+                </statement>
+			  </NOT>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:est-enfile-sur" subject="?Guide_1" object="Foret_25"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>	
+		<task id="AppuyerBouton_Perceuse01" name="AppuyerBouton Perceuse01" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Perceuse01" ref="?Perceuse01"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Allumer"/>
+            <resources>
+                 <ref-concept ref="?Perceuse01" predicate="nikita:Perceuse01"/>
+            </resources>
+          </operation>
+          <conditions>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="has-switch-state" subject="?Perceuse01" object="?state"/>
+                </statement>   
+				 <statement type="activity">
+                <triple predicate="nikita:value" subject="?state" object="sys:True"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Pousser_Perceuse01" name="Pousser Perceuse01" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Perceuse01" ref="?Perceuse01"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Pousser"/>
+            <resources>
+                 <ref-concept ref="?Perceuse01" predicate="nikita:Perceuse01"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                  <triple predicate="nikita:has-used-state" subject="?Perceuse01" object="Flase"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                  <triple predicate="nikita:has-used-state" subject="?Perceuse01" object="True"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="AppuyerBouton_Perceuse01" name="AppuyerBouton Perceuse01" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Perceuse01" ref="?Perceuse01"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:AppuyerBouton"/>
+            <resources>
+                 <ref-concept ref="?Perceuse01" predicate="nikita:Perceuse01"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                  <triple predicate="xxxxxxxxxxxxxxx" subject="?Guide_1" object=""/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxxxx" subject="?Guide_1" object="Foret_25"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Lacher_Perceuse01" name="Lacher Perceuse01" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Perceuse01" ref="?Perceuse01"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Lacher"/>
+            <resources>
+                 <ref-concept ref="?Perceuse01" predicate="nikita:Perceuse01"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                  <triple predicate="nikita:has-used-state" subject="?Perceuse01" object="True"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                  <triple predicate="nikita:has-used-state" subject="?Perceuse01" object="False"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Poser_la_Perceuse01" name="Poser la Perceuse01" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Perceuse01" ref="?Perceuse01"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Poser"/>
+            <resources>
+                 <ref-concept ref="?Perceuse01" predicate="nikita:Perceuse01"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?Perceuse01" object="true"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?Perceuse01" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Prendre_Tampon_1" name="Prendre Tampon_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Tampon_1" ref="?Tampon_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Prendre"/>
+            <resources>
+                 <ref-concept ref="?Tampon_1" predicate="nikita:Tampon_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?Tampon_1" object="false"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?Tampon_1" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Poser_Tampon_1" name="Poser Tampon_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Tampon_1" ref="?Tampon_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Poser"/>
+            <resources>
+                 <ref-concept ref="?Tampon_1" predicate="nikita:Tampon_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?Tampon_1" object="true"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?Tampon_1" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Prendre_Agraphe_1" name="Prendre Agraphe_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Agraphe_1" ref="?Agraphe_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Prendre"/>
+            <resources>
+                 <ref-concept ref="?Agraphe_1" predicate="nikita:Agraphe_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?Agraphe_1" object="false"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?Agraphe_1" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Prendre_PinceAAgrapher_1" name="Prendre PinceAAgrapher_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:PinceAAgrapher_1" ref="?PinceAAgrapher_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Prendre"/>
+            <resources>
+                 <ref-concept ref="?PinceAAgrapher_1" predicate="nikita:PinceAAgrapher_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="false"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Pincer_Agraphe_1" name="Pincer Agraphe_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Agraphe_1" ref="?Agraphe_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Pincer"/>
+            <resources>
+                 <ref-concept ref="?Agraphe_1" predicate="nikita:Agraphe_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:xxxxxxxxxxxxxx" subject="?Agraphe_1" object="false"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxxxxxxxx" subject="?Agraphe_1" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Agrapher_Support_1" name="Agrapher Support_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Support_1" ref="?Support_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Agrapher"/>
+            <resources>
+                 <ref-concept ref="?Support_1" predicate="nikita:Support_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxxxxxx" subject="?Support_1" object="true"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxxxxxxxx" subject="?Support_1" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Poser_PinceAAgrapher_1" name="Poser PinceAAgrapher_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:PinceAAgrapher_1" ref="?PinceAAgrapher_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Poser"/>
+            <resources>
+                 <ref-concept ref="?PinceAAgrapher_1" predicate="nikita:PinceAAgrapher_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="true"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Prendre_Agraphe_1" name="Prendre Agraphe_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Agraphe_1" ref="?Agraphe_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Prendre"/>
+            <resources>
+                 <ref-concept ref="?Agraphe_1" predicate="nikita:Agraphe_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?Agraphe_1" object="false"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?Agraphe_1" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Prendre_PinceAAgrapher_1" name="Prendre PinceAAgrapher_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:PinceAAgrapher_1" ref="?PinceAAgrapher_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Prendre"/>
+            <resources>
+                 <ref-concept ref="?PinceAAgrapher_1" predicate="nikita:PinceAAgrapher_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="false"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Pincer_Agraphe_1" name="Pincer Agraphe_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Agraphe_1" ref="?Agraphe_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Pincer"/>
+            <resources>
+                 <ref-concept ref="?Agraphe_1" predicate="nikita:Agraphe_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:xxxxxxxxxxxxxx" subject="?Agraphe_1" object="false"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxxxxxxxx" subject="?Agraphe_1" object="true"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Degrapher_Support_1" name="Degrapher Support_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Support_1" ref="?Support_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Degrapher"/>
+            <resources>
+                 <ref-concept ref="?Support_1" predicate="nikita:Support_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?Support_1" object="true"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="nikita:has-taken-state" subject="?Support_1" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Poser_la_PinceAAgrapher_1" name="Poser la PinceAAgrapher_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:PinceAAgrapher_1" ref="?PinceAAgrapher_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Poser"/>
+            <resources>
+                 <ref-concept ref="?PinceAAgrapher_1" predicate="nikita:PinceAAgrapher_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxxx" subject="?PinceAAgrapher_1" object="true"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxx" subject="?PinceAAgrapher_1" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="ControlEquerrage_du_Barque_Trou01" name="ControlEquerrage du Barque_Trou01" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Barque_Trou01" ref="?Barque_Trou01"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:ControlEquerrage"/>
+            <resources>
+                 <ref-concept ref="?Barque_Trou01" predicate="nikita:Barque_Trou01"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxxx" subject="?Barque_Trou01" object="true"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxx" subject="?Barque_Trou01" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="ControlRondeur_du_Barque_Trou01" name="ControlRondeur du Barque_Trou01" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Barque_Trou01" ref="?Barque_Trou01"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:ControlRondeur"/>
+            <resources>
+                 <ref-concept ref="?Barque_Trou01" predicate="nikita:Barque_Trou01"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxxx" subject="?Barque_Trou01" object="true"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxx" subject="?Barque_Trou01" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Enlever_les_copeaux" name="Enlever les copeaux" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:copeaux" ref="?copeaux"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Enlever"/>
+            <resources>
+                 <ref-concept ref="?copeaux" predicate="nikita:copeaux"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxxx" subject="?copeaux" object="true"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxx" subject="?copeaux" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="MaintenirEquerrage_Support_1" name="MaintenirEquerrage Support_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Support_1" ref="?Support_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:MaintenirEquerrage"/>
+            <resources>
+                 <ref-concept ref="?Support_1" predicate="nikita:Support_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxxx" subject="?Support_1" object="true"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxx" subject="?Support_1" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Ranger_Agrapher_1" name="Ranger Agrapher_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Agrapher_1" ref="?Agrapher_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Ranger"/>
+            <resources>
+                 <ref-concept ref="?Agrapher_1" predicate="nikita:Agrapher_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxxx" subject="?Agrapher_1" object="true"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxx" subject="?Agrapher_1" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+		<task id="Remonter_Guide_1" name="Remonter Guide_1" optional="fase">  
+          <context>
+            <refs>
+              <ref-concept concept="nikita:Guide_1" ref="?Guide_1"/> 
+            </refs>
+          </context>       
+          <operation>						
+            <action id="nikita:Remonter"/>
+            <resources>
+                 <ref-concept ref="?Guide_1" predicate="nikita:Guide_1"/>
+            </resources>
+          </operation>
+          <conditions>
+            <nomological id="1">	
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxxx" subject="?Guide_1" object="true"/>
+                </statement>
+              </AND>
+            </nomological>
+            <satisfaction id="1">
+              <AND>
+                <statement type="activity">
+                   <triple predicate="xxxxxxxxxxx" subject="?Guide_1" object="false"/>
+                </statement>   
+              </AND>
+            </satisfaction>
+          </conditions>
+        </task>
+	 </task_f>
+ </tasks>
+ </model>

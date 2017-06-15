@@ -294,11 +294,6 @@ public class ApplicationController {
     // Méthode principale a utiliser dans le controller.
     // Y effectuer toutes les actions
     public void main_action (){
-        // ajout de la liste de toutes les tâches à la listview taches filles
-        // ce n'est pas ce qu'il y aura dedans mais le fonctionnement est ok.
-        // /!\ A adapter /!\
-       // getListview_edit_taches_filles().setItems(leafTasks.getTasks());
-
         graphControl.currentItemProperty();
 
         getListview_tags().setItems(tags.getTags());
@@ -308,9 +303,6 @@ public class ApplicationController {
     // Méthode pour réaliser les bindings des actions et des boutons
 
     public void make_binding (){
-        // ajout du listener sur le bouton d'ajout de tache qui va déclancher l'ajout d'une tache par défaut
-        //view.getButton_graph_ajouter().setOnAction(evt -> handleAjoutTache());
-
 
         // creation du listener sur le bouton pour centrer le graph
         getButton_centrer().setOnAction(evt -> graphFitContent());
@@ -334,13 +326,7 @@ public class ApplicationController {
                     // on récupère l'objet sélectionné
                     currentNode = (INode) iModelItemItemClickedEventArgs.getItem();
                     System.out.println("l'objet courrant est devenu: " + currentNode.getTag().getClass() );
-                    /*if(currentNode.getTag().getClass() == Task.class){
-                        // si le noeud selectionné renferme une tache
-                        //currentTask = (Task) currentNode.getTag();
-                        currentMotherTask = null;
-                        currentLeafTask = null;
-
-                    }else */if (currentNode.getTag().getClass() == MotherTask.class){
+                    if (currentNode.getTag().getClass() == MotherTask.class){
                         System.out.println("l'objet dans current node est une tache mere" );
                         currentMotherTask = (MotherTask) currentNode.getTag();
                         //currentTask=null;
@@ -351,11 +337,7 @@ public class ApplicationController {
                         //currentTask=null;
                         currentMotherTask=null;
                     }
-                    //System.out.println("currentTask " + currentTask + "currentMotherTask " + currentMotherTask + "currentLeafTask " + currentLeafTask);
-                    //currentTask = (Task) currentNode.getTag();
 
-                    //getTxt_edit_id_resume().setText(currentTask.getIdProperty());
-                    //getTxtfield_edit_name().setText(currentTask.getNameProperty());
                     adjust_panel(currentMotherTask != null);
                     changePanelState(true);
                     if(currentMotherTask != null)
@@ -503,12 +485,13 @@ public class ApplicationController {
     {
 
         txtfield_edit_name.setText(task.getNameProperty());
-        cbb_constructeur.setValue(task.getConstructor().getName());
+        if( task.getConstructor() != null) cbb_constructeur.setValue(task.getConstructor().getName());
         System.out.println("la nature de la tache mere est: " + task.getNature());
         if( task.getNature() != null) cbb_nature.setValue(task.getNature().getName());
         listview_edit_taches_filles.getItems().clear();
         listview_edit_taches_filles.setItems(task.getSubTaskList());
         cbb_tache_fille_1.getItems().clear();
+        System.out.println("la liste de la subtasklist de la tache mere est de longueur: " + task.getSubTaskList().size());
         cbb_tache_fille_1.setItems(task.getSubTaskList());
         cbb_tache_fille_2.getItems().clear();
         cbb_tache_fille_2.setItems(task.getSubTaskList());
@@ -752,6 +735,7 @@ public class ApplicationController {
 
     // methode pour creer un lien entre deux taches sur les noeuds
     private void createLinkBetweenTwoNodes(IGraph graph, INode Mother, INode Daugther, IEdge egde){
+        System.out.println("appel de la methode creatLinkBetweenTwoNodes");
         MotherTask motherTask;
         if(Mother.getTag().getClass() == Task.class){
             // si la tache mère était pour le moment une tache
@@ -770,6 +754,7 @@ public class ApplicationController {
 
         // on essaye de trouver le type de la classe fille
         if(Daugther.getTag().getClass() == MotherTask.class){
+            System.out.println("la tache fille est une tache mere");
             // si la fille est une mother task
             MotherTask daugthertask = (MotherTask) Daugther.getTag();
             // ajout de cette tache a la liste des sous taches de la mère
@@ -777,34 +762,39 @@ public class ApplicationController {
             System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daugthertask.getIdProperty());
 
         }else if (Daugther.getTag().getClass() == LeafTask.class){
-            // si la fille est une leaf tag
-            LeafTask daugthertask = (LeafTask) Daugther.getTag();
+            System.out.println("la tache fille est une tache feuille");
+            Task daugthertask = (Task) Daugther.getTag();
+            LeafTask daugtherleaftask = new LeafTask(daugthertask);
             // ajout de cette tache a la liste des sous taches de la mère
-            motherTask.addSubTask(daugthertask.getIdProperty());
+            motherTask.addSubTask(daugtherleaftask.getIdProperty());
+            graphControl.getGraph().setStyle(Daugther,LeafTaskStyle);
             System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daugthertask.getIdProperty());
 
         }else {
+            System.out.println("la tache fille est une tache");
             // si la fille est une tache
             Task daugthertask = (Task) Daugther.getTag();
             //suppression de la tache a la liste des taches
             tasks.removeTask(daugthertask);
             // changement de la tache comme leaf tache
             LeafTask daugtherleaftask = new LeafTask(daugthertask);
+            System.out.println("modification de la tache de Tache -> leafTask");
             // sauvegarde de la mère
             daugtherleaftask.setMother(motherTask);
+            System.out.println("Sauvegarde par la leaf task de la tâche mere");
             // ajout de la leaf tache 
             // on sauvegarde derrière l'ancien noeud Daughet le fait que c'est maintenant une leaf task
             Daugther.setTag(motherTask);
             // ajout de cette tache a la liste des sous taches de la mère
             motherTask.addSubTask(daugtherleaftask.getIdProperty());
+            System.out.println("ajout a la tache mere de l'id de la tache fille");
             // update du style
             graphControl.getGraph().setStyle(Daugther,LeafTaskStyle);
             System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daugthertask.getIdProperty());
-
         }
 
-        // ajout du label du constructeur sur le lien
-        graph.addLabel(egde,motherTask.getConstructor().getName());
+        // ajout du label du constructeur sur le lien si il y en a un
+        if(motherTask.getConstructor() != null) graph.addLabel(egde,motherTask.getConstructor().getName());
     }
 
 

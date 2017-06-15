@@ -380,6 +380,14 @@ public class ApplicationController {
             }
         });
 
+        listview_edit_conditions.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Condition>() {
+            @Override
+            public void changed(ObservableValue<? extends Condition> observable, Condition oldValue, Condition newValue) {
+                if (newValue != null)
+                    listview_edit_assertions.setItems(newValue.getAssertionList());
+            }
+        });
+
 
         //Binding entre currentTask et PanelEdition
 

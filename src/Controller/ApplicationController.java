@@ -229,7 +229,7 @@ public class ApplicationController {
         nodes = new Nodes();
         // initilisation de l'objet qui contient l'adresse du fichier et le texte de ce fichier
         xmlFile = new XMLFile();
-        xmlParser = new XMLParser(tasks);
+        xmlParser = new XMLParser(motherTasks,leafTasks);
 
         // on creer le graph associé
         createGraphFromTasks(motherTasks,tasks,leafTasks);
@@ -868,6 +868,7 @@ public class ApplicationController {
                 System.out.println("created task: " + getCreateMotherTask().getNameProperty());
                 addNodeFromTask(createdMotherTask);
                 motherTasks.addTask(createdMotherTask);
+                refreshXMLfromTree();
             }
             else
             {
@@ -875,6 +876,7 @@ public class ApplicationController {
                 System.out.println("created task: " + getCreatedLeafTask().getNameProperty());
                 addNodeFromTask(createdLeafTask);
                 leafTasks.addTask(createdLeafTask);
+                refreshXMLfromTree();
             }
 
         });
@@ -1326,7 +1328,12 @@ public class ApplicationController {
         System.out.println("Refresh button activated");
         save();
         System.out.println("saved!");
+        graphControl.getGraph().clear();
+        motherTasks = new MotherTasks();
+        leafTasks = new LeafTasks();
         xmlParser.createTasksFromXML(xmlFile.getXMLfilePath());
+        motherTasks = xmlParser.getMotherTasks();
+        leafTasks = xmlParser.getLeafTasks();
         createGraphFromTasks(motherTasks,tasks,leafTasks);
     }
 
@@ -1336,12 +1343,15 @@ public class ApplicationController {
         File file = fileChooser.showOpenDialog(newStage);
         System.out.println(file.toString());
         if (file != null) {
-            tasks = new Tasks();
+            graphControl.getGraph().clear();
+            motherTasks = new MotherTasks();
+            leafTasks = new LeafTasks();
             xmlFile.setXMLfilePath(file.getPath());
             xmlFile.setTextFromFilePath();
             codeArea.replaceText(xmlFile.getXMLtext());
             xmlParser.createTasksFromXML(xmlFile.getXMLfilePath());
-            tasks = xmlParser.getTasks();
+            motherTasks = xmlParser.getMotherTasks();
+            leafTasks = xmlParser.getLeafTasks();
             createGraphFromTasks(motherTasks,tasks,leafTasks);
         }
     }

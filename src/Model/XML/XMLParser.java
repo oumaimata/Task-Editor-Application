@@ -45,14 +45,12 @@ public class XMLParser {
 
     public Document doc;
 
-    // reference on the tasks list : Tasks
-    private MotherTasks motherTasks;
-    private LeafTasks leafTasks;
+    private MotherTasks motherTasks = new MotherTasks();
+    private LeafTasks leafTasks = new LeafTasks();
 
     public MotherTasks getMotherTasks() {
         return motherTasks;
     }
-
     public void setMotherTasks(MotherTasks motherTasks) {
         this.motherTasks = motherTasks;
     }
@@ -60,7 +58,6 @@ public class XMLParser {
     public LeafTasks getLeafTasks() {
         return leafTasks;
     }
-
     public void setLeafTasks(LeafTasks leafTasks) {
         this.leafTasks = leafTasks;
     }
@@ -82,20 +79,19 @@ public class XMLParser {
     static final String OBJECT = "object";
     static final String NOT = "NOT";
 
-    public Boolean isElement(Node node)
+    public XMLParser()
     {
-        return (node.getNodeType() ==  Node.ELEMENT_NODE);
-    }
-
-    public XMLParser(MotherTasks motherTasks,LeafTasks leafTasks) {
-        this.motherTasks = motherTasks;
-        this.leafTasks = leafTasks;
         try {
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             doc = dBuilder.parse("init.xml");
         }catch (Exception e){
             System.out.println(e.toString());
         }
+    }
+
+    public Boolean isElement(Node node)
+    {
+        return (node.getNodeType() ==  Node.ELEMENT_NODE);
     }
 
     public void toXMLFromTree(MotherTasks motherTasks,LeafTasks leafTasks,String filePathName){
@@ -156,13 +152,13 @@ public class XMLParser {
         try{
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             doc = dBuilder.parse(file);
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            //System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
             if (doc.hasChildNodes()) {
                 NodeList nodeList = doc.getDocumentElement().getChildNodes();
                 for (int count = 0; count < nodeList.getLength(); count++) {
                     Node node = nodeList.item(count);
-                    System.out.println("tested node :" + node.getNodeName());
+                    //System.out.println("tested node :" + node.getNodeName());
                     if (node.getNodeName().equals(TASKS)) {
                         NodeList tasksTypeList = node.getChildNodes();
                         createTreeFromNodeList(tasksTypeList);
@@ -177,46 +173,38 @@ public class XMLParser {
     }
     public void createTreeFromNodeList(NodeList nodeList){
         for (int count = 0; count < nodeList.getLength(); count++) {
-            System.out.println("nodeList count : "+count);
-            System.out.println("nodeList length : "+nodeList.getLength());
             Node tempNode = nodeList.item(count);
-            System.out.println(tempNode.toString());
             // make sure it's element node.
             if (isElement(tempNode)) {
                 // get node name and value
-                System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
+                //System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
                 switch (tempNode.getNodeName())
                 {
-                    case MOTHER_TASK :
-                        NodeList motherTaskNodes = tempNode.getChildNodes();
-                        int motherTaskNb = motherTaskNodes.getLength();
-                        // creating a mother task for each of them
-                        for (int task_m_count = 0; task_m_count < motherTaskNb; task_m_count++) {
-                            Node motherTaskNode = motherTaskNodes.item(task_m_count);
-                            System.out.println("test mother: "+isElement(motherTaskNode));
-                            if (isElement(motherTaskNode))
-                            {
-                                MotherTask motherTask = createMotherTaskFromNode(motherTaskNode);
-                                motherTasks.addTask(motherTask);
-                                System.out.println("mothertask "+motherTask.toString());
-
-                            }
+                case MOTHER_TASK :
+                    NodeList motherTaskNodes = tempNode.getChildNodes();
+                    int motherTaskNb = motherTaskNodes.getLength();
+                    // creating a mother task for each of them
+                    for (int task_m_count = 0; task_m_count < motherTaskNb; task_m_count++) {
+                        Node motherTaskNode = motherTaskNodes.item(task_m_count);
+                        if (isElement(motherTaskNode))
+                        {
+                            MotherTask motherTask = createMotherTaskFromNode(motherTaskNode);
+                            motherTasks.addTask(motherTask);
                         }
-                        break;
-                    case LEAF_TASK :
-                        NodeList leafTaskNodes = tempNode.getChildNodes();
-                        int leafTaskNb = leafTaskNodes.getLength();
-                        for (int task_f_count = 0; task_f_count < leafTaskNb; task_f_count++) {
-                            Node leafTaskNode = leafTaskNodes.item(task_f_count);
-                            System.out.println("test leaf: "+isElement(leafTaskNode));
-                            if (isElement(leafTaskNode))
-                            {
-                                LeafTask leafTask = createLeafTaskFromNode(leafTaskNode);
-                                leafTasks.addTask(leafTask);
-                                System.out.println("leaftask "+leafTask.toString());
-                            }
+                    }
+                    break;
+                case LEAF_TASK :
+                    NodeList leafTaskNodes = tempNode.getChildNodes();
+                    int leafTaskNb = leafTaskNodes.getLength();
+                    for (int task_f_count = 0; task_f_count < leafTaskNb; task_f_count++) {
+                        Node leafTaskNode = leafTaskNodes.item(task_f_count);
+                        if (isElement(leafTaskNode))
+                        {
+                            LeafTask leafTask = createLeafTaskFromNode(leafTaskNode);
+                            leafTasks.addTask(leafTask);
                         }
-                        break;
+                    }
+                    break;
                 }
             }
         }

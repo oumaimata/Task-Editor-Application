@@ -7,12 +7,11 @@ import javafx.collections.ObservableList;
  * Created by pierrelouislacorte on 10/06/2017.
  */
 public class MotherTasks {
-    private ObservableList<MotherTask> motherTasks;
+    private ObservableList<MotherTask> motherTasks; // Passer en ObservableMap<String,MotherTask>
     private Integer id;
 
     // constructeur sans argument
     public MotherTasks() {
-        System.out.println("creation de la observablelist tasks avec task.extractor()");
         this.motherTasks = FXCollections.observableArrayList();
         id = 0;
     }

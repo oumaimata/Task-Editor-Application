@@ -43,18 +43,28 @@ import javax.xml.transform.stream.StreamResult;
  */
 public class XMLParser {
 
-    public Tasks getTasks() {
-        return tasks;
-    }
-
     public Document doc;
 
-    public void setTasks(Tasks tasks) {
-        this.tasks = tasks;
+    // reference on the tasks list : Tasks
+    private MotherTasks motherTasks;
+
+    private LeafTasks leafTasks;
+
+    public MotherTasks getMotherTasks() {
+        return motherTasks;
     }
 
-    // reference on the tasks list : Tasks
-    private Tasks tasks;
+    public void setMotherTasks(MotherTasks motherTasks) {
+        this.motherTasks = motherTasks;
+    }
+
+    public LeafTasks getLeafTasks() {
+        return leafTasks;
+    }
+
+    public void setLeafTasks(LeafTasks leafTasks) {
+        this.leafTasks = leafTasks;
+    }
 
     static final String TASKS = "tasks";
     static final String MOTHER_TASK = "task_m";
@@ -78,8 +88,9 @@ public class XMLParser {
         return (node.getNodeType() ==  Node.ELEMENT_NODE);
     }
 
-    public XMLParser(Tasks tasks) {
-        this.tasks = tasks;
+    public XMLParser(MotherTasks motherTasks,LeafTasks leafTasks) {
+        this.motherTasks = motherTasks;
+        this.leafTasks = leafTasks;
         try {
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             doc = dBuilder.parse("init.xml");
@@ -139,7 +150,8 @@ public class XMLParser {
     }
 
     public void createTasksFromXML(String XMLFilePath){
-        tasks = new Tasks();
+        motherTasks = new MotherTasks();
+        leafTasks = new LeafTasks();
         File file = new File(XMLFilePath);
 
         try{
@@ -186,7 +198,7 @@ public class XMLParser {
                             if (isElement(motherTaskNode))
                             {
                                 MotherTask motherTask = createMotherTaskFromNode(motherTaskNode);
-                                tasks.addTask(motherTask);
+                                motherTasks.addTask(motherTask);
                                 System.out.println("mothertask "+motherTask.toString());
 
                             }
@@ -201,7 +213,7 @@ public class XMLParser {
                             if (isElement(leafTaskNode))
                             {
                                 LeafTask leafTask = createLeafTaskFromNode(leafTaskNode);
-                                tasks.addTask(leafTask);
+                                leafTasks.addTask(leafTask);
                                 System.out.println("leaftask "+leafTask.toString());
                             }
                         }

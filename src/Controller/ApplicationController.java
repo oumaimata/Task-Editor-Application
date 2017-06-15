@@ -228,7 +228,7 @@ public class ApplicationController {
         nodes = new Nodes();
         // initilisation de l'objet qui contient l'adresse du fichier et le texte de ce fichier
         xmlFile = new XMLFile();
-        xmlParser = new XMLParser(tasks);
+        xmlParser = new XMLParser(motherTasks,leafTasks);
 
         // on creer le graph associé
         createGraphFromTasks(motherTasks,tasks,leafTasks);
@@ -873,11 +873,13 @@ public class ApplicationController {
                 System.out.println("created task: " + getCreateMotherTask().getNameProperty());
                 addNodeFromTask(createdMotherTask);
                 motherTasks.addTask(createdMotherTask);
+                refreshXMLfromTree();
             }else{
                 this.createdLeafTask = wc.getDataLeafTask();
                 System.out.println("created task: " + getCreatedLeafTask().getNameProperty());
                 addNodeFromTask(createdLeafTask);
                 leafTasks.addTask(createdLeafTask);
+                refreshXMLfromTree();
             }
 
         });
@@ -1307,6 +1309,8 @@ public class ApplicationController {
         save();
         System.out.println("saved!");
         xmlParser.createTasksFromXML(xmlFile.getXMLfilePath());
+        motherTasks = xmlParser.getMotherTasks();
+        leafTasks = xmlParser.getLeafTasks();
         createGraphFromTasks(motherTasks,tasks,leafTasks);
     }
 
@@ -1321,7 +1325,8 @@ public class ApplicationController {
             xmlFile.setTextFromFilePath();
             codeArea.replaceText(xmlFile.getXMLtext());
             xmlParser.createTasksFromXML(xmlFile.getXMLfilePath());
-            tasks = xmlParser.getTasks();
+            motherTasks = xmlParser.getMotherTasks();
+            leafTasks = xmlParser.getLeafTasks();
             createGraphFromTasks(motherTasks,tasks,leafTasks);
         }
     }

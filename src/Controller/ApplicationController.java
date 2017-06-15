@@ -86,8 +86,6 @@ public class ApplicationController {
     private LeafTask createdLeafTask;
     private MotherTask createdMotherTask;
     //
-    // savoir si le panel est relevé
-    //Boolean panelActif;
     // contient la chaine de caractére du XML
     private XMLFile xmlFile;
     // le parser pour le XML
@@ -97,9 +95,7 @@ public class ApplicationController {
     private OrganicLayout organicLayout;
     private HierarchicLayout hierarchicLayout;
     private OrthogonalLayout orthogonalLayout;
-
-
-
+    
     // le container de l'editeur XML
 
     private VirtualizedScrollPane vScrollPane;
@@ -195,9 +191,6 @@ public class ApplicationController {
         MotherTaskStyle = createMotherTaskStyle();
         TaskStyle = createTaskStyle();
         LeafTaskStyle = createLeafStyle();
-        //currentTask = new Task();
-        // le panel est actif initialement
-        //panelActif = true;
         // initialisation des layout utilisés
         treeLayout = new TreeLayout();
         organicLayout = new OrganicLayout();
@@ -212,7 +205,6 @@ public class ApplicationController {
         // initialisation des noeuds courrant
         currentMotherTask = null;
         currentLeafTask = null;
-        //currentTask = null;
     }
 
     public void initialize() {
@@ -237,10 +229,6 @@ public class ApplicationController {
         //Creation de la liste des tags
         tags = new Tags();
 
-        //PopupController popup = new PopupController();
-        // creation de l'application controller
-        // permettre l'edition directe du graph
-        //graphControl.setInputMode(new GraphEditorInputMode());
         // on fait les bindings depuis applicationController
         make_binding();
         // on déclanche la méthode d'action principale du controller de l'application
@@ -273,7 +261,6 @@ public class ApplicationController {
         cbb_type_condition.getItems().addAll("nomological","satisfaction","arret");
         cbb_operateur_condition.getItems().addAll("AND","OR","XOR","NOT");
 
-//        bindingTaskAndEdition();
     }
 
     public void adjust_panel(boolean isMotherTask)
@@ -294,10 +281,6 @@ public class ApplicationController {
     // Méthode principale a utiliser dans le controller.
     // Y effectuer toutes les actions
     public void main_action (){
-        // ajout de la liste de toutes les tâches à la listview taches filles
-        // ce n'est pas ce qu'il y aura dedans mais le fonctionnement est ok.
-        // /!\ A adapter /!\
-       // getListview_edit_taches_filles().setItems(leafTasks.getTasks());
 
         graphControl.currentItemProperty();
 
@@ -308,9 +291,6 @@ public class ApplicationController {
     // Méthode pour réaliser les bindings des actions et des boutons
 
     public void make_binding (){
-        // ajout du listener sur le bouton d'ajout de tache qui va déclancher l'ajout d'une tache par défaut
-        //view.getButton_graph_ajouter().setOnAction(evt -> handleAjoutTache());
-
 
         // creation du listener sur le bouton pour centrer le graph
         getButton_centrer().setOnAction(evt -> graphFitContent());
@@ -334,13 +314,7 @@ public class ApplicationController {
                     // on récupère l'objet sélectionné
                     currentNode = (INode) iModelItemItemClickedEventArgs.getItem();
                     System.out.println("l'objet courrant est devenu: " + currentNode.getTag().getClass() );
-                    /*if(currentNode.getTag().getClass() == Task.class){
-                        // si le noeud selectionné renferme une tache
-                        //currentTask = (Task) currentNode.getTag();
-                        currentMotherTask = null;
-                        currentLeafTask = null;
-
-                    }else */if (currentNode.getTag().getClass() == MotherTask.class){
+                    if (currentNode.getTag().getClass() == MotherTask.class){
                         System.out.println("l'objet dans current node est une tache mere" );
                         currentMotherTask = (MotherTask) currentNode.getTag();
                         //currentTask=null;
@@ -351,13 +325,10 @@ public class ApplicationController {
                         //currentTask=null;
                         currentMotherTask=null;
                     }
-                    //System.out.println("currentTask " + currentTask + "currentMotherTask " + currentMotherTask + "currentLeafTask " + currentLeafTask);
-                    //currentTask = (Task) currentNode.getTag();
 
-                    //getTxt_edit_id_resume().setText(currentTask.getIdProperty());
-                    //getTxtfield_edit_name().setText(currentTask.getNameProperty());
                     adjust_panel(currentMotherTask != null);
                     changePanelState(true);
+
                     if(currentMotherTask != null)
                     {
                         fillPanel(currentMotherTask);
@@ -382,7 +353,6 @@ public class ApplicationController {
                 currentNode = null;
                 currentMotherTask = null;
                 currentLeafTask = null;
-                //currentTask = null;
             }
         });
 
@@ -731,7 +701,6 @@ public class ApplicationController {
                         }
                     }
                 }
-                //graph.groupNodes(node,subtask);
             }
         }
         System.out.println("Fin de la methode de création des liens entre nodes à partir d'une liste de noeuds");
@@ -977,10 +946,6 @@ public class ApplicationController {
             mereCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    /*pop_cbb_constructeur.setVisible(newValue);
-                    pop_label_constructeur.setVisible(newValue);
-                    pop_cbb_nature.setVisible(newValue);
-                    pop_label_nature.setVisible(newValue);*/
                     pop_label_constructeur.setDisable(!newValue);
                     pop_cbb_constructeur.setDisable(!newValue);
                     pop_label_nature.setDisable(!newValue);

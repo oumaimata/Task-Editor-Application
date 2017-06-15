@@ -215,6 +215,7 @@ public class ApplicationController {
     }
 
     public void initialize() {
+        assert listview_edit_assertions != null;
         // permettre l'edition directe du graph
         // ensemble des tâches à null initialement.
         // Dans le cas d'un chargement il faudra modifier directement cette valeur
@@ -384,6 +385,17 @@ public class ApplicationController {
             }
         });
 
+        listview_edit_conditions.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Condition>() {
+            @Override
+            public void changed(ObservableValue<? extends Condition> observable, Condition oldValue, Condition newValue) {
+                if (newValue != null)
+                {
+                    //listview_edit_assertions.getItems().clear();
+                    //listview_edit_assertions.setItems(newValue.getAssertionList());
+                }
+            }
+        });
+
 
         //Binding entre currentTask et PanelEdition
 
@@ -487,6 +499,10 @@ public class ApplicationController {
         if( task.getNature() != null) cbb_nature.setValue(task.getNature().getName());
         listview_edit_taches_filles.getItems().clear();
         listview_edit_taches_filles.setItems(task.getSubTaskList());
+        cbb_tache_fille_1.getItems().clear();
+        cbb_tache_fille_1.setItems(task.getSubTaskList());
+        cbb_tache_fille_2.getItems().clear();
+        cbb_tache_fille_2.setItems(task.getSubTaskList());
         fillConditions(task);
     }
 

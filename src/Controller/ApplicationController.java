@@ -308,7 +308,7 @@ public class ApplicationController {
         getButton_centrer().setOnAction(evt -> graphFitContent());
 
         // ajout du listener sur le bouton de hierarchisation
-        getButton_hierarchiser().setOnAction(evt -> handleLayoutAction(evt, hierarchicLayout));
+        getButton_hierarchiser().setOnAction(evt -> handleLayoutAction(evt, organicLayout));
 
         // ajout du listener sur le bouton de hierarchisation
         getButton_graph_supprimer().setOnAction(evt -> {
@@ -523,7 +523,7 @@ public class ApplicationController {
         //handle removal of tags from all concerned tasks
     }
 
-    private void handleLayoutAction(ActionEvent event, HierarchicLayout layout) {
+    private void handleLayoutAction(ActionEvent event, OrganicLayout layout) {
         Button layoutButton = (Button) event.getSource();
         layoutButton.setDisable(true);
 
@@ -665,6 +665,7 @@ public class ApplicationController {
                 System.out.println("la tache: "+ task.getNameProperty() + " est une tache mère, la longueur de ses sous taches est: " + task.getSubTaskList().size());
                 // pour toutes les sous tâches
                 List<INode> subtask = new ArrayList<>();
+                boolean addLabel = false;
                 for (String subTaskStringId : task.getSubTaskList()) {
                     System.out.println("la sous tache a l'id "+ subTaskStringId + " et de longueur " + subTaskStringId.length() );
                     // on vérifie tous les autres noeuds savoir s'il y en a un qui doit être lié
@@ -682,7 +683,10 @@ public class ApplicationController {
                                     // création du lien graphique
                                     subtask.add(otherNode);
                                     IEdge edge = graphControl.getGraph().createEdge(node, otherNode);
-                                    graphControl.getGraph().addLabel(edge,task.getConstructor().getName());
+                                    if(!addLabel) {
+                                        graphControl.getGraph().addLabel(edge,task.getConstructor().getName());
+                                        addLabel = true;
+                                    }
                                     System.out.println("edge");
                                 }
                             } else if (otherNode.getTag().getClass() == LeafTask.class) {
@@ -695,7 +699,11 @@ public class ApplicationController {
                                     // création du lien graphique
                                     subtask.add(otherNode);
                                     IEdge edge = graphControl.getGraph().createEdge(node, otherNode);
-                                    graphControl.getGraph().addLabel(edge,task.getConstructor().getName());
+                                    //graphControl.getGraph().addLabel(edge,task.getConstructor().getName());
+                                    if(!addLabel) {
+                                        graphControl.getGraph().addLabel(edge,task.getConstructor().getName());
+                                        addLabel = true;
+                                    }
                                     System.out.println("edge");
                                 }
                             } else {

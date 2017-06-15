@@ -1344,6 +1344,7 @@ public class ApplicationController {
         save();
         System.out.println("saved!");
         xmlParser.createTasksFromXML(xmlFile.getXMLfilePath());
+        createGraphFromTasks(motherTasks,tasks,leafTasks);
     }
 
     public void openFile() {

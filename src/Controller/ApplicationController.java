@@ -165,6 +165,7 @@ public class ApplicationController {
     private  Text txt_edit_nom_tache_conditions,txt_edit_condition_selectionne;
     @FXML
     private  ListView<Condition> listview_edit_conditions;
+    @FXML
     private  ListView<Assertion> listview_edit_assertions;
     @FXML
     private ComboBox<String> cbb_type_condition, cbb_operateur_condition;
@@ -236,7 +237,7 @@ public class ApplicationController {
         //Creation de la liste des tags
         tags = new Tags();
 
-        PopupController popup = new PopupController();
+        //PopupController popup = new PopupController();
         // creation de l'application controller
         // permettre l'edition directe du graph
         //graphControl.setInputMode(new GraphEditorInputMode());
@@ -293,11 +294,6 @@ public class ApplicationController {
     // Méthode principale a utiliser dans le controller.
     // Y effectuer toutes les actions
     public void main_action (){
-        // ajout de la liste de toutes les tâches à la listview taches filles
-        // ce n'est pas ce qu'il y aura dedans mais le fonctionnement est ok.
-        // /!\ A adapter /!\
-       // getListview_edit_taches_filles().setItems(leafTasks.getTasks());
-
         graphControl.currentItemProperty();
 
         getListview_tags().setItems(tags.getTags());
@@ -307,9 +303,6 @@ public class ApplicationController {
     // Méthode pour réaliser les bindings des actions et des boutons
 
     public void make_binding (){
-        // ajout du listener sur le bouton d'ajout de tache qui va déclancher l'ajout d'une tache par défaut
-        //view.getButton_graph_ajouter().setOnAction(evt -> handleAjoutTache());
-
 
         // creation du listener sur le bouton pour centrer le graph
         getButton_centrer().setOnAction(evt -> graphFitContent());
@@ -333,13 +326,7 @@ public class ApplicationController {
                     // on récupère l'objet sélectionné
                     currentNode = (INode) iModelItemItemClickedEventArgs.getItem();
                     System.out.println("l'objet courrant est devenu: " + currentNode.getTag().getClass() );
-                    /*if(currentNode.getTag().getClass() == Task.class){
-                        // si le noeud selectionné renferme une tache
-                        //currentTask = (Task) currentNode.getTag();
-                        currentMotherTask = null;
-                        currentLeafTask = null;
-
-                    }else */if (currentNode.getTag().getClass() == MotherTask.class){
+                    if (currentNode.getTag().getClass() == MotherTask.class){
                         System.out.println("l'objet dans current node est une tache mere" );
                         currentMotherTask = (MotherTask) currentNode.getTag();
                         //currentTask=null;
@@ -350,11 +337,7 @@ public class ApplicationController {
                         //currentTask=null;
                         currentMotherTask=null;
                     }
-                    //System.out.println("currentTask " + currentTask + "currentMotherTask " + currentMotherTask + "currentLeafTask " + currentLeafTask);
-                    //currentTask = (Task) currentNode.getTag();
 
-                    //getTxt_edit_id_resume().setText(currentTask.getIdProperty());
-                    //getTxtfield_edit_name().setText(currentTask.getNameProperty());
                     adjust_panel(currentMotherTask != null);
                     changePanelState(true);
                     if(currentMotherTask != null)
@@ -390,8 +373,18 @@ public class ApplicationController {
             public void changed(ObservableValue<? extends Condition> observable, Condition oldValue, Condition newValue) {
                 if (newValue != null)
                 {
-                    //listview_edit_assertions.getItems().clear();
-                    //listview_edit_assertions.setItems(newValue.getAssertionList());
+                    cbb_type_condition.setValue(newValue.getType().getName());
+                    cbb_operateur_condition.setValue(newValue.getOperator().getName());
+                    listview_edit_assertions.getItems().clear();
+                    listview_edit_assertions.setItems(newValue.getAssertionList());
+                    txt_edit_condition_selectionne.setText(newValue.toString());
+                }
+                else
+                {
+                    listview_edit_assertions.getItems().clear();
+                    cbb_type_condition.setValue("");
+                    cbb_operateur_condition.setValue("");
+                    txt_edit_condition_selectionne.setText("");
                 }
             }
         });
@@ -414,10 +407,8 @@ public class ApplicationController {
                     // create the edge between the source and target port
                     IEdge edge = graph.createEdge(sourcePort, targetPort, dummyEdge.getStyle());
                     // creation d'un lien entre pere et fils
-                    createLinkBetweenTwoNodes(edge.getSourceNode(),edge.getTargetNode());
-                    // create a label
-                    //graph.addLabel(edge, "A new edge");
-                    // return the created edge
+                    createLinkBetweenTwoNodes(graph, edge.getSourceNode(),edge.getTargetNode(),edge);
+
                     return edge;
                 });
         graphEditorInputMode.getCreateEdgeInputMode().addEdgeCreatedListener(new IEventHandler<EdgeEventArgs>() {
@@ -494,12 +485,13 @@ public class ApplicationController {
     {
 
         txtfield_edit_name.setText(task.getNameProperty());
-        cbb_constructeur.setValue(task.getConstructor().getName());
+        if( task.getConstructor() != null) cbb_constructeur.setValue(task.getConstructor().getName());
         System.out.println("la nature de la tache mere est: " + task.getNature());
         if( task.getNature() != null) cbb_nature.setValue(task.getNature().getName());
         listview_edit_taches_filles.getItems().clear();
         listview_edit_taches_filles.setItems(task.getSubTaskList());
         cbb_tache_fille_1.getItems().clear();
+        System.out.println("la liste de la subtasklist de la tache mere est de longueur: " + task.getSubTaskList().size());
         cbb_tache_fille_1.setItems(task.getSubTaskList());
         cbb_tache_fille_2.getItems().clear();
         cbb_tache_fille_2.setItems(task.getSubTaskList());
@@ -552,16 +544,6 @@ public class ApplicationController {
         System.out.println("on centre le graphique");
         graphControl.fitContent();
     }
-
-    /* --  N'est plus utile pour le moment --
-    public void handleAjoutTache(){
-        System.out.println("lancement de la methode ajout tache du controller & creation du noeud graphique avec comme tag la tache ainsi créée");
-        INode node1 = graph.createNode(new PointD(),TaskStyle,tasks.addDefaultTache());
-        nodes.addNode(node1);
-        Task task = (Task) node1.getTag();
-        graph.addLabel(node1, task.getNameProperty());
-    }
-    */
 
     private void addNodeFromTask(LeafTask task){
         System.out.println("lancement de la methode d'ajout d'un node a partir d'une tache");
@@ -699,7 +681,8 @@ public class ApplicationController {
                                     System.out.println("on a " + otherTask.getIdProperty() + " == " + subTaskStringId + " et de longueur " + otherTask.getIdProperty().length());
                                     // création du lien graphique
                                     subtask.add(otherNode);
-                                    graphControl.getGraph().createEdge(node, otherNode);
+                                    IEdge edge = graphControl.getGraph().createEdge(node, otherNode);
+                                    graphControl.getGraph().addLabel(edge,task.getConstructor().getName());
                                     System.out.println("edge");
                                 }
                             } else if (otherNode.getTag().getClass() == LeafTask.class) {
@@ -711,7 +694,8 @@ public class ApplicationController {
                                     System.out.println("on a " + otherTask.getIdProperty() + " == " + subTaskStringId );
                                     // création du lien graphique
                                     subtask.add(otherNode);
-                                    graphControl.getGraph().createEdge(node, otherNode);
+                                    IEdge edge = graphControl.getGraph().createEdge(node, otherNode);
+                                    graphControl.getGraph().addLabel(edge,task.getConstructor().getName());
                                     System.out.println("edge");
                                 }
                             } else {
@@ -750,7 +734,8 @@ public class ApplicationController {
     }
 
     // methode pour creer un lien entre deux taches sur les noeuds
-    private void createLinkBetweenTwoNodes(INode Mother, INode Daugther){
+    private void createLinkBetweenTwoNodes(IGraph graph, INode Mother, INode Daugther, IEdge egde){
+        System.out.println("appel de la methode creatLinkBetweenTwoNodes");
         MotherTask motherTask;
         if(Mother.getTag().getClass() == Task.class){
             // si la tache mère était pour le moment une tache
@@ -769,6 +754,7 @@ public class ApplicationController {
 
         // on essaye de trouver le type de la classe fille
         if(Daugther.getTag().getClass() == MotherTask.class){
+            System.out.println("la tache fille est une tache mere");
             // si la fille est une mother task
             MotherTask daugthertask = (MotherTask) Daugther.getTag();
             // ajout de cette tache a la liste des sous taches de la mère
@@ -776,31 +762,39 @@ public class ApplicationController {
             System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daugthertask.getIdProperty());
 
         }else if (Daugther.getTag().getClass() == LeafTask.class){
-            // si la fille est une leaf tag
-            LeafTask daugthertask = (LeafTask) Daugther.getTag();
+            System.out.println("la tache fille est une tache feuille");
+            Task daugthertask = (Task) Daugther.getTag();
+            LeafTask daugtherleaftask = new LeafTask(daugthertask);
             // ajout de cette tache a la liste des sous taches de la mère
-            motherTask.addSubTask(daugthertask.getIdProperty());
+            motherTask.addSubTask(daugtherleaftask.getIdProperty());
+            graphControl.getGraph().setStyle(Daugther,LeafTaskStyle);
             System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daugthertask.getIdProperty());
 
         }else {
+            System.out.println("la tache fille est une tache");
             // si la fille est une tache
             Task daugthertask = (Task) Daugther.getTag();
             //suppression de la tache a la liste des taches
             tasks.removeTask(daugthertask);
             // changement de la tache comme leaf tache
             LeafTask daugtherleaftask = new LeafTask(daugthertask);
+            System.out.println("modification de la tache de Tache -> leafTask");
             // sauvegarde de la mère
             daugtherleaftask.setMother(motherTask);
+            System.out.println("Sauvegarde par la leaf task de la tâche mere");
             // ajout de la leaf tache 
             // on sauvegarde derrière l'ancien noeud Daughet le fait que c'est maintenant une leaf task
             Daugther.setTag(motherTask);
             // ajout de cette tache a la liste des sous taches de la mère
             motherTask.addSubTask(daugtherleaftask.getIdProperty());
+            System.out.println("ajout a la tache mere de l'id de la tache fille");
             // update du style
             graphControl.getGraph().setStyle(Daugther,LeafTaskStyle);
             System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daugthertask.getIdProperty());
-
         }
+
+        // ajout du label du constructeur sur le lien si il y en a un
+        if(motherTask.getConstructor() != null) graph.addLabel(egde,motherTask.getConstructor().getName());
     }
 
 
@@ -865,10 +859,11 @@ public class ApplicationController {
     // méthode appelée par l'application une fois que le stage a été chargé.
     public void onLoaded() {
         // ajout du listener sur le bouton d'ajout du graph pour ouvrir une pop-up d'ajout
-        getButton_graph_ajouter().setOnAction(e -> {
+        button_graph_ajouter.setOnAction(e -> {
             PopupController wc = new PopupController();
             wc.showPopUp();
-            if(wc.isMotherTask()){
+            if(wc.isMotherTask())
+            {
                 this.createdMotherTask = wc.getDataMotherTask();
                 System.out.println("created task: " + getCreateMotherTask().getNameProperty());
                 addNodeFromTask(createdMotherTask);
@@ -931,33 +926,55 @@ public class ApplicationController {
             TextField nameTextField = new TextField();
             grid.add(nameTextField, 1, 2);
 
-            Label tacheMere = new Label("Creation d'une tâche mère:");
+            Label tacheMere = new Label("Creation d'une tâche mère :");
             grid.add(tacheMere, 0, 3);
 
             // creation de la checkbox pour la construction d'une tache mère
             CheckBox mereCheckBox = new CheckBox();
-
-            // Choix du constructeur
-            ComboBox<String> pop_cbb_constructeur = new ComboBox<String>();
-            pop_cbb_constructeur.getItems().addAll("IND","SEQ","SEQ_ORD","PAR","PAR_SIM","PAR_START","PAR_END");
-
-            HBox hboxmere = new HBox(mereCheckBox, pop_cbb_constructeur);
-            pop_cbb_constructeur.setVisible(false);
+            HBox hboxmere = new HBox(mereCheckBox);
             hboxmere.setAlignment(Pos.CENTER_LEFT);
             grid.add(hboxmere, 1, 3);
+
+            Label pop_label_constructeur = new Label("Constructeur :");
+            grid.add(pop_label_constructeur, 0, 4);
+            // Choix du constructeur
+            ComboBox<String> pop_cbb_constructeur = new ComboBox<String>();
+            pop_cbb_constructeur.setTooltip(new Tooltip("Constructeur"));
+            pop_cbb_constructeur.getItems().addAll("IND","SEQ","SEQ_ORD","PAR","PAR_SIM","PAR_START","PAR_END");
+            pop_cbb_constructeur.setValue("IND");
+            grid.add(pop_cbb_constructeur, 1, 4);
+
+            Label pop_label_nature = new Label("Nature :");
+            grid.add(pop_label_nature, 0, 5);
+            // Choix du constructeur
+            ComboBox<String> pop_cbb_nature = new ComboBox<String>();
+            pop_cbb_nature.setTooltip(new Tooltip("Nature"));
+            pop_cbb_nature.getItems().addAll("INTERRUPTIBLE", "OPTIONELLE","ITERATIVE");
+            pop_cbb_nature.setValue("INTERRUPTIBLE");
+            grid.add(pop_cbb_nature, 1, 5);
+
+
+            /*pop_label_constructeur.setVisible(false);
+            pop_cbb_constructeur.setVisible(false);
+            pop_label_nature.setVisible(false);
+            pop_cbb_nature.setVisible(false);*/
+            pop_label_constructeur.setDisable(true);
+            pop_cbb_constructeur.setDisable(true);
+            pop_label_nature.setDisable(true);
+            pop_cbb_nature.setDisable(true);
+
 
             mereCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
                 @Override
                 public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    pop_cbb_constructeur.setVisible(newValue);
-                    if(newValue == true){
-                        System.out.println("la checkbox est cochée");
-                        pop_cbb_constructeur.show();
-                    }
-                    if(newValue == false){
-                        System.out.println("la checkbox est décochée");
-                        pop_cbb_constructeur.hide();
-                    }
+                    /*pop_cbb_constructeur.setVisible(newValue);
+                    pop_label_constructeur.setVisible(newValue);
+                    pop_cbb_nature.setVisible(newValue);
+                    pop_label_nature.setVisible(newValue);*/
+                    pop_label_constructeur.setDisable(!newValue);
+                    pop_cbb_constructeur.setDisable(!newValue);
+                    pop_label_nature.setDisable(!newValue);
+                    pop_cbb_nature.setDisable(!newValue);
                 }
             });
 
@@ -965,33 +982,34 @@ public class ApplicationController {
             HBox hbBtn = new HBox(10);
             hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
             hbBtn.getChildren().add(btn);
-            grid.add(hbBtn, 1, 5);
+            grid.add(hbBtn, 1, 6);
 
             btn.setOnAction(e ->{
                         if (mereCheckBox.isSelected())
                         {
                             motherTask = new MotherTask();
                             if(!idTextField.getText().isEmpty()){
-                                System.out.println("On modifie la tache avec id: "+ idTextField.getText());
+                                //System.out.println("On modifie la tache avec id: "+ idTextField.getText());
                                 motherTask.setIdProperty(idTextField.getText());
                             }
                             if(!nameTextField.getText().isEmpty()){
-                                System.out.println("On modifie la tache avec nom: "+ nameTextField.getText());
+                                //System.out.println("On modifie la tache avec nom: "+ nameTextField.getText());
                                 motherTask.setNameProperty(nameTextField.getText());
                             }
                             motherTask.setConstructor(GlobalParameters.TypeConstructeur.valueOf(pop_cbb_constructeur.getValue()));
-                            System.out.println("On créer une tache mere, son constructeur est: "+ motherTask.getConstructor());
+                            motherTask.setNature(GlobalParameters.Nature.valueOf(pop_cbb_nature.getValue()));
+                            System.out.println("On créer une tache mere, sa nature est: "+ motherTask.getNature().getName());
                             leafTask = null;
                         }
                         else
                         {
                             leafTask = new LeafTask();
                             if(!idTextField.getText().isEmpty()){
-                                System.out.println("On modifie la tache avec id: "+ idTextField.getText());
+                                //System.out.println("On modifie la tache avec id: "+ idTextField.getText());
                                 leafTask.setIdProperty(idTextField.getText());
                             }
                             if(!nameTextField.getText().isEmpty()){
-                                System.out.println("On modifie la tache avec nom: "+ nameTextField.getText());
+                                //System.out.println("On modifie la tache avec nom: "+ nameTextField.getText());
                                 leafTask.setNameProperty(nameTextField.getText());
                             }
                             motherTask = null;

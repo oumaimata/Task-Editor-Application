@@ -425,10 +425,8 @@ public class ApplicationController {
                     // create the edge between the source and target port
                     IEdge edge = graph.createEdge(sourcePort, targetPort, dummyEdge.getStyle());
                     // creation d'un lien entre pere et fils
-                    createLinkBetweenTwoNodes(edge.getSourceNode(),edge.getTargetNode());
-                    // create a label
-                    //graph.addLabel(edge, "A new edge");
-                    // return the created edge
+                    createLinkBetweenTwoNodes(graph, edge.getSourceNode(),edge.getTargetNode(),edge);
+
                     return edge;
                 });
         graphEditorInputMode.getCreateEdgeInputMode().addEdgeCreatedListener(new IEventHandler<EdgeEventArgs>() {
@@ -563,16 +561,6 @@ public class ApplicationController {
         System.out.println("on centre le graphique");
         graphControl.fitContent();
     }
-
-    /* --  N'est plus utile pour le moment --
-    public void handleAjoutTache(){
-        System.out.println("lancement de la methode ajout tache du controller & creation du noeud graphique avec comme tag la tache ainsi créée");
-        INode node1 = graph.createNode(new PointD(),TaskStyle,tasks.addDefaultTache());
-        nodes.addNode(node1);
-        Task task = (Task) node1.getTag();
-        graph.addLabel(node1, task.getNameProperty());
-    }
-    */
 
     private void addNodeFromTask(LeafTask task){
         System.out.println("lancement de la methode d'ajout d'un node a partir d'une tache");
@@ -710,7 +698,8 @@ public class ApplicationController {
                                     System.out.println("on a " + otherTask.getIdProperty() + " == " + subTaskStringId + " et de longueur " + otherTask.getIdProperty().length());
                                     // création du lien graphique
                                     subtask.add(otherNode);
-                                    graphControl.getGraph().createEdge(node, otherNode);
+                                    IEdge edge = graphControl.getGraph().createEdge(node, otherNode);
+                                    graphControl.getGraph().addLabel(edge,task.getConstructor().getName());
                                     System.out.println("edge");
                                 }
                             } else if (otherNode.getTag().getClass() == LeafTask.class) {
@@ -722,7 +711,8 @@ public class ApplicationController {
                                     System.out.println("on a " + otherTask.getIdProperty() + " == " + subTaskStringId );
                                     // création du lien graphique
                                     subtask.add(otherNode);
-                                    graphControl.getGraph().createEdge(node, otherNode);
+                                    IEdge edge = graphControl.getGraph().createEdge(node, otherNode);
+                                    graphControl.getGraph().addLabel(edge,task.getConstructor().getName());
                                     System.out.println("edge");
                                 }
                             } else {
@@ -761,7 +751,7 @@ public class ApplicationController {
     }
 
     // methode pour creer un lien entre deux taches sur les noeuds
-    private void createLinkBetweenTwoNodes(INode Mother, INode Daugther){
+    private void createLinkBetweenTwoNodes(IGraph graph, INode Mother, INode Daugther, IEdge egde){
         MotherTask motherTask;
         if(Mother.getTag().getClass() == Task.class){
             // si la tache mère était pour le moment une tache
@@ -812,6 +802,9 @@ public class ApplicationController {
             System.out.println("Creation d'un lien de parenté entre "+ motherTask.getIdProperty() + " et "+ daugthertask.getIdProperty());
 
         }
+
+        // ajout du label du constructeur sur le lien
+        graph.addLabel(egde,motherTask.getConstructor().getName());
     }
 
 
@@ -966,8 +959,8 @@ public class ApplicationController {
             // Choix du constructeur
             ComboBox<String> pop_cbb_nature = new ComboBox<String>();
             pop_cbb_nature.setTooltip(new Tooltip("Nature"));
-            pop_cbb_nature.getItems().addAll("interruptible", "optional","iterative");
-            pop_cbb_nature.setValue("interruptible");
+            pop_cbb_nature.getItems().addAll("INTERRUPTIBLE", "OPTIONELLE","ITERATIVE");
+            pop_cbb_nature.setValue("INTERRUPTIBLE");
             grid.add(pop_cbb_nature, 1, 5);
 
 

@@ -257,8 +257,9 @@ public class ApplicationController {
         });
         codeArea.replaceText(0, 0, xmlFile.getXMLtext());
         // setting the action to open a document
-        button_open.setOnAction((event) -> {openFile();});
-        button_save.setOnAction((event) -> {save();});
+        button_open.setOnAction((event) -> openFile());
+        button_save.setOnAction((event) -> save());
+
         button_xml_rafraichir.setOnAction((event) -> {refreshTreeFromXML();});
         xmlFile.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
 
@@ -338,10 +339,12 @@ public class ApplicationController {
                         currentLeafTask = null;
 
                     }else */if (currentNode.getTag().getClass() == MotherTask.class){
+                        System.out.println("l'objet dans current node est une tache mere" );
                         currentMotherTask = (MotherTask) currentNode.getTag();
                         //currentTask=null;
                         currentLeafTask= null;
                     }else{
+                        System.out.println("l'objet dans current node est une tache feuille" );
                         currentLeafTask = (LeafTask) currentNode.getTag();
                         //currentTask=null;
                         currentMotherTask=null;
@@ -351,6 +354,8 @@ public class ApplicationController {
 
                     //getTxt_edit_id_resume().setText(currentTask.getIdProperty());
                     //getTxtfield_edit_name().setText(currentTask.getNameProperty());
+                    adjust_panel(currentMotherTask != null);
+                    changePanelState(true);
                     if(currentMotherTask != null)
                     {
                         fillPanel(currentMotherTask);
@@ -359,7 +364,6 @@ public class ApplicationController {
                     {
                         fillPanel(currentLeafTask);
                     }
-                    adjust_panel(currentMotherTask != null);
                 }
                 // mise en place du panel d'édition
                 changePanelState(true);
@@ -484,9 +488,11 @@ public class ApplicationController {
 
     private void fillPanel(MotherTask task)
     {
+
         txtfield_edit_name.setText(task.getNameProperty());
         cbb_constructeur.setValue(task.getConstructor().getName());
-        cbb_nature.setValue(task.getNature().getName());
+        System.out.println("la nature de la tache mere est: " + task.getNature());
+        if( task.getNature() != null) cbb_nature.setValue(task.getNature().getName());
         listview_edit_taches_filles.getItems().clear();
         listview_edit_taches_filles.setItems(task.getSubTaskList());
         fillConditions(task);

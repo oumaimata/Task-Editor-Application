@@ -76,7 +76,7 @@ public class GlobalParameters {
         }
 
         public String getName() {
-            return name;
+                return name;
         }
     }
 

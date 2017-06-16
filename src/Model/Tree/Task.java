@@ -46,7 +46,8 @@ public class Task {
     }
 
     public void setNameProperty(String nameProperty) {
-        this.nameProperty.set(nameProperty);
+        if (!nameProperty.isEmpty())
+            this.nameProperty.set(nameProperty);
     }
 
     public String getNameProperty() {

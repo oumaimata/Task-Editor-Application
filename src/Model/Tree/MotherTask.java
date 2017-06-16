@@ -34,6 +34,12 @@ public class MotherTask extends Task{
         this.subTaskList = FXCollections.observableArrayList();
     }
 
+    public MotherTask(MotherTask task) {
+        super(task.idPropertyProperty(),task.namePropertyProperty(),task.getConditionList());
+        this.linkBetweenDaughters = task.getLinkBetweenDaughters();
+        this.subTaskList = task.getSubTaskList();
+    }
+
     public MotherTask() {
         super();
         this.linkBetweenDaughters = FXCollections.observableArrayList(LinkBetweenDaughter.extractor());

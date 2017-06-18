@@ -57,24 +57,53 @@
                 <!-- Title -->
                 <h1>Le cahier des charges</h1>
 
-                <!-- Author -->
-                <p class="lead">
-                    by <a href="#">Start Bootstrap</a>
-                </p>
-
-                <hr>
-
                 <!-- Preview Image -->
                 <img class="img-responsive" src="../img/content/conception/conception.jpg" alt="">
 
                 <hr>
 
                 <!-- Post Content -->
-                <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut, tenetur natus doloremque laborum quos iste ipsum rerum obcaecati impedit odit illo dolorum ab tempora nihil dicta earum fugiat. Temporibus, voluptatibus.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos, doloribus, dolorem iusto blanditiis unde eius illum consequuntur neque dicta incidunt ullam ea hic porro optio ratione repellat perspiciatis. Enim, iure!</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error, nostrum, aliquid, animi, ut quas placeat totam sunt tempora commodi nihil ullam alias modi dicta saepe minima ab quo voluptatem obcaecati?</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum, dolor quis. Sunt, ut, explicabo, aliquam tenetur ratione tempore quidem voluptates cupiditate voluptas illo saepe quaerat numquam recusandae? Qui, necessitatibus, est!</p>
+                <p class="lead">La conception du projet passe par l'élaboration
+                d'un cahier de charge, mettant en place les différents aspects
+                représentants les besoins, les premières idées de maquette en détaillant les fonctionnalités à développer, l'étude des logiciels concurrents ainsi que le positionnement du projet.</p>
+                <h2>Besoins</h2>
+                <p>Les principales fonctionnalités explicitées par les utilisateurs étaient que :</p>
+                <ul>
+                  <li>L’application devra disposer de fonctionnalités dites génériques :</li>
+                  <ul>
+                    <li>Créer un nouveau modèle de tâche,</li>
+                    <li>Importer un modèle de tâche existant,</li>
+                    <li>Enregistrer le modèle de tâche,</li>
+                    <li>Quitter l’application.</li>
+                  </ul> 
+                  <li>L’interface devra permettre en particulier de :</li>
+                  <ul>
+                    <li>Visualiser et éditer l’arbre de tâche,</li>
+                    <li>Visualiser et éditer  les propriétés des tâches,</li>
+                    <li>Visualiser et éditer les propriétés générales du modèle,</li>
+                    <li>Visualiser et éditer le fichier XML correspondant.</li>
+                  </ul>
+                </ul> 
+                <p>Les fonctionnalités de visualisation/édition de l’arbre ainsi que celle de visualisation/édition des propriétés générales du modèle peuvent être regroupées en une seule entité dans la limite où l’on admet que les propriétés générales du modèle sont limitées à l’existence de tags. </p>
+                <p>Il y a donc <b>trois</b> parties principales de l’interface à développer :</p>
+                <ul>
+                  <li><b>arbre de tâche</b> avec la gestion des tags,</li>
+                  <li>la section <b>XML</b>,</li>
+                  <li>et enfin l’<b>édition des propriétés des tâches</b>.</li>
+                </ul> 
+                <h2>Conception de l'interface</h2>
+                <p>La maquette générale de l’application prendra la forme suivante:</p>
+                <img class="img-responsive" src="../img/content/conception/maquette.jpg" alt="">
+                <br>
+                <p>La partie centrale correspond à la visualisation graphique et l’édition de l’arbre des tâches avec les options d’édition à sa droite et les options relatives à la gestion des tags sur la gauche. Sous cet arbre se trouve la partie d’édition des propriétés d’une tâche. Enfin à droite de l’application nous retrouvons le XML correspondant à l’arbre graphique.</p>
+                <p>Cette maquette ne comprend pas les éléments de design finaux à cause des limites d’utilisation de la version gratuite du logiciel de maquettage, elle nous permet d’avoir une représentation globale de l’espace et du positionnement des objets.</p>
+                <h2>Logiciel concurrent</h2>
+                <p>Un logiciel a été développé par la Junior Entreprise de l’UTC, l’USEC, dans le même but. Ce logiciel comporte quelques problèmes. Il ne permet pas de modifier plusieurs caractéristiques des tâches simultanément. Il ne propose pas de sauvegarder quand on quitte le logiciel.</p>
+                <h2>Positionnement</h2>
+                <p>Comme cela a été précisé au cours des parties précédentes, nous allons mettre l’accent sur la facilité d'utilisation de l'application, le fait que l'utilisation de chaque fonctionnalité soit le plus intuitif et pratique possible. Nous allons donc notamment éviter l'ouverture d'onglets secondaires grâce à une répartition cohérente et pertinente des options. Enfin nous allons livrer une application complète en incluant la possibilité de sauvegarder et d'importer des arbres.</p>
+
+
+
                 
             </div>
 
@@ -89,25 +118,13 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <ul class="list-unstyled">
-                                <li><a href="#">Category Name</a>
+                                <li><a href="https://fr.wikipedia.org/wiki/Ergonomie">Ergonomie</a>
                                 </li>
-                                <li><a href="#">Category Name</a>
+                                <li><a href="https://fr.wikipedia.org/wiki/Prototypage_logiciel">Prototype</a>
                                 </li>
-                                <li><a href="#">Category Name</a>
+                                <li><a href="https://fr.wikipedia.org/wiki/Optimisation_de_code">Optimisation</a>
                                 </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled">
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
+                                <li><a href="https://doisjeutiliser.fr/unePopinIntrusive/">Pop-up</a>
                                 </li>
                             </ul>
                         </div>
@@ -118,7 +135,9 @@
                 <!-- Side Widget Well -->
                 <div class="well">
                     <h4>La page en bref</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
+                    <p>Les premières idées de conception et études des besoins.</p>
+                    <p>Ce n'est jamais définitif jusqu'à ce que l'implémentation
+                        commence... </p>
                 </div>
 
             </div>

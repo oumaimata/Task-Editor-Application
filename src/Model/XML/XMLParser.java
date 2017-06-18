@@ -83,11 +83,6 @@ public class XMLParser {
     static final String OBJECT = "object";
     static final String NOT = "NOT";
 
-    public Boolean isElement(Node node)
-    {
-        return (node.getNodeType() ==  Node.ELEMENT_NODE);
-    }
-
     public XMLParser(MotherTasks motherTasks,LeafTasks leafTasks) {
         this.motherTasks = motherTasks;
         this.leafTasks = leafTasks;
@@ -97,6 +92,11 @@ public class XMLParser {
         }catch (Exception e){
             System.out.println(e.toString());
         }
+    }
+
+    public Boolean isElement(Node node)
+    {
+        return (node.getNodeType() ==  Node.ELEMENT_NODE);
     }
 
     public void toXMLFromTree(MotherTasks motherTasks,LeafTasks leafTasks,String filePathName){
@@ -157,13 +157,13 @@ public class XMLParser {
         try{
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             doc = dBuilder.parse(file);
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            //System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
             if (doc.hasChildNodes()) {
                 NodeList nodeList = doc.getDocumentElement().getChildNodes();
                 for (int count = 0; count < nodeList.getLength(); count++) {
                     Node node = nodeList.item(count);
-                    System.out.println("tested node :" + node.getNodeName());
+                    //System.out.println("tested node :" + node.getNodeName());
                     if (node.getNodeName().equals(TASKS)) {
                         NodeList tasksTypeList = node.getChildNodes();
                         createTreeFromNodeList(tasksTypeList);
@@ -178,14 +178,11 @@ public class XMLParser {
     }
     public void createTreeFromNodeList(NodeList nodeList){
         for (int count = 0; count < nodeList.getLength(); count++) {
-            System.out.println("nodeList count : "+count);
-            System.out.println("nodeList length : "+nodeList.getLength());
             Node tempNode = nodeList.item(count);
-            System.out.println(tempNode.toString());
             // make sure it's element node.
             if (isElement(tempNode)) {
                 // get node name and value
-                System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
+                //System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
                 switch (tempNode.getNodeName())
                 {
                     case MOTHER_TASK :
@@ -217,8 +214,8 @@ public class XMLParser {
                                 System.out.println("leaftask "+leafTask.toString());
                             }
                         }
-                        break;
                 }
+                break;
             }
         }
     }

@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <model version="1.0">
     <namespaces>
-      <prefix iri="http://www.utc.fr/hds/ici/humans/nikita/nikita#" name="nikita"/>
+      <prefix name="nikita" iri="http://www.utc.fr/hds/ici/humans/nikita/nikita#"/>
     </namespaces>
 <tasks>
 	<task_m>	
-	<task id="ici" iterative="false" name="ici">  
+	<task id="Contre-percer_Support_1" iterative="false" name="Contre_percer le Support_1">  
           <context>
             <refs>
               <ref-concept concept="nikita:Support_1" ref="?Support_1"/> 
             </refs>
           </context>                 
           <subtasks>					
-           
+            <subtask id="Prendre_la_Perceuse01"/>
             <subtask id="Percer_le_Support_1"/>
             <subtask id="Controler_le_Barque_Trou01"/>
 			 <subtask id="Agrapher_le_Support_1"/>
@@ -28,14 +28,14 @@
 			 <nomological id="1">
 			<AND>
 					<statement type="activity">
-					  <triple object="false" predicate="nikita:has-perced-state" subject="?Support_1"/>
+					  <triple predicate="nikita:has-perced-state" subject="?Support_1" object="false"/>
 					</statement>
 			</AND>
 			 </nomological>
 			  <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="nikita:has-perced-state" subject="?Support_1"/>
+                   <triple predicate="nikita:has-perced-state" subject="?Support_1" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -65,14 +65,14 @@
 			 <nomological id="1">
 			<AND>
 					<statement type="activity">
-					  <triple object="false" predicate="nikita:has-perced-state" subject="?Support_1"/>
+					  <triple predicate="nikita:has-perced-state" subject="?Support_1" object="false"/>
 					</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                  <triple object="true" predicate="nikita:has-perced-state" subject="?Support_1"/>
+                  <triple predicate="nikita:has-perced-state" subject="?Support_1" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -97,14 +97,14 @@
 			 <nomological id="1">
 			<AND>
 					<statement type="activity">
-					  <triple object="false" predicate="nikita:has-Barque_Trou01_Quality" subject="?Barque_Trou01"/>
+					  <triple predicate="nikita:has-Barque_Trou01_Quality" subject="?Barque_Trou01" object="false"/>
 					</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                     <triple object="true" predicate="nikita:has-Barque_Trou01_Quality" subject="?Barque_Trou01"/>
+                     <triple predicate="nikita:has-Barque_Trou01_Quality" subject="?Barque_Trou01" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -127,14 +127,14 @@
 			 <nomological id="1">
 			<AND>
 					<statement type="activity">
-					  <triple object="false" predicate="nikita:has-Agraphed" subject="?Support_1"/>
+					  <triple predicate="nikita:has-Agraphed" subject="?Support_1" object="false"/>
 					</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                     <triple object="true" predicate="nikita:has-Agraphed" subject="?Support_1"/>
+                     <triple predicate="nikita:has-Agraphed" subject="?Support_1" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -157,14 +157,14 @@
 			 <nomological id="1">
 			<AND>
 					<statement type="activity">
-					  <triple object="true" predicate="nikita:has-Agraphed" subject="?Support_1"/>
+					  <triple predicate="nikita:has-Agraphed" subject="?Support_1" object="true"/>
 					</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                     <triple object="false" predicate="nikita:has-Agraphed" subject="?Support_1"/>
+                     <triple predicate="nikita:has-Agraphed" subject="?Support_1" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -189,14 +189,14 @@
 			 <nomological id="1">
 			<AND>
 					<statement type="activity">
-					  <triple object="true" predicate="nikita:has-free_State" subject="?BlocMoteur_1"/>
+					  <triple predicate="nikita:has-free_State" subject="?BlocMoteur_1" object="true"/>
 					</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                     <triple object="false" predicate="nikita:has-free_State" subject="?BlocMoteur_1"/>
+                     <triple predicate="nikita:has-free_State" subject="?BlocMoteur_1" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -222,14 +222,14 @@
 			 <nomological id="1">
 			<AND>
 					<statement type="activity">
-					  <triple object="false" predicate="nikita:has-Controled_Equerrage" subject="?Support_1"/>
+					  <triple predicate="nikita:has-Controled_Equerrage" subject="?Support_1" object="false"/>
 					</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                      <triple object="true" predicate="nikita:has-Controled_Equerrage" subject="?Support_1"/>
+                      <triple predicate="nikita:has-Controled_Equerrage" subject="?Support_1" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -253,14 +253,14 @@
 			 <nomological id="1">
 			<AND>
 				<statement type="activity">
-				  <triple object="" predicate="nikita:a-trou" subject="?Support_1"/>
+				  <triple predicate="nikita:a-trou" subject="?Support_1" object=""/>
 				</statement>
 			</AND>
 			 </nomological>
 			 <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                      <triple object="Barque_Trou01" predicate="nikita:a-trou" subject="?Support_1"/>
+                      <triple predicate="nikita:a-trou" subject="?Support_1" object="Barque_Trou01"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -352,8 +352,6 @@
             </refs>
           </context>                 
           <subtasks>					
-			<subtask id="Prendre_PinceAAgrapher_1"/>
-			<subtask id="Pincer_Agraphe_1"/>
 			<subtask id="Degrapher_Support_1"/>
 			<subtask id="Ranger_Agrapher_1"/>
 			<subtask id="Poser_la_PinceAAgrapher_1"/>
@@ -379,14 +377,14 @@
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                  <triple object="false" predicate="nikita:has-align-state" subject="?Guide_1"/>
+                  <triple predicate="nikita:has-align-state" subject="?Guide_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="nikita:has-align-state" subject="?Guide_1"/>
+                   <triple predicate="nikita:has-align-state" subject="?Guide_1" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -406,7 +404,7 @@
           <operation>						
             <action id="nikita:Prendre"/>
             <resources>
-                 <ref-concept predicate="nikita:take-object" ref="?Perceuse01"/>
+                 <ref-concept ref="?Perceuse01" predicate="nikita:take-object"/>
             </resources>
        </operation>
           <constructor type="SEQ_ORD">
@@ -416,7 +414,7 @@
 			<AND>
         <NOT>
 					<statement type="activity">
-					  <triple object="?Perceuse01" predicate="nikita:porte" subject="nikita:Bob"/>
+					  <triple predicate="nikita:porte" subject="nikita:Bob" object = "?Perceuse01"/>
 					</statement>
           </NOT>
 			</AND>
@@ -424,7 +422,7 @@
 			   <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="?Perceuse01" predicate="nikita:porte" subject="nikita:Bob"/>
+                   <triple predicate="nikita:porte" subject="nikita:Bob" object = "?Perceuse01"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -439,7 +437,7 @@
           <operation>						
             <action id="nikita:Prendre"/>
             <resources>
-                 <ref-concept predicate="nikita:Prendre" ref="?BlocMoteur_1"/>
+                 <ref-concept ref="?BlocMoteur_1" predicate="nikita:Prendre"/>
             </resources>
           </operation>
           <conditions>
@@ -447,7 +445,7 @@
               <AND>
 			  <NOT>
                 <statement type="activity">
-                  <triple object="BlocMoteur_1" predicate="nikita:porte" subject="?Agent"/>
+                  <triple predicate="nikita:porte" subject="?Agent" object="BlocMoteur_1"/>
                 </statement>
 			  </NOT>
               </AND>
@@ -455,7 +453,7 @@
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="BlocMoteur_1" predicate="nikita:porte" subject="?Agent"/>
+                   <triple predicate="nikita:porte" subject="?Agent" object="BlocMoteur_1"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -470,7 +468,7 @@
           <operation>						
             <action id="nikita:Prendre"/>
             <resources>
-                 <ref-concept predicate="nikita:Prendre" ref="?Tete_1"/>
+                 <ref-concept ref="?Tete_1" predicate="nikita:Prendre"/>
             </resources>
           </operation>
           <conditions>
@@ -478,7 +476,7 @@
               <AND>
 			  <NOT>
                 <statement type="activity">
-                  <triple object="Tete_1" predicate="nikita:porte" subject="?Agent"/>
+                  <triple predicate="nikita:porte" subject="?Agent" object="Tete_1"/>
                 </statement>
 			  </NOT>
               </AND>
@@ -486,7 +484,7 @@
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="Tete_1" predicate="nikita:porte" subject="?Agent"/>
+                   <triple predicate="nikita:porte" subject="?Agent" object="Tete_1"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -502,8 +500,8 @@
           <operation>						
             <action id="nikita:Monter"/>
             <resources>
-                 <ref-concept predicate="nikita:Monter" ref="?Tete_1"/>
-				 <ref-concept predicate="nikita:Monter" ref="?BlocMoteur_1"/>
+                 <ref-concept ref="?Tete_1" predicate="nikita:Monter"/>
+				 <ref-concept ref="?BlocMoteur_1" predicate="nikita:Monter"/>
             </resources>
           </operation>
           <conditions>
@@ -511,7 +509,7 @@
               <AND>
                 <NOT>
                   <statement type="activity">
-                    <triple object="?object" predicate="nikita:est-monte-sur" subject="?Tete_1"/>
+                    <triple predicate="nikita:est-monte-sur" subject="?Tete_1" object="?object"/>
                   </statement>
                 </NOT>
               </AND>
@@ -519,7 +517,7 @@
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="BlocMoteur_1" predicate="nikita:est-monte-sur" subject="?Tete_1"/>
+                   <triple predicate="nikita:est-monte-sur" subject="?Tete_1" object="BlocMoteur_1"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -534,21 +532,21 @@
           <operation>						
             <action id="nikita:Prendre"/>
             <resources>
-                 <ref-concept predicate="nikita:Prendre" ref="?Guide_1"/>
+                 <ref-concept ref="?Guide_1" predicate="nikita:Prendre"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                  <triple object="Guide_1" predicate="nikita:porte" subject="?Agent"/>
+                  <triple predicate="nikita:porte" subject="?Agent" object="Guide_1"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="Guide_1" predicate="nikita:porte" subject="?Agent"/>
+                   <triple predicate="nikita:porte" subject="?Agent" object="Guide_1"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -564,8 +562,8 @@
           <operation>						
             <action id="nikita:Enfiler"/>
             <resources>
-                 <ref-concept predicate="nikita:Enfiler" ref="?Guide_1"/>
-				  <ref-concept predicate="nikita:Enfiler" ref="?Foret_25"/>
+                 <ref-concept ref="?Guide_1" predicate="nikita:Enfiler"/>
+				  <ref-concept ref="?Foret_25" predicate="nikita:Enfiler"/>
             </resources>
           </operation>
           <conditions>
@@ -573,7 +571,7 @@
               <AND>
 			  <NOT>
                 <statement type="activity">
-                  <triple object="Object" predicate="nikita:est-enfile-sur" subject="?Guide_1"/>
+                  <triple predicate="nikita:est-enfile-sur" subject="?Guide_1" object="Object"/>
                 </statement>
 			  </NOT>
               </AND>
@@ -581,7 +579,7 @@
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="Foret_25" predicate="nikita:est-enfile-sur" subject="?Guide_1"/>
+                   <triple predicate="nikita:est-enfile-sur" subject="?Guide_1" object="Foret_25"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -596,17 +594,17 @@
           <operation>						
             <action id="nikita:Allumer"/>
             <resources>
-                 <ref-concept predicate="nikita:Perceuse01" ref="?Perceuse01"/>
+                 <ref-concept ref="?Perceuse01" predicate="nikita:Perceuse01"/>
             </resources>
           </operation>
           <conditions>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="?state" predicate="has-switch-state" subject="?Perceuse01"/>
+                   <triple predicate="has-switch-state" subject="?Perceuse01" object="?state"/>
                 </statement>   
 				 <statement type="activity">
-                <triple object="sys:True" predicate="nikita:value" subject="?state"/>
+                <triple predicate="nikita:value" subject="?state" object="sys:True"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -621,21 +619,21 @@
           <operation>						
             <action id="nikita:Pousser"/>
             <resources>
-                 <ref-concept predicate="nikita:Perceuse01" ref="?Perceuse01"/>
+                 <ref-concept ref="?Perceuse01" predicate="nikita:Perceuse01"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                  <triple object="Flase" predicate="nikita:has-used-state" subject="?Perceuse01"/>
+                  <triple predicate="nikita:has-used-state" subject="?Perceuse01" object="Flase"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                  <triple object="True" predicate="nikita:has-used-state" subject="?Perceuse01"/>
+                  <triple predicate="nikita:has-used-state" subject="?Perceuse01" object="True"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -650,21 +648,21 @@
           <operation>						
             <action id="nikita:AppuyerBouton"/>
             <resources>
-                 <ref-concept predicate="nikita:Perceuse01" ref="?Perceuse01"/>
+                 <ref-concept ref="?Perceuse01" predicate="nikita:Perceuse01"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                  <triple object="" predicate="xxxxxxxxxxxxxxx" subject="?Guide_1"/>
+                  <triple predicate="xxxxxxxxxxxxxxx" subject="?Guide_1" object=""/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="Foret_25" predicate="xxxxxxxxxxxxx" subject="?Guide_1"/>
+                   <triple predicate="xxxxxxxxxxxxx" subject="?Guide_1" object="Foret_25"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -679,21 +677,21 @@
           <operation>						
             <action id="nikita:Lacher"/>
             <resources>
-                 <ref-concept predicate="nikita:Perceuse01" ref="?Perceuse01"/>
+                 <ref-concept ref="?Perceuse01" predicate="nikita:Perceuse01"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                  <triple object="True" predicate="nikita:has-used-state" subject="?Perceuse01"/>
+                  <triple predicate="nikita:has-used-state" subject="?Perceuse01" object="True"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                  <triple object="False" predicate="nikita:has-used-state" subject="?Perceuse01"/>
+                  <triple predicate="nikita:has-used-state" subject="?Perceuse01" object="False"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -708,21 +706,21 @@
           <operation>						
             <action id="nikita:Poser"/>
             <resources>
-                 <ref-concept predicate="nikita:Perceuse01" ref="?Perceuse01"/>
+                 <ref-concept ref="?Perceuse01" predicate="nikita:Perceuse01"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="nikita:has-taken-state" subject="?Perceuse01"/>
+                   <triple predicate="nikita:has-taken-state" subject="?Perceuse01" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="nikita:has-taken-state" subject="?Perceuse01"/>
+                   <triple predicate="nikita:has-taken-state" subject="?Perceuse01" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -737,21 +735,21 @@
           <operation>						
             <action id="nikita:Prendre"/>
             <resources>
-                 <ref-concept predicate="nikita:Tampon_1" ref="?Tampon_1"/>
+                 <ref-concept ref="?Tampon_1" predicate="nikita:Tampon_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="nikita:has-taken-state" subject="?Tampon_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?Tampon_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="nikita:has-taken-state" subject="?Tampon_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?Tampon_1" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -766,21 +764,21 @@
           <operation>						
             <action id="nikita:Poser"/>
             <resources>
-                 <ref-concept predicate="nikita:Tampon_1" ref="?Tampon_1"/>
+                 <ref-concept ref="?Tampon_1" predicate="nikita:Tampon_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="nikita:has-taken-state" subject="?Tampon_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?Tampon_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="nikita:has-taken-state" subject="?Tampon_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?Tampon_1" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -795,21 +793,21 @@
           <operation>						
             <action id="nikita:Prendre"/>
             <resources>
-                 <ref-concept predicate="nikita:Agraphe_1" ref="?Agraphe_1"/>
+                 <ref-concept ref="?Agraphe_1" predicate="nikita:Agraphe_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="nikita:has-taken-state" subject="?Agraphe_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?Agraphe_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="nikita:has-taken-state" subject="?Agraphe_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?Agraphe_1" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -824,21 +822,21 @@
           <operation>						
             <action id="nikita:Prendre"/>
             <resources>
-                 <ref-concept predicate="nikita:PinceAAgrapher_1" ref="?PinceAAgrapher_1"/>
+                 <ref-concept ref="?PinceAAgrapher_1" predicate="nikita:PinceAAgrapher_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -853,21 +851,21 @@
           <operation>						
             <action id="nikita:Pincer"/>
             <resources>
-                 <ref-concept predicate="nikita:Agraphe_1" ref="?Agraphe_1"/>
+                 <ref-concept ref="?Agraphe_1" predicate="nikita:Agraphe_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="nikita:xxxxxxxxxxxxxx" subject="?Agraphe_1"/>
+                   <triple predicate="nikita:xxxxxxxxxxxxxx" subject="?Agraphe_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="xxxxxxxxxxxxxxxxx" subject="?Agraphe_1"/>
+                   <triple predicate="xxxxxxxxxxxxxxxxx" subject="?Agraphe_1" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -882,21 +880,21 @@
           <operation>						
             <action id="nikita:Agrapher"/>
             <resources>
-                 <ref-concept predicate="nikita:Support_1" ref="?Support_1"/>
+                 <ref-concept ref="?Support_1" predicate="nikita:Support_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="xxxxxxxxxxxxxxx" subject="?Support_1"/>
+                   <triple predicate="xxxxxxxxxxxxxxx" subject="?Support_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="xxxxxxxxxxxxxxxxx" subject="?Support_1"/>
+                   <triple predicate="xxxxxxxxxxxxxxxxx" subject="?Support_1" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -911,21 +909,21 @@
           <operation>						
             <action id="nikita:Poser"/>
             <resources>
-                 <ref-concept predicate="nikita:PinceAAgrapher_1" ref="?PinceAAgrapher_1"/>
+                 <ref-concept ref="?PinceAAgrapher_1" predicate="nikita:PinceAAgrapher_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -940,21 +938,21 @@
           <operation>						
             <action id="nikita:Prendre"/>
             <resources>
-                 <ref-concept predicate="nikita:Agraphe_1" ref="?Agraphe_1"/>
+                 <ref-concept ref="?Agraphe_1" predicate="nikita:Agraphe_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="nikita:has-taken-state" subject="?Agraphe_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?Agraphe_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="nikita:has-taken-state" subject="?Agraphe_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?Agraphe_1" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -969,21 +967,21 @@
           <operation>						
             <action id="nikita:Prendre"/>
             <resources>
-                 <ref-concept predicate="nikita:PinceAAgrapher_1" ref="?PinceAAgrapher_1"/>
+                 <ref-concept ref="?PinceAAgrapher_1" predicate="nikita:PinceAAgrapher_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?PinceAAgrapher_1" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -998,21 +996,21 @@
           <operation>						
             <action id="nikita:Pincer"/>
             <resources>
-                 <ref-concept predicate="nikita:Agraphe_1" ref="?Agraphe_1"/>
+                 <ref-concept ref="?Agraphe_1" predicate="nikita:Agraphe_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="nikita:xxxxxxxxxxxxxx" subject="?Agraphe_1"/>
+                   <triple predicate="nikita:xxxxxxxxxxxxxx" subject="?Agraphe_1" object="false"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="xxxxxxxxxxxxxxxxx" subject="?Agraphe_1"/>
+                   <triple predicate="xxxxxxxxxxxxxxxxx" subject="?Agraphe_1" object="true"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -1027,21 +1025,21 @@
           <operation>						
             <action id="nikita:Degrapher"/>
             <resources>
-                 <ref-concept predicate="nikita:Support_1" ref="?Support_1"/>
+                 <ref-concept ref="?Support_1" predicate="nikita:Support_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="nikita:has-taken-state" subject="?Support_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?Support_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="nikita:has-taken-state" subject="?Support_1"/>
+                   <triple predicate="nikita:has-taken-state" subject="?Support_1" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -1056,21 +1054,21 @@
           <operation>						
             <action id="nikita:Poser"/>
             <resources>
-                 <ref-concept predicate="nikita:PinceAAgrapher_1" ref="?PinceAAgrapher_1"/>
+                 <ref-concept ref="?PinceAAgrapher_1" predicate="nikita:PinceAAgrapher_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="xxxxxxxxxxxx" subject="?PinceAAgrapher_1"/>
+                   <triple predicate="xxxxxxxxxxxx" subject="?PinceAAgrapher_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="xxxxxxxxxxx" subject="?PinceAAgrapher_1"/>
+                   <triple predicate="xxxxxxxxxxx" subject="?PinceAAgrapher_1" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -1085,21 +1083,21 @@
           <operation>						
             <action id="nikita:ControlEquerrage"/>
             <resources>
-                 <ref-concept predicate="nikita:Barque_Trou01" ref="?Barque_Trou01"/>
+                 <ref-concept ref="?Barque_Trou01" predicate="nikita:Barque_Trou01"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="xxxxxxxxxxxx" subject="?Barque_Trou01"/>
+                   <triple predicate="xxxxxxxxxxxx" subject="?Barque_Trou01" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="xxxxxxxxxxx" subject="?Barque_Trou01"/>
+                   <triple predicate="xxxxxxxxxxx" subject="?Barque_Trou01" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -1114,21 +1112,21 @@
           <operation>						
             <action id="nikita:ControlRondeur"/>
             <resources>
-                 <ref-concept predicate="nikita:Barque_Trou01" ref="?Barque_Trou01"/>
+                 <ref-concept ref="?Barque_Trou01" predicate="nikita:Barque_Trou01"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="xxxxxxxxxxxx" subject="?Barque_Trou01"/>
+                   <triple predicate="xxxxxxxxxxxx" subject="?Barque_Trou01" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="xxxxxxxxxxx" subject="?Barque_Trou01"/>
+                   <triple predicate="xxxxxxxxxxx" subject="?Barque_Trou01" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -1143,21 +1141,21 @@
           <operation>						
             <action id="nikita:Enlever"/>
             <resources>
-                 <ref-concept predicate="nikita:copeaux" ref="?copeaux"/>
+                 <ref-concept ref="?copeaux" predicate="nikita:copeaux"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="xxxxxxxxxxxx" subject="?copeaux"/>
+                   <triple predicate="xxxxxxxxxxxx" subject="?copeaux" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="xxxxxxxxxxx" subject="?copeaux"/>
+                   <triple predicate="xxxxxxxxxxx" subject="?copeaux" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -1172,21 +1170,21 @@
           <operation>						
             <action id="nikita:MaintenirEquerrage"/>
             <resources>
-                 <ref-concept predicate="nikita:Support_1" ref="?Support_1"/>
+                 <ref-concept ref="?Support_1" predicate="nikita:Support_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="xxxxxxxxxxxx" subject="?Support_1"/>
+                   <triple predicate="xxxxxxxxxxxx" subject="?Support_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="xxxxxxxxxxx" subject="?Support_1"/>
+                   <triple predicate="xxxxxxxxxxx" subject="?Support_1" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -1201,21 +1199,21 @@
           <operation>						
             <action id="nikita:Ranger"/>
             <resources>
-                 <ref-concept predicate="nikita:Agrapher_1" ref="?Agrapher_1"/>
+                 <ref-concept ref="?Agrapher_1" predicate="nikita:Agrapher_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="xxxxxxxxxxxx" subject="?Agrapher_1"/>
+                   <triple predicate="xxxxxxxxxxxx" subject="?Agrapher_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="xxxxxxxxxxx" subject="?Agrapher_1"/>
+                   <triple predicate="xxxxxxxxxxx" subject="?Agrapher_1" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -1230,21 +1228,21 @@
           <operation>						
             <action id="nikita:Remonter"/>
             <resources>
-                 <ref-concept predicate="nikita:Guide_1" ref="?Guide_1"/>
+                 <ref-concept ref="?Guide_1" predicate="nikita:Guide_1"/>
             </resources>
           </operation>
           <conditions>
             <nomological id="1">	
               <AND>
                 <statement type="activity">
-                   <triple object="true" predicate="xxxxxxxxxxxx" subject="?Guide_1"/>
+                   <triple predicate="xxxxxxxxxxxx" subject="?Guide_1" object="true"/>
                 </statement>
               </AND>
             </nomological>
             <satisfaction id="1">
               <AND>
                 <statement type="activity">
-                   <triple object="false" predicate="xxxxxxxxxxx" subject="?Guide_1"/>
+                   <triple predicate="xxxxxxxxxxx" subject="?Guide_1" object="false"/>
                 </statement>   
               </AND>
             </satisfaction>
@@ -1253,3 +1251,4 @@
 	 </task_f>
  </tasks>
  </model>
+

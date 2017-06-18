@@ -7,12 +7,11 @@ import javafx.collections.ObservableList;
  * Created by pierrelouislacorte on 10/06/2017.
  */
 public class LeafTasks {
-    private ObservableList<LeafTask> leaftasks;
+    private ObservableList<LeafTask> leaftasks; // Passer en ObservableMap<String,LeafTask>
     private Integer id;
 
     // constructeur sans argument
     public LeafTasks() {
-        System.out.println("creation de la observablelist tasks avec task.extractor()");
         this.leaftasks = FXCollections.observableArrayList();
         id = 0;
     }

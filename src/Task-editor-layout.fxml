@@ -71,7 +71,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <SplitPane fx:id="splitPane_graph_edit" dividerPositions="0.63" layoutX="126.0" layoutY="67.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="584.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane fx:id="splitPane_graph_edit" dividerPositions="0.95" layoutX="126.0" layoutY="67.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="584.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="520.0" prefWidth="661.0">
                            <children>
@@ -136,7 +136,7 @@
                                                 <Text fx:id="label_filles" layoutX="17.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tâches filles :" AnchorPane.leftAnchor="18.0" />
                                                 <ListView fx:id="listview_edit_taches_filles" layoutX="18.0" layoutY="114.0" prefHeight="116.0" prefWidth="262.0" style="-fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="18.0" />
                                                 <Text layoutX="607.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identifiant :" AnchorPane.rightAnchor="97.0" AnchorPane.topAnchor="21.0" />
-                                                <TextField fx:id="txtfield_edit_name" layoutX="71.0" prefHeight="27.0" prefWidth="163.0" promptText="Tâche mère" style="-fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="112.0" AnchorPane.topAnchor="5.0" />
+                                                <TextField fx:id="txtfield_edit_name" layoutX="71.0" prefHeight="27.0" prefWidth="163.0" promptText="Nom de la tâche" style="-fx-border-color: #1f7a8c;" AnchorPane.leftAnchor="112.0" AnchorPane.topAnchor="5.0" />
                                                 <Text fx:id="label_constructeur" layoutX="284.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Constructeur :" AnchorPane.leftAnchor="284.0" AnchorPane.topAnchor="53.0" />
                                                 <ListView fx:id="listview_edit_autres_taches" layoutX="381.0" layoutY="111.0" prefHeight="116.0" prefWidth="262.0" style="-fx-border-color: #1f7a8c;" AnchorPane.rightAnchor="128.0" />
                                                 <Text fx:id="label_autres" layoutX="392.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Autres Tâches :" AnchorPane.rightAnchor="284.9091796875" />

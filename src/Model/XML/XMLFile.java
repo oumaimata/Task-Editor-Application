@@ -33,8 +33,8 @@ public class XMLFile {
     public XMLFile() {
         this.XMLfilePath = new SimpleStringProperty();
         this.XMLtext = new SimpleStringProperty();
-        XMLtext.setValue("");
         XMLfilePath.setValue("test.xml");
+        XMLtext.setValue("");
     }
 
     public StringProperty XMLtextProperty() {
@@ -42,7 +42,7 @@ public class XMLFile {
     }
 
     public String getXMLfilePath() {
-        return XMLfilePath.get();
+        return XMLfilePath.getValue();
     }
 
     public StringProperty XMLfilePathProperty() {
@@ -50,15 +50,15 @@ public class XMLFile {
     }
 
     public void setXMLfilePath(String XMLfilePath) {
-        this.XMLfilePath.set(XMLfilePath);
+        this.XMLfilePath.setValue(XMLfilePath);
     }
 
     public String getXMLtext() {
-        return XMLtext.get();
+        return XMLtext.getValue();
     }
 
     public void setXMLtext(String XMLtext) {
-        this.XMLtext.set(XMLtext);
+        this.XMLtext.setValue(XMLtext);
     }
 
     public void setTextFromFilePath() {

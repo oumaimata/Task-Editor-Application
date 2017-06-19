@@ -61,7 +61,7 @@ public class ApplicationController {
     private INode currentNode = null; // reference sur le noeud selectionné (dans le cas du graph notamment)
     private MotherTask currentMotherTask = null; // reference sur la tache lorsque c'est une tache mere
     private LeafTask currentLeafTask = null; // reference sur la tache lorsque c'est une tache feuille
-    public Nodes nodes = new Nodes();; // reference sur la liste des noeuds
+    public Nodes nodes = new Nodes(); // reference sur la liste des noeuds
 
     public Tags tags = new Tags();; //reference sur la liste des tags
 
@@ -119,8 +119,6 @@ public class ApplicationController {
         graphEditorInputMode.setCreateNodeAllowed(false); // empecher la création d'un noeud au clic sur le graphique
         hierarchicLayout.setMinimumLayerDistance(50);
         hierarchicLayout.setNodeLabelConsiderationEnabled(true);
-        // initialisation du xmlFile
-        xmlFile = new XMLFile();
         // initialisation des noeuds courrant
         currentMotherTask = null;
         currentLeafTask = null;
@@ -132,26 +130,20 @@ public class ApplicationController {
         motherTasks = new MotherTasks();
         // initialisation de la liste des noeuds feuilles
         leafTasks = new LeafTasks();
-        // initialisation de la liste des noeuds
-        nodes = new Nodes();
-        // initilisation de l'objet qui contient l'adresse du fichier et le texte de ce fichier
-        xmlFile = new XMLFile();
         xmlParser = new XMLParser(motherTasks,leafTasks);
 
-        // on creer le graph associé
-        createGraphFromTasks();
+
 
         //Creation de la liste des tags
         tags = new Tags();
-
         //PopupController popup = new PopupController();
         // creation de l'application controller
         // permettre l'edition directe du graph
         //graphControl.setInputMode(new GraphEditorInputMode());
-        // on fait les bindings depuis applicationController
-        make_binding();
         // initialisation de l'éditeur de code
         codeArea = new CodeArea();
+        System.out.println("test : "+xmlFile.getXMLtext());
+        codeArea.replaceText(0,0,xmlFile.getXMLtext());
         vScrollPane = new VirtualizedScrollPane(codeArea);
         borderPane.setCenter(vScrollPane);
 
@@ -165,7 +157,8 @@ public class ApplicationController {
             codeArea.setStyleSpans(0, XMLEditor.computeHighlighting(newText));
             xmlFile.setXMLtext(newText);
         });
-        codeArea.replaceText(xmlFile.getXMLtext());
+        System.out.println("test : "+xmlFile.getXMLtext());
+        codeArea.replaceText(0,0,xmlFile.getXMLtext());
         borderPane.setCenter(vScrollPane);
 
         // Côté Panel d'édition
@@ -174,12 +167,14 @@ public class ApplicationController {
         cbb_lien_taches.getItems().addAll(">","<","m","mi","o","oi","s","si","d","di","f","fi","=");
         cbb_type_condition.getItems().addAll("nomological","satisfaction","arret");
         cbb_operateur_condition.getItems().addAll("AND","OR","XOR","NOT");
-
+        // on creer le graph associé
+        createGraphFromTasks();
+        // on fait les bindings depuis applicationController
         make_binding();
     }
 
     // Méthode pour réaliser les bindings des actions et des boutons
-    private void make_binding (){
+    private void make_binding(){
         // Boutons liées au XML
         button_open.setOnAction((event) -> openFile());
         button_save.setOnAction((event) -> save());

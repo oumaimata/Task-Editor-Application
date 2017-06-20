@@ -26,32 +26,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
+ * This class is used as an agent to manage the XML file and code and to parse XML.
  * Created by ladyn-totorosaure on 20/06/17.
  */
 public class XMLAgent {
+
+    /////////// Attributes ///////////
+    // object necessary for the dom parsing
     public Document doc;
-
-    // reference on the tasks list : Tasks
+    // reference on the tasks lists
     private MotherTasks motherTasks;
-
     private LeafTasks leafTasks;
-
-    public MotherTasks getMotherTasks() {
-        return motherTasks;
-    }
-
-    public void setMotherTasks(MotherTasks motherTasks) {
-        this.motherTasks = motherTasks;
-    }
-
-    public LeafTasks getLeafTasks() {
-        return leafTasks;
-    }
-
-    public void setLeafTasks(LeafTasks leafTasks) {
-        this.leafTasks = leafTasks;
-    }
-
+    // name of the balise for the XML
     static final String TASKS = "tasks";
     static final String MOTHER_TASK = "task_m";
     static final String LEAF_TASK = "task_f";
@@ -68,7 +54,12 @@ public class XMLAgent {
     static final String PREDICATE = "predicate";
     static final String OBJECT = "object";
     static final String NOT = "NOT";
+    // attribute containing the text of the XML File
+    private StringProperty XMLtext;
+    private StringProperty XMLfilePath;
 
+    /////////// Constructors ///////////
+    // equivalent of the setup() methods for agent
     public XMLAgent(MotherTasks motherTasks,LeafTasks leafTasks) {
         this.motherTasks = motherTasks;
         this.leafTasks = leafTasks;
@@ -84,10 +75,6 @@ public class XMLAgent {
         XMLtext.setValue("");
     }
 
-    // attribute containing the text of the XML File
-    private StringProperty XMLtext;
-    private StringProperty XMLfilePath;
-
     public XMLAgent(MotherTasks motherTasks,LeafTasks leafTasks,String XMLfilePath) {
         this.motherTasks = motherTasks;
         this.leafTasks = leafTasks;
@@ -100,7 +87,8 @@ public class XMLAgent {
         this.XMLfilePath = new SimpleStringProperty(XMLfilePath);
         this.XMLtext = new SimpleStringProperty();
     }
-    //// GETTERS AND SETTERS
+
+    /////////// Getters and Setters ///////////
 
     public StringProperty XMLtextProperty() {
         return XMLtext;
@@ -126,6 +114,23 @@ public class XMLAgent {
         this.XMLtext.setValue(XMLtext);
     }
 
+    public MotherTasks getMotherTasks() {
+        return motherTasks;
+    }
+
+    public void setMotherTasks(MotherTasks motherTasks) {
+        this.motherTasks = motherTasks;
+    }
+
+    public LeafTasks getLeafTasks() {
+        return leafTasks;
+    }
+
+    public void setLeafTasks(LeafTasks leafTasks) {
+        this.leafTasks = leafTasks;
+    }
+
+
     public void setTextFromFilePath() {
         // creating the object path to the file
         Path pathToFile = Paths.get(getXMLfilePath());
@@ -137,24 +142,7 @@ public class XMLAgent {
         }
     }
 
-    public void saveTextInFile(){
-        File newFile = new File(getXMLfilePath());
-        try{
-            if(newFile.exists()){newFile.delete();}
-            newFile.createNewFile();
-            FileWriter writer = new FileWriter(newFile);
-            writer.write(getXMLtext());
-            writer.flush();
-            writer.close();
-        }catch (Exception e){
-            System.out.println("Erreur : "+e.toString());
-        }
-    }
-
-    public Boolean isElement(Node node)
-    {
-        return (node.getNodeType() ==  Node.ELEMENT_NODE);
-    }
+    /////////// Functions used as behaviours ///////////
 
     public void toXMLFromTree(MotherTasks motherTasks,LeafTasks leafTasks,String filePathName){
         try{
@@ -232,6 +220,31 @@ public class XMLAgent {
         }
 
     }
+
+    public void saveTextInFile(){
+        File newFile = new File(getXMLfilePath());
+        try{
+            if(newFile.exists()){newFile.delete();}
+            newFile.createNewFile();
+            FileWriter writer = new FileWriter(newFile);
+            writer.write(getXMLtext());
+            writer.flush();
+            writer.close();
+        }catch (Exception e){
+            System.out.println("Erreur : "+e.toString());
+        }
+    }
+
+
+
+    /////////// Functions used in behaviours ///////////
+
+    public Boolean isElement(Node node)
+    {
+        return (node.getNodeType() ==  Node.ELEMENT_NODE);
+    }
+
+
     public void createTreeFromNodeList(NodeList nodeList){
         for (int count = 0; count < nodeList.getLength(); count++) {
             System.out.println(nodeList.getLength());

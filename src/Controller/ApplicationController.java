@@ -2,8 +2,7 @@ package Controller;
 
 import Model.GlobalParameters;
 import Model.Tree.*;
-import Model.XML.XMLFile;
-import Model.XML.XMLParser;
+import Model.XML.XMLAgent;
 import View.PopupTaskCreation;
 import View.XMLEditor;
 import com.yworks.yfiles.geometry.PointD;
@@ -72,8 +71,7 @@ public class ApplicationController {
     private GraphEditorInputMode graphEditorInputMode = new GraphEditorInputMode(); // propriétés de l'édition de graphe
     private HierarchicLayout hierarchicLayout = new HierarchicLayout(); // layout utilisé pour l'arbre graphique
 
-    private XMLFile xmlFile = new XMLFile(); // contient le texte du XML
-    private XMLParser xmlParser = new XMLParser(motherTasks,leafTasks); // le parser pour le XML
+    private XMLAgent xmlAgent = new XMLAgent(motherTasks,leafTasks); // le parser pour le XML
     private VirtualizedScrollPane vScrollPane;
     private CodeArea codeArea = new CodeArea();  // l'editeur
 
@@ -124,13 +122,6 @@ public class ApplicationController {
         currentLeafTask = null;
         //currentTask = null;
         assert listview_edit_assertions != null;
-        // permettre l'edition directe du graph
-        // ensemble des tâches à null initialement.
-        // initialisation de la liste des noeuds meres
-        motherTasks = new MotherTasks();
-        // initialisation de la liste des noeuds feuilles
-        leafTasks = new LeafTasks();
-        xmlParser = new XMLParser(motherTasks,leafTasks);
 
 
 
@@ -142,8 +133,8 @@ public class ApplicationController {
         //graphControl.setInputMode(new GraphEditorInputMode());
         // initialisation de l'éditeur de code
         codeArea = new CodeArea();
-        System.out.println("test : "+xmlFile.getXMLtext());
-        codeArea.replaceText(0,0,xmlFile.getXMLtext());
+        System.out.println("test : "+xmlAgent.getXMLtext());
+        codeArea.replaceText(0,0,xmlAgent.getXMLtext());
         vScrollPane = new VirtualizedScrollPane(codeArea);
         borderPane.setCenter(vScrollPane);
 
@@ -155,10 +146,10 @@ public class ApplicationController {
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea)); // montrer les numeros de lignes
         codeArea.textProperty().addListener((obs, oldText, newText) -> {
             codeArea.setStyleSpans(0, XMLEditor.computeHighlighting(newText));
-            xmlFile.setXMLtext(newText);
+            xmlAgent.setXMLtext(newText);
         });
-        System.out.println("test : "+xmlFile.getXMLtext());
-        codeArea.replaceText(0,0,xmlFile.getXMLtext());
+        System.out.println("test : "+xmlAgent.getXMLtext());
+        codeArea.replaceText(0,0,xmlAgent.getXMLtext());
         borderPane.setCenter(vScrollPane);
 
         // Côté Panel d'édition
@@ -179,7 +170,7 @@ public class ApplicationController {
         button_open.setOnAction((event) -> openFile());
         button_save.setOnAction((event) -> save());
         button_xml_rafraichir.setOnAction((event) -> {refreshTreeFromXML();});
-        xmlFile.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
+        xmlAgent.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
 
         // Boutons liés au graph
         button_centrer.setOnAction(evt -> graphFitContent());
@@ -545,7 +536,7 @@ public class ApplicationController {
     }
 
     public void save(){
-        xmlFile.saveTextInFile();
+        xmlAgent.saveTextInFile();
     }
 
     public void refreshTreeFromXML()
@@ -554,9 +545,9 @@ public class ApplicationController {
         graphControl.getGraph().clear();
         motherTasks = new MotherTasks();
         leafTasks = new LeafTasks();
-        xmlParser.createTasksFromXML(xmlFile.getXMLfilePath());
-        motherTasks = xmlParser.getMotherTasks();
-        leafTasks = xmlParser.getLeafTasks();
+        xmlAgent.createTasksFromXML(xmlAgent.getXMLfilePath());
+        motherTasks = xmlAgent.getMotherTasks();
+        leafTasks = xmlAgent.getLeafTasks();
         createGraphFromTasks();
     }
 
@@ -570,19 +561,19 @@ public class ApplicationController {
             graphControl.getGraph().clear();
             motherTasks = new MotherTasks();
             leafTasks = new LeafTasks();
-            xmlFile.setXMLfilePath(file.getPath());
-            xmlFile.setTextFromFilePath();
-            codeArea.replaceText(xmlFile.getXMLtext());
-            xmlParser.createTasksFromXML(xmlFile.getXMLfilePath());
-            motherTasks = xmlParser.getMotherTasks();
-            leafTasks = xmlParser.getLeafTasks();
+            xmlAgent.setXMLfilePath(file.getPath());
+            xmlAgent.setTextFromFilePath();
+            codeArea.replaceText(xmlAgent.getXMLtext());
+            xmlAgent.createTasksFromXML(xmlAgent.getXMLfilePath());
+            motherTasks = xmlAgent.getMotherTasks();
+            leafTasks = xmlAgent.getLeafTasks();
             createGraphFromTasks();
         }
     }
 
     private void refreshXMLfromTree(){
-        xmlParser.toXMLFromTree(motherTasks,leafTasks,xmlFile.getXMLfilePath());
-        xmlFile.setTextFromFilePath();
-        codeArea.replaceText(xmlFile.getXMLtext());
+        xmlAgent.toXMLFromTree(motherTasks,leafTasks,xmlAgent.getXMLfilePath());
+        xmlAgent.setTextFromFilePath();
+        codeArea.replaceText(xmlAgent.getXMLtext());
     }
 }

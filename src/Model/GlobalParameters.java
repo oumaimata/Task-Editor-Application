@@ -42,6 +42,7 @@ public class GlobalParameters {
 
     public enum TypeAssertion {
         activity("activity"),
+        domain("domain"),
         world("world");
 
         private String name;
@@ -138,6 +139,34 @@ public class GlobalParameters {
         TypeConstructeur(String name) {this.name = name;}
 
         public String getName() {return name;}
+
+        public static TypeConstructeur getFromName(String name){
+            switch (name){
+                case "IND" :
+                    return IND;
+                case "SEQ" :
+                    return SEQ;
+                case "SEQ-ORD" :
+                    return SEQ_ORD;
+                case "SEQ_ORD" :
+                    return SEQ_ORD;
+                case "PAR" :
+                    return PAR;
+                case "PAR-SIM" :
+                    return PAR_SIM;
+                case "PAR_SIM" :
+                    return PAR_SIM;
+                case "PAR-START" :
+                    return PAR_START;
+                case "PAR_START" :
+                    return PAR_START;
+                case "PAR-END" :
+                    return PAR_END;
+                case "PAR_END" :
+                    return PAR_END;
+            }
+            return IND;
+        }
     }
 
 }

@@ -393,6 +393,7 @@ public class ApplicationController {
                 treeAgent.removeTask(task);
             }
             graphControl.getGraph().remove(currentNode);
+            refreshXMLfromTree();
         }
     }
 
@@ -465,9 +466,13 @@ public class ApplicationController {
         Task daughterTask = (Task) daughterNode.getTag();
         motherTask.addSubTask(daughterTask.getIdProperty());
 
+        //TODO Mettre à jour le TreeAgent ! On ne modifie que localement pour l'instant.
+
         // ajout du label du constructeur sur le lien si c'est la première fille
         if(!hasChildren && motherTask.getConstructor() != null)
             graphControl.getGraph().addLabel(egde,motherTask.getConstructor().getName());
+        // On met à jour le XML.
+        refreshXMLfromTree();
     }
 
     private void updateNodeStyle(){
@@ -512,14 +517,13 @@ public class ApplicationController {
             {
                 addNodeFromTask(wc.getDataMotherTask());
                 treeAgent.addTask(wc.getDataMotherTask());
-                refreshXMLfromTree();
             }
             else
             {
                 addNodeFromTask(wc.getDataLeafTask());
                 treeAgent.addTask(wc.getDataLeafTask());
-                refreshXMLfromTree();
             }
+            refreshXMLfromTree();
         });
         graphControl.fitGraphBounds();
     }

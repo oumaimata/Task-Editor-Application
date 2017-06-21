@@ -15,7 +15,6 @@ public class TreeAgent {
     public MotherTasks getMotherTasks() {
         return motherTasks;
     }
-
     public void setMotherTasks(MotherTasks motherTasks) {
         this.motherTasks = motherTasks;
     }
@@ -23,9 +22,14 @@ public class TreeAgent {
     public LeafTasks getLeafTasks() {
         return leafTasks;
     }
-
     public void setLeafTasks(LeafTasks leafTasks) {
         this.leafTasks = leafTasks;
     }
+
+    public void addTask(MotherTask task) { motherTasks.addTask(task); }
+    public void addTask(LeafTask task) { leafTasks.addTask(task); }
+
+    public void removeTask(MotherTask task) { motherTasks.removeTask(task); }
+    public void removeTask(LeafTask task) { leafTasks.removeTask(task); }
 
 }

@@ -387,10 +387,10 @@ public class ApplicationController {
         {
             if(currentNode.getTag().getClass() == MotherTask.class){
                 MotherTask task = (MotherTask) currentNode.getTag();
-                treeAgent.getMotherTasks().removeTask(task);
+                treeAgent.removeTask(task);
             } else {
                 LeafTask task = (LeafTask) currentNode.getTag();
-                treeAgent.getLeafTasks().removeTask(task);
+                treeAgent.removeTask(task);
             }
             graphControl.getGraph().remove(currentNode);
         }
@@ -511,13 +511,13 @@ public class ApplicationController {
             if(wc.isMotherTask())
             {
                 addNodeFromTask(wc.getDataMotherTask());
-                treeAgent.getMotherTasks().addTask(wc.getDataMotherTask());
+                treeAgent.addTask(wc.getDataMotherTask());
                 refreshXMLfromTree();
             }
             else
             {
                 addNodeFromTask(wc.getDataLeafTask());
-                treeAgent.getLeafTasks().addTask(wc.getDataLeafTask());
+                treeAgent.addTask(wc.getDataLeafTask());
                 refreshXMLfromTree();
             }
         });

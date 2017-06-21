@@ -2,8 +2,7 @@ package Controller;
 
 import Model.GlobalParameters;
 import Model.Tree.*;
-import Model.XML.XMLFile;
-import Model.XML.XMLParser;
+import Model.XML.XMLAgent;
 import View.PopupTaskCreation;
 import View.XMLEditor;
 import com.yworks.yfiles.geometry.PointD;
@@ -16,28 +15,19 @@ import com.yworks.yfiles.view.GraphControl;
 import com.yworks.yfiles.view.Pen;
 import com.yworks.yfiles.view.input.ClickEventArgs;
 import com.yworks.yfiles.view.input.GraphEditorInputMode;
-import com.yworks.yfiles.view.input.ICommand;
 import com.yworks.yfiles.view.input.ItemClickedEventArgs;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
@@ -45,9 +35,6 @@ import org.fxmisc.richtext.LineNumberFactory;
 
 import java.io.File;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by pierrelouislacorte on 13/05/2017.
  */
@@ -55,13 +42,12 @@ public class ApplicationController {
 
     public GraphControl graphControl = new GraphControl(); // reference sur le controller du graph
 
-    private MotherTasks motherTasks = new MotherTasks(); // reference sur l'ensemble des taches meres du modèle
-    private LeafTasks leafTasks = new LeafTasks(); // reference sur l'ensemble des taches feuilles du modèle
+    private TreeAgent treeAgent = new TreeAgent();
 
     private INode currentNode = null; // reference sur le noeud selectionné (dans le cas du graph notamment)
     private MotherTask currentMotherTask = null; // reference sur la tache lorsque c'est une tache mere
     private LeafTask currentLeafTask = null; // reference sur la tache lorsque c'est une tache feuille
-    public Nodes nodes = new Nodes();; // reference sur la liste des noeuds
+    public Nodes nodes = new Nodes(); // reference sur la liste des noeuds
 
     public Tags tags = new Tags();; //reference sur la liste des tags
 
@@ -72,8 +58,7 @@ public class ApplicationController {
     private GraphEditorInputMode graphEditorInputMode = new GraphEditorInputMode(); // propriétés de l'édition de graphe
     private HierarchicLayout hierarchicLayout = new HierarchicLayout(); // layout utilisé pour l'arbre graphique
 
-    private XMLFile xmlFile = new XMLFile(); // contient le texte du XML
-    private XMLParser xmlParser = new XMLParser(); // le parser pour le XML
+    private XMLAgent xmlAgent = new XMLAgent(treeAgent.getMotherTasks(),treeAgent.getLeafTasks()); // le parser pour le XML
     private VirtualizedScrollPane vScrollPane;
     private CodeArea codeArea = new CodeArea();  // l'editeur
 
@@ -119,16 +104,41 @@ public class ApplicationController {
         graphEditorInputMode.setCreateNodeAllowed(false); // empecher la création d'un noeud au clic sur le graphique
         hierarchicLayout.setMinimumLayerDistance(50);
         hierarchicLayout.setNodeLabelConsiderationEnabled(true);
+        // initialisation des noeuds courrant
+        currentMotherTask = null;
+        currentLeafTask = null;
+        //currentTask = null;
+        assert listview_edit_assertions != null;
+
+
+
+        //Creation de la liste des tags
+        tags = new Tags();
+        //PopupController popup = new PopupController();
+        // creation de l'application controller
+        // permettre l'edition directe du graph
+        //graphControl.setInputMode(new GraphEditorInputMode());
+
+
+        // initialisation de l'éditeur de code
+        codeArea = new CodeArea();
+        System.out.println("test : "+xmlAgent.getXMLtext());
+        codeArea.replaceText(0,0,xmlAgent.getXMLtext());
+        vScrollPane = new VirtualizedScrollPane(codeArea);
+        borderPane.setCenter(vScrollPane);
+
+        // montrer les numeros de lignes
+        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
         listview_tags.setEditable(true);
 
         // Côté éditeur de code XML
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea)); // montrer les numeros de lignes
+        // setup de l'envoie de message entre l'utilisateur et l'agent XMLAgent pour la modification du code XML
         codeArea.textProperty().addListener((obs, oldText, newText) -> {
             codeArea.setStyleSpans(0, XMLEditor.computeHighlighting(newText));
-            xmlFile.setXMLtext(newText);
+            xmlAgent.setXMLtext(newText);
         });
-        codeArea.replaceText(0, 0, xmlFile.getXMLtext());
-        vScrollPane = new VirtualizedScrollPane(codeArea);
+        codeArea.replaceText(0,0,xmlAgent.getXMLtext());
         borderPane.setCenter(vScrollPane);
 
         // Côté Panel d'édition
@@ -137,17 +147,19 @@ public class ApplicationController {
         cbb_lien_taches.getItems().addAll(">","<","m","mi","o","oi","s","si","d","di","f","fi","=");
         cbb_type_condition.getItems().addAll("nomological","satisfaction","arret");
         cbb_operateur_condition.getItems().addAll("AND","OR","XOR","NOT");
-
+        // on creer le graph associé
+        createGraphFromTasks();
+        // on fait les bindings depuis applicationController
         make_binding();
     }
 
     // Méthode pour réaliser les bindings des actions et des boutons
-    private void make_binding (){
+    private void make_binding(){
         // Boutons liées au XML
         button_open.setOnAction((event) -> openFile());
         button_save.setOnAction((event) -> save());
         button_xml_rafraichir.setOnAction((event) -> {refreshTreeFromXML();});
-        xmlFile.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
+        xmlAgent.XMLtextProperty().bindBidirectional(codeArea.accessibleTextProperty());
 
         // Boutons liés au graph
         button_centrer.setOnAction(evt -> graphFitContent());
@@ -375,10 +387,10 @@ public class ApplicationController {
         {
             if(currentNode.getTag().getClass() == MotherTask.class){
                 MotherTask task = (MotherTask) currentNode.getTag();
-                motherTasks.removeTask(task);
+                treeAgent.getMotherTasks().removeTask(task);
             } else {
                 LeafTask task = (LeafTask) currentNode.getTag();
-                leafTasks.removeTask(task);
+                treeAgent.getLeafTasks().removeTask(task);
             }
             graphControl.getGraph().remove(currentNode);
         }
@@ -395,13 +407,13 @@ public class ApplicationController {
     // méthode pour creer tous les noeuds à partir des taches
     private void createNodesFromTasks(){
         nodes = new Nodes(); // re-initialisation des nodes
-        for (MotherTask motherTask:motherTasks.getTasks())
+        for (MotherTask motherTask:treeAgent.getMotherTasks().getTasks())
         {
             INode node = graphControl.getGraph().createNode(new PointD(0,0),MotherTaskStyle,motherTask); // création d'un nouveau noeud avec la la motherTask comme tag
             nodes.addNode(node); // ajout du noeud à la liste des noeuds
             graphControl.getGraph().addLabel(node, motherTask.getNameProperty()); // ajout du label de la task au noeud
         }
-        for (LeafTask leafTask:leafTasks.getTasks())
+        for (LeafTask leafTask:treeAgent.getLeafTasks().getTasks())
         {
             INode node = graphControl.getGraph().createNode(new PointD(0,0),LeafTaskStyle,leafTask); // création d'un nouveau noeud avec la task comme tag
             nodes.addNode(node); // ajout de ce noeuds a la liste des noeuds
@@ -499,13 +511,13 @@ public class ApplicationController {
             if(wc.isMotherTask())
             {
                 addNodeFromTask(wc.getDataMotherTask());
-                motherTasks.addTask(wc.getDataMotherTask());
+                treeAgent.getMotherTasks().addTask(wc.getDataMotherTask());
                 refreshXMLfromTree();
             }
             else
             {
                 addNodeFromTask(wc.getDataLeafTask());
-                leafTasks.addTask(wc.getDataLeafTask());
+                treeAgent.getLeafTasks().addTask(wc.getDataLeafTask());
                 refreshXMLfromTree();
             }
         });
@@ -513,18 +525,18 @@ public class ApplicationController {
     }
 
     public void save(){
-        xmlFile.saveTextInFile();
+        xmlAgent.saveTextInFile();
     }
 
     public void refreshTreeFromXML()
     {
         save();
         graphControl.getGraph().clear();
-        motherTasks = new MotherTasks();
-        leafTasks = new LeafTasks();
-        xmlParser.createTasksFromXML(xmlFile.getXMLfilePath());
-        motherTasks = xmlParser.getMotherTasks();
-        leafTasks = xmlParser.getLeafTasks();
+        treeAgent.setMotherTasks(new MotherTasks());
+        treeAgent.setLeafTasks(new LeafTasks());
+        xmlAgent.createTasksFromXML(xmlAgent.getXMLfilePath());
+        treeAgent.setMotherTasks(xmlAgent.getMotherTasks());
+        treeAgent.setLeafTasks(xmlAgent.getLeafTasks());
         createGraphFromTasks();
     }
 
@@ -536,21 +548,21 @@ public class ApplicationController {
         System.out.println(file.toString());
         if (file != null) {
             graphControl.getGraph().clear();
-            motherTasks = new MotherTasks();
-            leafTasks = new LeafTasks();
-            xmlFile.setXMLfilePath(file.getPath());
-            xmlFile.setTextFromFilePath();
-            codeArea.replaceText(xmlFile.getXMLtext());
-            xmlParser.createTasksFromXML(xmlFile.getXMLfilePath());
-            motherTasks = xmlParser.getMotherTasks();
-            leafTasks = xmlParser.getLeafTasks();
+            treeAgent.setMotherTasks(new MotherTasks());
+            treeAgent.setLeafTasks(new LeafTasks());
+            xmlAgent.setXMLfilePath(file.getPath());
+            xmlAgent.setTextFromFilePath();
+            codeArea.replaceText(xmlAgent.getXMLtext());
+            xmlAgent.createTasksFromXML(xmlAgent.getXMLfilePath());
+            treeAgent.setMotherTasks(xmlAgent.getMotherTasks());
+            treeAgent.setLeafTasks(xmlAgent.getLeafTasks());
             createGraphFromTasks();
         }
     }
 
     private void refreshXMLfromTree(){
-        xmlParser.toXMLFromTree(motherTasks,leafTasks,xmlFile.getXMLfilePath());
-        xmlFile.setTextFromFilePath();
-        codeArea.replaceText(xmlFile.getXMLtext());
+        xmlAgent.toXMLFromTree(treeAgent.getMotherTasks(),treeAgent.getLeafTasks(),xmlAgent.getXMLfilePath());
+        xmlAgent.setTextFromFilePath();
+        codeArea.replaceText(xmlAgent.getXMLtext());
     }
 }

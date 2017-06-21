@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>TE - Cahier des charges</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap-blog.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../css/blog-post.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../index.html">Accueil</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- Blog Post Content Column -->
+            <div class="col-lg-8">
+
+                <!-- Blog Post -->
+
+                <!-- Title -->
+                <h1>Le cahier des charges</h1>
+
+                <!-- Preview Image -->
+                <img class="img-responsive" src="../img/content/conception/conception.jpg" alt="">
+
+                <hr>
+
+                <!-- Post Content -->
+                <p class="lead">La conception du projet passe par l'élaboration
+                d'un cahier de charge, mettant en place les différents aspects
+                représentants les besoins, les premières idées de maquette en détaillant les fonctionnalités à développer, l'étude des logiciels concurrents ainsi que le positionnement du projet.</p>
+                <h2>Besoins</h2>
+                <p>Les principales fonctionnalités explicitées par les utilisateurs étaient que :</p>
+                <ul>
+                  <li>L’application devra disposer de fonctionnalités dites génériques :</li>
+                  <ul>
+                    <li>Créer un nouveau modèle de tâche,</li>
+                    <li>Importer un modèle de tâche existant,</li>
+                    <li>Enregistrer le modèle de tâche,</li>
+                    <li>Quitter l’application.</li>
+                  </ul> 
+                  <li>L’interface devra permettre en particulier de :</li>
+                  <ul>
+                    <li>Visualiser et éditer l’arbre de tâche,</li>
+                    <li>Visualiser et éditer  les propriétés des tâches,</li>
+                    <li>Visualiser et éditer les propriétés générales du modèle,</li>
+                    <li>Visualiser et éditer le fichier XML correspondant.</li>
+                  </ul>
+                </ul> 
+                <p>Les fonctionnalités de visualisation/édition de l’arbre ainsi que celle de visualisation/édition des propriétés générales du modèle peuvent être regroupées en une seule entité dans la limite où l’on admet que les propriétés générales du modèle sont limitées à l’existence de tags. </p>
+                <p>Il y a donc <b>trois</b> parties principales de l’interface à développer :</p>
+                <ul>
+                  <li><b>arbre de tâche</b> avec la gestion des tags,</li>
+                  <li>la section <b>XML</b>,</li>
+                  <li>et enfin l’<b>édition des propriétés des tâches</b>.</li>
+                </ul> 
+                <h2>Conception de l'interface</h2>
+                <p>La maquette générale de l’application prendra la forme suivante:</p>
+                <img class="img-responsive" src="../img/content/conception/maquette.jpg" alt="">
+                <br>
+                <p>La partie centrale correspond à la visualisation graphique et l’édition de l’arbre des tâches avec les options d’édition à sa droite et les options relatives à la gestion des tags sur la gauche. Sous cet arbre se trouve la partie d’édition des propriétés d’une tâche. Enfin à droite de l’application nous retrouvons le XML correspondant à l’arbre graphique.</p>
+                <p>Cette maquette ne comprend pas les éléments de design finaux à cause des limites d’utilisation de la version gratuite du logiciel de maquettage, elle nous permet d’avoir une représentation globale de l’espace et du positionnement des objets.</p>
+                <h2>Logiciel concurrent</h2>
+                <p>Un logiciel a été développé par la Junior Entreprise de l’UTC, l’USEC, dans le même but. Ce logiciel comporte quelques problèmes. Il ne permet pas de modifier plusieurs caractéristiques des tâches simultanément. Il ne propose pas de sauvegarder quand on quitte le logiciel.</p>
+                <h2>Positionnement</h2>
+                <p>Comme cela a été précisé au cours des parties précédentes, nous allons mettre l’accent sur la facilité d'utilisation de l'application, le fait que l'utilisation de chaque fonctionnalité soit le plus intuitif et pratique possible. Nous allons donc notamment éviter l'ouverture d'onglets secondaires grâce à une répartition cohérente et pertinente des options. Enfin nous allons livrer une application complète en incluant la possibilité de sauvegarder et d'importer des arbres.</p>
+
+
+
+                
+            </div>
+
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
+
+
+
+                <!-- Blog Categories Well -->
+                <div class="well">
+                    <h4>Les mots clés</h4>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href="https://www.researchgate.net/publication/220439022_Modelisation_conceptuelle_des_IHM_Une_approche_globale_s%27appuyant_sur_les_processus_metier">Modèle de tâche</a>
+                                </li>
+                                <li><a href="https://www.youtube.com/watch?v=6EGd0E5N2HI">Vidéo des fonctionnalités</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+
+                <!-- Side Widget Well -->
+                <div class="well">
+                    <h4>La page en bref</h4>
+                    <p>Les premières idées de conception et études des besoins.</p>
+                    <p>Ce n'est jamais définitif jusqu'à ce que l'implémentation
+                        commence... </p>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Projet Task-Editor réalisé au semestre de printemps 2017</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

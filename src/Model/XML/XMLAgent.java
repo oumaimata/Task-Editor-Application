@@ -1,9 +1,9 @@
 package Model.XML;
 
-import java.io.File;
-
 import Model.GlobalParameters;
 import Model.Tree.*;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -17,51 +17,27 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-
-/* soit paring DOM soit parsing SAX
-    pour parsing SAX
-    Reader et listener, quand événement fonction de réponse
-    reader est déjà prêt
-    listener à faire,
-    événement détecté par le reader ex : balise ouvrante, balise fermante
-    récupére le contexte grâce à une fonction
-
-    dom crée un arbre des noeuds pas rès pratique dans
-    notre cas car ne correspond pas du tout à notre type d'arborescence
-
-    se renseigner sur xpath
-    librairie Xerces
-
-    faire des scénarios en fonction des uses cases choisir le pasingc
-    utiliser la classe XMLReader ?
-
-    * */
 /**
- * Created by ladyn-totorosaure on 22/05/17.
- * This class is used to parse the XML file. To transform the XML file into Objects and the Objects into an XML file.
+ * This class is used as an agent to manage the XML file and code and to parse XML.
+ * Created by ladyn-totorosaure on 20/06/17.
  */
-public class XMLParser {
+public class XMLAgent {
 
+    /////////// Attributes ///////////
+    // object necessary for the dom parsing
     public Document doc;
-
-    private MotherTasks motherTasks = new MotherTasks();
-    private LeafTasks leafTasks = new LeafTasks();
-
-    public MotherTasks getMotherTasks() {
-        return motherTasks;
-    }
-    public void setMotherTasks(MotherTasks motherTasks) {
-        this.motherTasks = motherTasks;
-    }
-
-    public LeafTasks getLeafTasks() {
-        return leafTasks;
-    }
-    public void setLeafTasks(LeafTasks leafTasks) {
-        this.leafTasks = leafTasks;
-    }
-
+    // reference on the tasks lists
+    private MotherTasks motherTasks;
+    private LeafTasks leafTasks;
+    // name of the balise for the XML
     static final String TASKS = "tasks";
     static final String MOTHER_TASK = "task_m";
     static final String LEAF_TASK = "task_f";
@@ -78,21 +54,95 @@ public class XMLParser {
     static final String PREDICATE = "predicate";
     static final String OBJECT = "object";
     static final String NOT = "NOT";
+    // attribute containing the text of the XML File
+    private StringProperty XMLtext;
+    private StringProperty XMLfilePath;
 
-    public XMLParser()
-    {
+    /////////// Constructors ///////////
+    // equivalent of the setup() methods for agent
+    public XMLAgent(MotherTasks motherTasks,LeafTasks leafTasks) {
+        this.motherTasks = motherTasks;
+        this.leafTasks = leafTasks;
         try {
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             doc = dBuilder.parse("init.xml");
         }catch (Exception e){
             System.out.println(e.toString());
         }
+        this.XMLfilePath = new SimpleStringProperty();
+        this.XMLtext = new SimpleStringProperty();
+        XMLfilePath.setValue("test.xml");
+        XMLtext.setValue("");
     }
 
-    public Boolean isElement(Node node)
-    {
-        return (node.getNodeType() ==  Node.ELEMENT_NODE);
+    public XMLAgent(MotherTasks motherTasks,LeafTasks leafTasks,String XMLfilePath) {
+        this.motherTasks = motherTasks;
+        this.leafTasks = leafTasks;
+        try {
+            DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            doc = dBuilder.parse("init.xml");
+        }catch (Exception e){
+            System.out.println(e.toString());
+        }
+        this.XMLfilePath = new SimpleStringProperty(XMLfilePath);
+        this.XMLtext = new SimpleStringProperty();
     }
+
+    /////////// Getters and Setters ///////////
+
+    public StringProperty XMLtextProperty() {
+        return XMLtext;
+    }
+
+    public String getXMLfilePath() {
+        return XMLfilePath.getValue();
+    }
+
+    public StringProperty XMLfilePathProperty() {
+        return XMLfilePath;
+    }
+
+    public void setXMLfilePath(String XMLfilePath) {
+        this.XMLfilePath.setValue(XMLfilePath);
+    }
+
+    public String getXMLtext() {
+        return XMLtext.getValue();
+    }
+
+    public void setXMLtext(String XMLtext) {
+        this.XMLtext.setValue(XMLtext);
+    }
+
+    public MotherTasks getMotherTasks() {
+        return motherTasks;
+    }
+
+    public void setMotherTasks(MotherTasks motherTasks) {
+        this.motherTasks = motherTasks;
+    }
+
+    public LeafTasks getLeafTasks() {
+        return leafTasks;
+    }
+
+    public void setLeafTasks(LeafTasks leafTasks) {
+        this.leafTasks = leafTasks;
+    }
+
+
+    public void setTextFromFilePath() {
+        // creating the object path to the file
+        Path pathToFile = Paths.get(getXMLfilePath());
+        try {
+            // getting the text of the file in the string
+            XMLtext.setValue(new String(Files.readAllBytes(pathToFile), StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /////////// Functions used as behaviours ///////////
 
     public void toXMLFromTree(MotherTasks motherTasks,LeafTasks leafTasks,String filePathName){
         try{
@@ -148,7 +198,6 @@ public class XMLParser {
         motherTasks = new MotherTasks();
         leafTasks = new LeafTasks();
         File file = new File(XMLFilePath);
-
         try{
             DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             doc = dBuilder.parse(file);
@@ -171,41 +220,73 @@ public class XMLParser {
         }
 
     }
+
+    public void saveTextInFile(){
+        File newFile = new File(getXMLfilePath());
+        try{
+            if(newFile.exists()){newFile.delete();}
+            newFile.createNewFile();
+            FileWriter writer = new FileWriter(newFile);
+            writer.write(getXMLtext());
+            writer.flush();
+            writer.close();
+        }catch (Exception e){
+            System.out.println("Erreur : "+e.toString());
+        }
+    }
+
+
+
+    /////////// Functions used in behaviours ///////////
+
+    public Boolean isElement(Node node)
+    {
+        return (node.getNodeType() ==  Node.ELEMENT_NODE);
+    }
+
+
     public void createTreeFromNodeList(NodeList nodeList){
         for (int count = 0; count < nodeList.getLength(); count++) {
+            System.out.println(nodeList.getLength());
             Node tempNode = nodeList.item(count);
+            System.out.println(tempNode.toString());
             // make sure it's element node.
             if (isElement(tempNode)) {
                 // get node name and value
                 //System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
                 switch (tempNode.getNodeName())
                 {
-                case MOTHER_TASK :
-                    NodeList motherTaskNodes = tempNode.getChildNodes();
-                    int motherTaskNb = motherTaskNodes.getLength();
-                    // creating a mother task for each of them
-                    for (int task_m_count = 0; task_m_count < motherTaskNb; task_m_count++) {
-                        Node motherTaskNode = motherTaskNodes.item(task_m_count);
-                        if (isElement(motherTaskNode))
-                        {
-                            MotherTask motherTask = createMotherTaskFromNode(motherTaskNode);
-                            motherTasks.addTask(motherTask);
+                    case MOTHER_TASK :
+                        NodeList motherTaskNodes = tempNode.getChildNodes();
+                        int motherTaskNb = motherTaskNodes.getLength();
+                        // creating a mother task for each of them
+                        for (int task_m_count = 0; task_m_count < motherTaskNb; task_m_count++) {
+                            Node motherTaskNode = motherTaskNodes.item(task_m_count);
+                            if (isElement(motherTaskNode))
+                            {
+                                MotherTask motherTask = createMotherTaskFromNode(motherTaskNode);
+                                motherTasks.addTask(motherTask);
+                                System.out.println("mothertask "+motherTask.toString());
+
+                            }
                         }
-                    }
-                    break;
-                case LEAF_TASK :
-                    NodeList leafTaskNodes = tempNode.getChildNodes();
-                    int leafTaskNb = leafTaskNodes.getLength();
-                    for (int task_f_count = 0; task_f_count < leafTaskNb; task_f_count++) {
-                        Node leafTaskNode = leafTaskNodes.item(task_f_count);
-                        if (isElement(leafTaskNode))
-                        {
-                            LeafTask leafTask = createLeafTaskFromNode(leafTaskNode);
-                            leafTasks.addTask(leafTask);
+                        break;
+                    case LEAF_TASK :
+                        NodeList leafTaskNodes = tempNode.getChildNodes();
+                        int leafTaskNb = leafTaskNodes.getLength();
+                        for (int task_f_count = 0; task_f_count < leafTaskNb; task_f_count++) {
+                            Node leafTaskNode = leafTaskNodes.item(task_f_count);
+                            System.out.println("test leaf: "+isElement(leafTaskNode));
+                            if (isElement(leafTaskNode))
+                            {
+                                LeafTask leafTask = createLeafTaskFromNode(leafTaskNode);
+                                leafTasks.addTask(leafTask);
+                                System.out.println("leaftask "+leafTask.toString());
+                            }
                         }
-                    }
-                    break;
+                        break;
                 }
+
             }
         }
     }
@@ -271,12 +352,12 @@ public class XMLParser {
                         createSubTaskList(motherTask, elementNode.getChildNodes());
                         break;
                     case CONSTRUCTOR :
-                        motherTask.setConstructor(elementNode.getAttributes().getNamedItem(TYPE).getNodeValue());
+                        motherTask.setConstructor(Model.GlobalParameters.TypeConstructeur.getFromName(elementNode.getAttributes().getNamedItem(TYPE).getNodeValue()));
                         System.out.println(motherTask.getConstructor().getName());
                         // Getting the relations
                         if (elementNode.hasChildNodes())
                             createLinkBetweenDaugther(motherTask,elementNode.getChildNodes());
-                            // motherTask.setLinkBetweenDaughters(createLinkBetweenDaugther(motherTask,elementNode.getChildNodes()));
+                        // motherTask.setLinkBetweenDaughters(createLinkBetweenDaugther(motherTask,elementNode.getChildNodes()));
                         break;
                     case CONDITIONS :
                         //motherTask.setConditionList(createConditionFromNode(motherTask,elementNode));
@@ -476,3 +557,4 @@ public class XMLParser {
         }
     }
 }
+
